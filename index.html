@@ -685,6 +685,11 @@ margin-top:10px;
             const jaRegex = /[\u3040-\u309F\u30A0-\u30FF]/;
             if (jaRegex.test(text)) return 'ja-JP';
 
+
+   // 일본어 한자만 있는 단어
+    if (/^[\u4E00-\u9FFF]+$/.test(text))
+        return 'ja-JP';
+			
             
             // 2. 스페인어 특수 기호 감지 (á, é, ñ 등)
             const esRegex = /[áéíóúüñÁÉÍÓÚÜÑ¡¿]/;
