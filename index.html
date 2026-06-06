@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -368,16 +367,15 @@
             padding: 15px;
             border-radius: 10px;
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 5px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
         }
 
         .key-btn {
             background: white;
             border: 2px solid #444;
             border-radius: 8px;
-             /* width: 48px; */
-            height: 35px; /*문자박스*/
+            height: 50px;
             font-size: 18px;
             font-weight: bold;
             display: flex;
@@ -393,8 +391,8 @@
             color: #888;
             border-color: #aaa;
             box-shadow: none;
-            cursor: not-allowed;
-            pointer-events: none;
+            /* 🎯 자판 토글 기능을 위해 pointer-events: none; 과 cursor: not-allowed; 제거 */
+            cursor: pointer; 
         }
         .key-btn.backspace {
             background: #ffeaa7;
@@ -485,7 +483,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         let quizData = [];
         let currentProblem = null;
         let correctCount = 0;
@@ -580,7 +578,7 @@
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = ` ${file.name}`; //📖 현재 학습 중인 로드 파일 :
+            txtFileNameScreen.textContent = `📖 학습 중인 파일 : ${file.name}`;
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -641,7 +639,7 @@
             isRandomMode = !isRandomMode; 
             
             if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 순서: random"; //무작위
+                btnToggleOrder.textContent = "🔄 순서: 무작위";
                 btnToggleOrder.style.backgroundColor = "#079992";
             } else {
                 btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
@@ -687,15 +685,16 @@
             const jaRegex = /[\u3040-\u309F\u30A0-\u30FF]/;
             if (jaRegex.test(text)) return 'ja-JP';
 
+            
+            // 2. 스페인어 특수 기호 감지 (á, é, ñ 등)
+            const esRegex = /[áéíóúüñÁÉÍÓÚÜÑ¡¿]/;
+            if (esRegex.test(text)) return 'es-ES';
+            
 
-            // 2. 중국어 판별 (간체/번체 한자 범위 매칭)
+            // 3. 중국어 판별 (간체/번체 한자 범위 매칭)
             const zhRegex = /[\u4E00-\u9FA5]/;
             if (zhRegex.test(text)) return 'zh-CN';
 
-            
-            // 3. 스페인어 특수 기호 감지 (á, é, ñ 등)
-            const esRegex = /[áéíóúüñÁÉÍÓÚÜÑ¡¿]/;
-            if (esRegex.test(text)) return 'es-ES';
             
             return 'en-US';
         }
@@ -709,7 +708,6 @@
             
             const utterance = new SpeechSynthesisUtterance(cleanText);
             utterance.lang = langMode; 
-            // 중국어/일본어는 시스템 톤에 맞춰 기본 속도 조율
             utterance.rate = (langMode === 'ja-JP' || langMode === 'zh-CN') ? 1.0 : 0.9; 
             window.speechSynthesis.speak(utterance);
         }
@@ -792,7 +790,8 @@
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong></strong> ${currentProblem.example}`; /*Ex:*/           txtMeaning.textContent = currentProblem.meaning;
+            txtExample.innerHTML = `<strong>Ex:</strong> ${currentProblem.example}`;
+            txtMeaning.textContent = currentProblem.meaning;
             txtExMeaning.textContent = ""; 
             txtExMeaning.style.display = "none";
 
@@ -885,6 +884,7 @@
                 btn.classList.add('key-btn');
                 btn.textContent = char;
                 btn.style.order = "1"; 
+                // 🎯 자판 클릭 시 입력 또는 삭제 처리가 둘 다 가능하도록 핸들러 연동
                 btn.addEventListener('click', () => handleKeyPress(char, btn));
                 keyboardContainer.appendChild(btn);
             });
@@ -907,9 +907,27 @@
             return -1;
         }
 
+        // 🎯 [핵심 로직 변경] 자판 입력 및 토글 취소 통합 처리기
         function handleKeyPress(char, btnElement) {
             if (isCorrectAnswered) return;
 
+            // 🌟 만약 이미 사용(입력)된 자판 버튼을 다시 콕 누른 상황이라면? -> 매핑된 빈칸을 찾아 삭제!
+            if (btnElement.classList.contains('used')) {
+                let foundTargetIdx = -1;
+                // 현재 매핑 로그 중에서 이 자판 엘리먼트를 가리키고 있는 빈칸 인덱스를 역추적합니다.
+                for (let key in keyMappingLog) {
+                    if (keyMappingLog[key] === btnElement) {
+                        foundTargetIdx = parseInt(key);
+                        break;
+                    }
+                }
+                if (foundTargetIdx !== -1) {
+                    executeBlankClear(foundTargetIdx);
+                }
+                return; // 삭제 작업을 완료했으므로 처리 종료
+            }
+
+            // 일반적인 입력 상황 처리 (미사용 자판 버튼 클릭 시)
             let targetIdx = getNextEmptyBlankIndex();
             if (targetIdx === -1) return; 
 
@@ -1007,7 +1025,7 @@
                     nextQuiz(false); 
                 }
             } else {
-                alert("❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.\n💡 꿀팁: 틀린 글자 칸을 직접 마우스로 콕 누르면 그 글자만 쏙 빠집니다!");
+                alert("❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.\n💡 꿀팁: 자판의 회색 글자를 다시 누르거나, 위의 틀린 글자 칸을 직접 누르면 쏙 빠집니다!");
                 wrongCount++;
                 lblWrong.textContent = wrongCount;
             }
