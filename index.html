@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스파르타 멀티랭귀지 단어 맞추기 퀴즈 게임</title>
+    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -22,23 +23,21 @@
             align-items: center;
         }
 
-           /* ---시작 파일 불러오기 setup-container--- */
-        #setup-container {
+                #setup-container {
 
             width: 100%;
             max-width: 550px;
-margin-top:10px;
+
             height: 100%;
             max-height:650px;
 
            /* display: flex; */
-            justify-content: space-between;
-            align-items: center;
-
+           /* justify-content: space-between;
+              align-items: center;*/
 
             margin-bottom: 20px;
             background-color: var(--bg-color);
-            margin-top: 10px;
+margin-top: 10px;
             border: 4px solid #96b8ad;
             border-radius: 15px;
             padding: 20px;
@@ -97,26 +96,24 @@ margin-top:10px;
         }
         .btn-hard-toggle:active { transform: translateY(2px); box-shadow: none; }
 
-       /* 오디오🔊 소리켬 끔 컨트롤 바(정답 시 자동발음) */
+        /* 오디오 컨트롤 바 */
         .audio-control-box {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: #98b76a;
+            background: #ffffff;
             padding: 4px 10px;
             border-radius: 8px;
-            height: 16px; /*박스 높이*/
             border: 2px solid #a5b1c2;
             font-size: 12px;
             font-weight: bold;
-		    box-shadow: 0 3px 0 #6b8741;
         }
 
         .btn-sound-mute {
-            background-color: #8080c0;
+            background-color: #4b6584;
             color: white;
             border: none;
-            padding: 3px 7px;
+            padding: 3px 8px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 11px;
@@ -126,21 +123,20 @@ margin-top:10px;
         .repeat-control-box {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             background: #ffffff;
             padding: 4px 10px;
             border-radius: 8px;
-            border: 1px solid #959595;
+            border: 2px solid #ccc;
             font-size: 12px;
             font-weight: bold;
-            box-shadow: 0 2px 0 #7f7f7f;
         }
         .repeat-btn {
             background: #eee;
             border: 1px solid #aaa;
             border-radius: 4px;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -151,19 +147,19 @@ margin-top:10px;
             font-weight: bold;
             border: 1px solid #bbb;
             border-radius: 4px;
-            height: 16px;
+            height: 18px;
         }
 
         /* 엑셀 파일 이름 전광판 스타일 */
         .file-name-display {
-            background: #476481;
+            background: #2c3e50;
             color: #ecf0f1;
             padding: 6px 15px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             word-break: break-all;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -199,7 +195,7 @@ margin-top:10px;
             background-color: var(--board-color);
             border: 3px solid #bcaba0;
             border-radius: 8px;
-            min-height: 120px;
+            min-height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -227,13 +223,27 @@ margin-top:10px;
             font-weight: bold;
             color: #2c2c2c;
             padding-right: 45px;
+            margin-bottom: 5px;
+        }
+
+        .meaning-english {
+            font-size: 15px;
+            color: #57606f;
+            font-weight: 500;
+            padding-right: 45px;
         }
 
         .example-hint {
             font-size: 14px;
-            color: #8080ff; /*힌트문자 컬러*/
-            margin-top: 8px;
-            font-weight: normal;
+            color: #c503b6; /* 가독성 좋은 어두운 올리브그린(#bdc581) 계열 */
+            background-color: #f5f6fa;
+            border: 1px dashed #dcdde1;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: bold;
+            width: 90%;
+            word-break: break-all;
         }
 
         /* 보드 내부 발음 아이콘 버튼 */
@@ -243,9 +253,9 @@ margin-top:10px;
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 34px;
-           width: 25px;
-            height: 25px;
+            width: 14px;
+            height: 14px;
+            font-size: 16px;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -255,8 +265,9 @@ margin-top:10px;
         }
         .btn-speak-inline:hover { background: #f1f2f6; }
         .btn-speak-inline:active { transform: scale(0.92); background: #dfe4ea; }
-        #btn-speak-word { top: 65px; }
         #btn-speak-example { top: 15px; }
+        #btn-speak-word { top: 60px; }
+        #btn-speak-english { top: 105px; }
 
         /* 현재 단어 반복 진행 상황판 스타일 */
         .loop-progress-bar {
@@ -267,7 +278,7 @@ margin-top:10px;
             margin-bottom: 10px;
         }
 
-        /* 정답 단어 입력칸 리스트 */
+       /* 정답 단어 입력칸 리스트 */
         .word-slots {
             display: flex;  /*입력문자 박스간격*/
             justify-content: center;
@@ -277,7 +288,7 @@ margin-top:10px;
         }
 
         .slot {
-            width: 35px;  /*입력문자 박스 가로 크기*/
+             width: 35px;  /*입력문자 박스 가로 크기*/
             height: 38px; /*입력문자 박스 세로 크기*/
             background: white;
             border: 2px solid #555;
@@ -297,7 +308,7 @@ margin-top:10px;
             box-shadow: 0 4px 0 #c0c0c0;
             cursor: pointer;
             transition: transform 0.1s, border-color 0.1s;
-        }
+        }     
                 /* 🎯 마우스를 올리면 오타 지우기/수정이 가능하다는 피드백 시각화 */
         .slot.blank.filled:hover {
             transform: scale(1.08);
@@ -320,17 +331,17 @@ margin-top:10px;
             justify-content: center;
             align-items: center;
             gap: 12px;
-            background: #eef9f1;
-            border: 2px solid #9d9d00; /*다음 단어로 이동합니다 (박스 라인색)*/
+            background: #ebf8fe;
+            border: 2px solid #333366; /*다음 단어로 이동합니다 (박스 라인색)*/
             padding: 6px 15px;
             border-radius: 10px;
             margin-bottom: 15px;
             box-shadow: 3 2px 4px rgba(0,0,0,0.05);
         }
         .feedback-text {
-            font-size: 16px;
-            font-weight: bold;
-            color: #ff80c0;  /* 다음 단어로 이동합니다 (문자색)*/
+            font-size: 14px;
+            font-weight: solid; /*bold*/
+            color: #8913ff;  /* 다음 단어로 이동합니다 (문자색)*/
         }
 
         /* 조작 영역 */
@@ -342,20 +353,22 @@ margin-top:10px;
         }
         
         .btn-action {
-            padding: 3px 7px;
+            padding: 6px 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 11px; 
             border: none;
         }
-        .hint-btn {
+         .hint-btn {
             background: #fddd8a;
+			height: 25px; /*버튼세로 크기*/
             border: 1.5px solid #e7be52;
             box-shadow: 0 2px 0 #e7be52
         }
         .next-btn {
             background: #ffb7db;
+			height: 25px; /*버튼세로 크기*/
             color: white;
             border: 1.5px solid #eda0a0;
             box-shadow: 0 2px 0 #eda0a0;
@@ -409,21 +422,17 @@ margin-top:10px;
     </style>
 </head>
 <body>
+
     <div id="setup-container">
-        <h2 style="margin-left: 30px; margin-right: 30px; margin-top: 50px;   font-size:20px;" >🎯 "스파르타" [Sparta Word quiz game]의
-		<br><!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  --><!-- 단어퀴즈  파일을 로드 하면-->(영어/일어/스페인어/중국어 자동감지)<br><!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --> 강력한 트레이닝이 시작 <!-- 화면이 열립 -->됩니다. </h2>
+        <h2 style="margin-left: 30px; margin-right: 30px;  font-size:20px;" >🎯 "스파르타" [Sparta Word quiz game]의
+		<br><!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  --><!-- 단어퀴즈  파일을 로드 하면-->(영어/일어/스페인어/중국어 <!-- 자동감지 -->)<br><!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --> 강력한 트레이닝이 시작 <!-- 화면이 열립 -->됩니다. </h2>
         <input style="margin-left: 40px;" type="file" id="excel-file-init" accept=".xlsx, .xls" />
 		<br>
 		<h1 style=" font-size:14px; font-color: #eda0a0; margin-top:20px; margin-bottom: 50px;  margin-left: 75px; margin-right: 75px;" >"파일 선택" 버튼을 클릭후 준비된 파일을  로드 하면 "스파르타" Word quiz game 시작 화면이 열립니다.</h1>
     </div>
 
-
-
     <div id="game-frame" style="display: none; width: 100%; max-width: 550px;">
-
-              <h2 style="margin-left: 5px; margin-bottom: 5px; font-size:18px; ">🎯 "스파르타" [Sparta Word quiz game]</h2>
-
-		<div class="top-loader-bar">
+        <div class="top-loader-bar">
             <button class="btn-order-toggle" id="btn-toggle-order">🔢 순서: 작위 (순차적)</button>
             <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 난이도: 보통</button>
             
@@ -445,7 +454,7 @@ margin-top:10px;
             <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">📖 <!-- 학습 중인-->현재  파일: 연결 중...</div>
+        <div class="file-name-display" id="file-name-screen">📖 학습 중인 파일: 연결 중...</div>
 
         <div id="game-container">
             <div class="status-bar">
@@ -460,8 +469,11 @@ margin-top:10px;
                 
                 <button class="btn-speak-inline" id="btn-speak-word" title="단어 다시 듣기">🔊</button>
                 <div id="word-meaning" class="meaning-middle">뜻이 표시됩니다.</div>
+
+                <button class="btn-speak-inline" id="btn-speak-english" title="영어 표현 다시 듣기">🔊</button>
+                <div id="word-english" class="meaning-english">영어 표현이 표시됩니다.</div>
                 
-                <div class="example-hint" id="example-meaning"></div>
+                <div class="example-hint" id="example-meaning" style="display: none;"></div>
             </div>
 
             <div class="loop-progress-bar" id="loop-progress-zone">
@@ -475,7 +487,7 @@ margin-top:10px;
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡 예문 해석 (H)</button>
+                <button class="btn-action hint-btn" id="hint-button">💡 안내 (H)</button>
                 <button class="btn-action next-btn" id="next-button">⏩ 다음 단어로 (Next)</button>
             </div>
 
@@ -483,7 +495,7 @@ margin-top:10px;
         </div>
     </div>
 
-<script>
+    <script>
         let quizData = [];
         let currentProblem = null;
         let correctCount = 0;
@@ -526,6 +538,7 @@ margin-top:10px;
 
         const txtExample = document.getElementById('word-example'); 
         const txtMeaning = document.getElementById('word-meaning');
+        const txtEnglish = document.getElementById('word-english');
         const txtExMeaning = document.getElementById('example-meaning');
         const slotsContainer = document.getElementById('word-slots');
         const keyboardContainer = document.getElementById('keyboard');
@@ -541,6 +554,7 @@ margin-top:10px;
         const btnSoundMute = document.getElementById('btn-sound-mute');
         const chkAutoSpeak = document.getElementById('chk-auto-speak');
         const btnSpeakWord = document.getElementById('btn-speak-word');
+        const btnSpeakEnglish = document.getElementById('btn-speak-english');
         const btnSpeakExample = document.getElementById('btn-speak-example');
         
         const txtFileNameScreen = document.getElementById('file-name-screen');
@@ -578,7 +592,7 @@ margin-top:10px;
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖 : ${file.name}`; /*학습 중인 파일*/
+            txtFileNameScreen.textContent = `📖 학습 중인 파일 : ${file.name}`;
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -589,11 +603,14 @@ margin-top:10px;
                 
                 const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
                 
+                // 구조 매핑 완벽 정렬: 
+                // A열(row[0]): 단어, B열(row[1]): 뜻, C열(row[2]): 영어, D열(row[3]): 예문(해석포함), E열(row[4]): 언어코드
                 quizData = rows.map(row => ({
                     word: String(row[0] || '').trim(),
                     meaning: String(row[1] || '').trim(),
-                    example: String(row[2] || '').trim(),
-                    exMeaning: String(row[3] || '').trim()
+                    english: String(row[2] || '').trim(),
+                    example: String(row[3] || '').trim(),
+                    langCode: String(row[4] || 'ja').trim().toLowerCase() 
                 })).filter(item => item.word.length > 0);
 
                 if (quizData.length === 0) {
@@ -625,7 +642,7 @@ margin-top:10px;
         fileInit.addEventListener('change', (e) => parseExcel(e.target.files[0]));
 
         btnChangeFile.addEventListener('click', () => {
-            const confirmChange = confirm("다른 엑셀 파일을 불러오시겠습니까?\n(현재까지 기록된 정답/오답 개수와 타이머가 초기화됩니다.)");
+            const confirmChange = confirm("다른 엑셀 파일을 불러오시겠습니까?\n(기록 및 타이머가 초기화됩니다.)");
             if (confirmChange) {
                 fileRuntime.click();
             }
@@ -637,7 +654,6 @@ margin-top:10px;
 
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
-            
             if (isRandomMode) {
                 btnToggleOrder.textContent = "🔄 순서: 무작위";
                 btnToggleOrder.style.backgroundColor = "#079992";
@@ -653,11 +669,9 @@ margin-top:10px;
             if (isAllBlankMode) {
                 btnToggleHard.textContent = "🔥 난이도: 전체 숨김";
                 btnToggleHard.style.backgroundColor = "#eb3b5a";
-                btnToggleHard.style.boxShadow = "0 3px 0 #b33939";
             } else {
                 btnToggleHard.textContent = "🎯 난이도: 보통";
                 btnToggleHard.style.backgroundColor = "#fa8231";
-                btnToggleHard.style.boxShadow = "0 3px 0 #d35400";
             }
         });
 
@@ -673,74 +687,76 @@ margin-top:10px;
             }
         });
 
-         // 🎯 [중국어 기능 확장] 텍스트 분석 후 다국어 TTS 언어 코드 반환
-        function detectLanguageCode(text) {
-            if (!text) return 'en-US';
+        function getFinalLangCode(configCode) {
+            if (configCode === 'ja' || configCode === 'jp') return 'ja-JP';
+            if (configCode === 'zh' || configCode === 'cn') return 'zh-CN';
+            if (configCode === 'es') return 'es-ES';
+            return 'en-US';
+        }
 
-            // 0. 한국어 판별 (가장 먼저 검사)
-            const koRegex = /[가-힣ㄱ-ㅎㅏ-ㅣ]/;
+        function detectGeneralLanguage(text) {
+            const koRegex = /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/;
             if (koRegex.test(text)) return 'ko-KR';
-    
-		    // 1. 일본어 판별 (히라가나, 가타카나 범위 매칭)
-            const jaRegex = /[\u3040-\u309F\u30A0-\u30FF]/;
-            if (jaRegex.test(text)) return 'ja-JP';
-
-
-   // 일본어 한자만 있는 단어
-    if (/^[\u4E00-\u9FFF]+$/.test(text))
-        return 'ja-JP';
-			
             
-            // 2. 스페인어 특수 기호 감지 (á, é, ñ 등)
             const esRegex = /[áéíóúüñÁÉÍÓÚÜÑ¡¿]/;
             if (esRegex.test(text)) return 'es-ES';
-            
-
-            // 3. 중국어 판별 (간체/번체 한자 범위 매칭)
-            const zhRegex = /[\u4E00-\u9FA5]/;
-            if (zhRegex.test(text)) return 'zh-CN';
-
             
             return 'en-US';
         }
 
-        function speakText(text) {
-            if (isMuted || !text) return;
-            window.speechSynthesis.cancel(); 
-            
-            let cleanText = text.replace(/^<strong>Ex:<\/strong>\s*/i, '');
-            const langMode = detectLanguageCode(cleanText);
-            
+        function speakSpecificColumn(text, columnType) {
+            if (isMuted || !text || !currentProblem) return;
+            window.speechSynthesis.cancel();
+
+            let cleanText = text.replace(/^<strong>📖:<\/strong>\s*/i, ''); // Ex:
+            let targetLang = 'en-US';
+
+            if (columnType === 'word') {
+                targetLang = getFinalLangCode(currentProblem.langCode);
+            } else if (columnType === 'meaning') {
+                targetLang = detectGeneralLanguage(cleanText);
+            } else if (columnType === 'english') {
+                targetLang = 'en-US';
+            } else if (columnType === 'example') {
+                targetLang = detectGeneralLanguage(cleanText);
+            }
+
             const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.lang = langMode; 
-            utterance.rate = (langMode === 'ja-JP' || langMode === 'zh-CN') ? 1.0 : 0.9; 
+            utterance.lang = targetLang;
+            utterance.rate = (targetLang === 'ja-JP' || targetLang === 'zh-CN') ? 1.0 : 0.9;
             window.speechSynthesis.speak(utterance);
         }
 
-        function speakMultipleTexts(textList) {
-            if (isMuted || !textList || textList.length === 0) return;
+        function playCorrectSoundChain() {
+            if (isMuted || !currentProblem) return;
             window.speechSynthesis.cancel();
 
-            textList.forEach((text, index) => {
-                let cleanText = text.replace(/^<strong>Ex:<\/strong>\s*/i, '');
-                const langMode = detectLanguageCode(cleanText);
-                
-                const utterance = new SpeechSynthesisUtterance(cleanText);
-                utterance.lang = langMode;
-                utterance.rate = (langMode === 'ja-JP' || langMode === 'zh-CN') ? 1.0 : 0.9;
-                
-                if (index > 0) utterance.delay = 0.3; 
-                
-                window.speechSynthesis.speak(utterance);
-            });
+            const uWord = new SpeechSynthesisUtterance(currentProblem.word);
+            uWord.lang = getFinalLangCode(currentProblem.langCode);
+            
+            const uMeaning = new SpeechSynthesisUtterance(currentProblem.meaning);
+            uMeaning.lang = detectGeneralLanguage(currentProblem.meaning);
+            uMeaning.rate = (uMeaning.lang === 'ja-JP' || uMeaning.lang === 'zh-CN') ? 1.0 : 0.9;
+            
+            const uEnglish = new SpeechSynthesisUtterance(currentProblem.english);
+            uEnglish.lang = 'en-US';
+            uEnglish.rate = 0.9;
+
+            window.speechSynthesis.speak(uWord);
+            window.speechSynthesis.speak(uMeaning);
+            window.speechSynthesis.speak(uEnglish);
         }
 
         btnSpeakWord.addEventListener('click', () => {
-            if (currentProblem) speakText(currentProblem.word);
+            if (currentProblem) speakSpecificColumn(currentProblem.word, 'word');
+        });
+
+        btnSpeakEnglish.addEventListener('click', () => {
+            if (currentProblem) speakSpecificColumn(currentProblem.english, 'english');
         });
 
         btnSpeakExample.addEventListener('click', () => {
-            if (currentProblem) speakText(currentProblem.example);
+            if (currentProblem) speakSpecificColumn(currentProblem.example, 'example');
         });
 
         window.addEventListener('keydown', (e) => {
@@ -795,16 +811,19 @@ margin-top:10px;
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong> 📖 </strong> ${currentProblem.example}` ;/*Ex:*/
-            txtMeaning.textContent = currentProblem.meaning;
-            txtExMeaning.textContent = ""; 
+            txtExample.innerHTML = `<strong>📖 :</strong> ${currentProblem.example}`; //Ex :
+            txtMeaning.textContent = `  ${currentProblem.meaning}`; //뜻:
+            txtEnglish.textContent = `   ${currentProblem.english}`; //영:
+            
+            // 🎯 다음 문제로 갈 때 예문 해석 영역은 우선 숨겨둡니다. (H키나 버튼 누르면 등장)
+            txtExMeaning.textContent = currentProblem.example; 
             txtExMeaning.style.display = "none";
 
             updateProgressUI();
             setupWordSlots(targetWord);
 
             if (isNewWord && !isMuted) {
-                speakMultipleTexts([currentProblem.word, currentProblem.example]);
+                playCorrectSoundChain();
             }
         }
 
@@ -889,7 +908,6 @@ margin-top:10px;
                 btn.classList.add('key-btn');
                 btn.textContent = char;
                 btn.style.order = "1"; 
-                // 🎯 자판 클릭 시 입력 또는 삭제 처리가 둘 다 가능하도록 핸들러 연동
                 btn.addEventListener('click', () => handleKeyPress(char, btn));
                 keyboardContainer.appendChild(btn);
             });
@@ -912,14 +930,11 @@ margin-top:10px;
             return -1;
         }
 
-        // 🎯 [핵심 로직 변경] 자판 입력 및 토글 취소 통합 처리기
         function handleKeyPress(char, btnElement) {
             if (isCorrectAnswered) return;
 
-            // 🌟 만약 이미 사용(입력)된 자판 버튼을 다시 콕 누른 상황이라면? -> 매핑된 빈칸을 찾아 삭제!
             if (btnElement.classList.contains('used')) {
                 let foundTargetIdx = -1;
-                // 현재 매핑 로그 중에서 이 자판 엘리먼트를 가리키고 있는 빈칸 인덱스를 역추적합니다.
                 for (let key in keyMappingLog) {
                     if (keyMappingLog[key] === btnElement) {
                         foundTargetIdx = parseInt(key);
@@ -929,10 +944,9 @@ margin-top:10px;
                 if (foundTargetIdx !== -1) {
                     executeBlankClear(foundTargetIdx);
                 }
-                return; // 삭제 작업을 완료했으므로 처리 종료
+                return; 
             }
 
-            // 일반적인 입력 상황 처리 (미사용 자판 버튼 클릭 시)
             let targetIdx = getNextEmptyBlankIndex();
             if (targetIdx === -1) return; 
 
@@ -1012,7 +1026,7 @@ margin-top:10px;
                 updateProgressUI();
 
                 if (chkAutoSpeak.checked) {
-                    speakText(targetWord);
+                    playCorrectSoundChain(); 
                 }
 
                 if (currentMatchCount >= targetMatchCount) {
@@ -1025,22 +1039,29 @@ margin-top:10px;
 
                     setTimeout(() => {
                         nextQuiz(true); 
-                    }, 1000);
+                    }, 1200);
                 } else {
                     nextQuiz(false); 
                 }
             } else {
-                alert("❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.\n💡 꿀팁: 자판의 회색 글자를 다시 누르거나, 위의 틀린 글자 칸을 직접 누르면 쏙 빠집니다!");
+                alert("❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.");
                 wrongCount++;
                 lblWrong.textContent = wrongCount;
             }
         }
 
+        // 🎯 [완벽 수정] 버튼 클릭 시 임의의 알림이 아닌, 엑셀 D열(예문/해석) 내용이 정밀 노출됩니다.
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.innerHTML = ` 📖   ${currentProblem.exMeaning}`; /* 뜻: */
-                txtExMeaning.style.display = "block";
+                // 데이터가 있을 때만 깔끔하게 노출
+                if (currentProblem.example) {
+                    txtExMeaning.textContent = currentProblem.example;
+                    txtExMeaning.style.display = "block";
+                } else {
+                    txtExMeaning.textContent = "등록된 예문(D열)이 없습니다.";
+                    txtExMeaning.style.display = "block";
+                }
             } else {
                 txtExMeaning.style.display = "none";
             }
