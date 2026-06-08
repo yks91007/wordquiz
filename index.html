@@ -239,7 +239,7 @@ margin-top: 10px;
         }
 
         .example-hint {
-            font-size: 14px;
+            font-size: 15px;
             color: #c503b6; /* 올리브그린(#bdc581) 계열 */
             background-color: #f5f6fa;
             border: 1px dashed #dcdde1;
@@ -865,8 +865,8 @@ margin-top: 10px;
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong>📖 :</strong> ${currentProblem.example}`; //Ex :
-            txtMeaning.textContent = `   ${currentProblem.meaning}`; //뜻:
+            txtExample.innerHTML = `<strong>   </strong> ${currentProblem.example}`; //📖 : Ex :
+            txtMeaning.textContent = ` 📖 :  ${currentProblem.meaning}`; //뜻:
             txtEnglish.textContent = `   ${currentProblem.english}`; //영:
             
             txtExMeaning.textContent = currentProblem.example; 
