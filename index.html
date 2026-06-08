@@ -22,7 +22,7 @@
             align-items: center;
         }
 
-        /* 메인 게임 프레임 (초기부터 즉시 표시되도록 변경) */
+        /* 메인 게임 프레임 */
         #game-frame {
             width: 100%;
             max-width: 550px;
@@ -77,9 +77,9 @@
         }
         .btn-hard-toggle:active { transform: translateY(2px); box-shadow: none; }
 
-       /* 오디오🔊 소리켬 끔 컨트롤 바(정답 시 자동발음) */
+      /* 오디오🔊 소리켬 끔 컨트롤 바(정답 시 자동발음) */
         .audio-control-box {
-		    height: 17px;
+		    height: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -93,25 +93,22 @@
         }
 
         .btn-sound-mute {
-            background-color: #8080c0;
-         box-height:10px;
-			            align-items: center;
-						            gap: 3px;
+            background-color: #4b6584;
             color: white;
             border: none;
-            padding: 2px 3px;
+            padding: 3px 8px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         /* 목표 맞춤 횟수 설정 컨트롤러 스타일 */
         .repeat-control-box {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             background: #ffffff;
-            padding: 2px 5px;
+            padding: 4px 10px;
             border-radius: 8px;
             border: 2px solid #ccc;
             font-size: 12px;
@@ -139,17 +136,16 @@
 
         /* 엑셀 파일 이름 전광판 스타일 */
         .file-name-display {
-            background: #405873;
-            border: 2px solid #3e566f;
-            color: #f3f4f5;
-            padding: 2px 7px;
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 8px 15px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 11px;
+            margin-bottom: 12px;
             word-break: break-all;
-            box-shadow: 0 3px 0 #7f7f7f;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         /* 게임 메인 보드 */
@@ -220,8 +216,8 @@
         }
 
         .example-hint {
-            font-size: 15px;
-            color: #c503b6; /* 올리브그린(#bdc581) 계열 */
+            font-size: 14px;
+            color: #c503b6; /* (전광판 Hint 글씨 컬러) (#bdc581) 계열 */
             background-color: #f5f6fa;
             border: 1px dashed #dcdde1;
             padding: 6px 12px;
@@ -239,8 +235,8 @@
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 14px;
-            height: 14px;
+            width: 14px; /* 발음 아이콘 가로 */
+            height: 14px; /* 발음 아이콘 세로 */
             font-size: 15px;
             cursor: pointer;
             display: flex;
@@ -302,6 +298,7 @@
             cursor: pointer;
             transition: transform 0.1s, border-color 0.1s;
         }
+        
                 /* 🎯 마우스를 올리면 오타 지우기/수정이 가능하다는 피드백 시각화 */
         .slot.blank.filled:hover {
             transform: scale(1.08);
@@ -346,11 +343,11 @@
         }
         
         .btn-action {
-            padding: 3px 12px;
+            padding: 8px 15px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 11px; 
+            font-size: 13px; 
             border: none;
         }
 		     /*💡 안내(Hint) 버튼*/
@@ -363,6 +360,7 @@
 		    /*⏩ 다음 단어로(Next)버튼*/
         .next-btn {
             background: #ffb7db;
+            padding: 3px 16px; /*⏩ 다음 단어로(Next)버튼 길이*/
             color: white;
             border: 1.5px solid #eda0a0;
             box-shadow: 0 2px 0 #eda0a0;
@@ -400,7 +398,7 @@
             border-color: #aaa;
             box-shadow: none;
             /* 🎯 자판 토글 기능을 위해 pointer-events: none; 과 cursor: not-allowed; 제거 */
-            cursor: pointer; 
+            cursor: pointer;  
         }
         .key-btn.backspace {
             background: #ffeaa7;
@@ -440,7 +438,7 @@
             <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">⚠️ 상단의 [📁 Excel 파일 불러오기] 버튼을 눌러 학습할 파일을 선택해 주세요!</div>
+        <div class="file-name-display" id="file-name-screen">⚠️ 원하는 옵션을 미리 지정한 후, [📁 Excel 파일 불러오기]를 눌러주세요!</div>
 
         <div id="game-container">
             <div class="status-bar">
@@ -495,6 +493,7 @@
         let currentBlankIndices = []; 
         let keyMappingLog = {}; 
 
+        // 사용자가 미리 설정할 수 있도록 기본 상태 대기화
         let isRandomMode = false; 
         let sequentialIndex = 0; 
         let isCorrectAnswered = false; 
@@ -505,7 +504,6 @@
 
         let isMuted = false;
 
-       // 🎯 [신규 추가] 3개 스피커의 개별 자동재생 활성화 상태 관리 (기본값: 모두 true = 켬)
         let isSpeakerEnabled = {
             example: true,
             word: true,
@@ -550,6 +548,7 @@
         
         const txtFileNameScreen = document.getElementById('file-name-screen');
 
+        // [사전 지정 가능] 반복 맞춤 횟수 변경 이벤트
         btnRepeatMinus.addEventListener('click', () => {
             let val = parseInt(inputRepeatCount.value) || 1;
             if (val > 1) {
@@ -580,10 +579,47 @@
             lblTotalTarget.textContent = targetMatchCount;
         }
 
+        // [사전 지정 가능] 무작위 / 순차적 순서 토글 버튼
+        btnToggleOrder.addEventListener('click', () => {
+            isRandomMode = !isRandomMode; 
+            if (isRandomMode) {
+                btnToggleOrder.textContent = "🔄 순서: 무작위(Random)";
+                btnToggleOrder.style.backgroundColor = "#e76dd8";
+            } else {
+                btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
+                btnToggleOrder.style.backgroundColor = "#38ada9";
+            }
+        });
+
+        // [사전 지정 가능] 난이도 토글 버튼
+        btnToggleHard.addEventListener('click', () => {
+            isAllBlankMode = !isAllBlankMode;
+            if (isAllBlankMode) {
+                btnToggleHard.textContent = "🔥 난이도: 전체 숨김";
+                btnToggleHard.style.backgroundColor = "#ed54af";
+            } else {
+                btnToggleHard.textContent = "🎯 난이도: 보통";
+                btnToggleHard.style.backgroundColor = "#fa8231";
+            }
+        });
+
+        // [사전 지정 가능] 전체 음소거 버튼
+        btnSoundMute.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                window.speechSynthesis.cancel(); 
+                btnSoundMute.textContent = "🔇 음소거";
+                btnSoundMute.style.backgroundColor = "#f17288";
+            } else {
+                btnSoundMute.textContent = "🔊 소리 켬";
+                btnSoundMute.style.backgroundColor = "#4b6584";
+            }
+        });
+
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖 : ${file.name}`; // 학습 중인 파일
+            txtFileNameScreen.textContent = `📖  : ${file.name}`; //학습 중인 파일
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -607,24 +643,20 @@
                     return;
                 }
 
+                // 스코어 및 인덱스 초기화 (유저가 사전 설정한 옵션값은 그대로 유지됨!)
                 correctCount = 0;
                 wrongCount = 0;
-                
                 sequentialIndex = 0; 
-                isRandomMode = false; 
-                btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
-                btnToggleOrder.style.backgroundColor = "#38ada9";
 
                 lblCorrect.textContent = correctCount;
                 lblWrong.textContent = wrongCount;
                 
                 currentMatchCount = 0;
-                nextQuiz(true); 
+                nextQuiz(true); // 파일 연 직후, 유저가 사전 설정해둔 조건으로 첫 단어 매칭 시작!
             };
             reader.readAsArrayBuffer(file);
         }
 
-        // 파일 열기 원터치 트리거
         btnChangeFile.addEventListener('click', () => {
             fileRuntime.click();
         });
@@ -632,41 +664,6 @@
         fileRuntime.addEventListener('change', (e) => {
             parseExcel(e.target.files[0]);
             e.target.value = ''; 
-        });
-
-        btnToggleOrder.addEventListener('click', () => {
-            isRandomMode = !isRandomMode; 
-            if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 순서: 무작위(Random)";
-                btnToggleOrder.style.backgroundColor = "#e76dd8";
-            } else {
-                btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
-                btnToggleOrder.style.backgroundColor = "#38ada9";
-                if (sequentialIndex >= quizData.length) sequentialIndex = 0;
-            }
-        });
-
-        btnToggleHard.addEventListener('click', () => {
-            isAllBlankMode = !isAllBlankMode;
-            if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥 난이도: 전체 숨김";
-                btnToggleHard.style.backgroundColor = "#ed54af";
-            } else {
-                btnToggleHard.textContent = "🎯 난이도: 보통";
-                btnToggleHard.style.backgroundColor = "#fa8231";
-            }
-        });
-
-        btnSoundMute.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (isMuted) {
-                window.speechSynthesis.cancel(); 
-                btnSoundMute.textContent = "🔇 음소거";
-                btnSoundMute.style.backgroundColor = "#f17288";
-            } else {
-                btnSoundMute.textContent = "🔊 소리 켬";
-                btnSoundMute.style.backgroundColor = "#4b6584";
-            }
         });
 
         function getFinalLangCode(configCode) {
@@ -686,7 +683,6 @@
             return 'en-US';
         }
 
-        // 특정 항목 강제/수동 발음 실행 함수 (상태 상관없이 무조건 즉시 발음)
         function forceSpeakColumn(text, columnType) {
             if (isMuted || !text || !currentProblem) return;
             window.speechSynthesis.cancel();
@@ -710,7 +706,6 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // 🎯 [완벽 수정] 스피커 아이콘별 개별 ON/OFF 토글 처리기
         function toggleSpeakerState(type, btnElement) {
             isSpeakerEnabled[type] = !isSpeakerEnabled[type];
             
@@ -718,7 +713,6 @@
                 btnElement.textContent = "🔊";
                 btnElement.classList.remove('muted-state');
                 btnElement.title = "자동 발음: 켬 (클릭시 끔)";
-                // 켬으로 바꿨을 때는 학습 편의를 위해 소리를 한 번 샘플로 들려줍니다.
                 triggerCurrentSound(type);
             } else {
                 btnElement.textContent = "🔇";
@@ -734,19 +728,16 @@
             if (type === 'english') forceSpeakColumn(currentProblem.english, 'english');
         }
 
-        // 스피커 요소 클릭 시 토글 스위치로 동작하도록 이벤트 전면 교체
         btnSpeakExample.addEventListener('click', () => toggleSpeakerState('example', btnSpeakExample));
         btnSpeakWord.addEventListener('click', () => toggleSpeakerState('word', btnSpeakWord));
         btnSpeakEnglish.addEventListener('click', () => toggleSpeakerState('english', btnSpeakEnglish));
 
-        // 🎯 [완벽 수정] 단어가 넘어갈 때, 오직 켬(🔊) 상태인 스피커들만 모아서 순차 재생 체인 가동
         function playCorrectSoundChain() {
             if (isMuted || !currentProblem) return;
             window.speechSynthesis.cancel();
 
             let utterancesQueue = [];
 
-            // 1. 단어 발음 대기열추가 (단어 스피커가 켜져 있을 때만)
             if (isSpeakerEnabled.word && currentProblem.word) {
                 const uWord = new SpeechSynthesisUtterance(currentProblem.word);
                 uWord.lang = getFinalLangCode(currentProblem.langCode);
@@ -825,9 +816,9 @@
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong>       </strong> ${currentProblem.example}`; //📖 : Ex :
-            txtMeaning.textContent = ` 📖 : ${currentProblem.meaning}`; //뜻:
-            txtEnglish.textContent = `   ${currentProblem.english}`; //영:
+            txtExample.innerHTML = `<strong>    </strong> ${currentProblem.example}`; //Ex:
+            txtMeaning.textContent = `      ${currentProblem.meaning}`; //뜻:
+            txtEnglish.textContent = `      ${currentProblem.english}`; //영:
             
             txtExMeaning.textContent = currentProblem.example; 
             txtExMeaning.style.display = "none";
