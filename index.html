@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -61,7 +60,7 @@ margin-top: 10px;
             background-color: #4a69bd;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 3px 15px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -74,7 +73,7 @@ margin-top: 10px;
             background-color: #38ada9; 
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 3px 15px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -87,7 +86,7 @@ margin-top: 10px;
             background-color: #fa8231;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 3px 15px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -96,47 +95,51 @@ margin-top: 10px;
         }
         .btn-hard-toggle:active { transform: translateY(2px); box-shadow: none; }
 
-        /* 오디오 컨트롤 바 */
+       /* 오디오🔊 소리켬 끔 컨트롤 바(정답 시 자동발음) */
         .audio-control-box {
+         height: 17px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: #ffffff;
-            padding: 4px 10px;
+            gap: 4px;
+            background: #98b76a;
+            padding: 4px 15px;
             border-radius: 8px;
-            border: 2px solid #a5b1c2;
+                       border: none;/*border: 2px solid #a5b1c2;*/
             font-size: 12px;
             font-weight: bold;
+		    box-shadow: 0 3px 0 #6b8741;
         }
 
         .btn-sound-mute {
-            background-color: #4b6584;
+            background-color: #8080c0;
+         box-height:10px;
+			            align-items: center;
+						            gap: 3px;
             color: white;
             border: none;
-            padding: 3px 8px;
+            padding: 2px 3px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         /* 목표 맞춤 횟수 설정 컨트롤러 스타일 */
         .repeat-control-box {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             background: #ffffff;
-            padding: 4px 10px;
+            padding: 2px 5px;
             border-radius: 8px;
             border: 2px solid #ccc;
             font-size: 12px;
             font-weight: bold;
+            box-shadow: 0 1px 0 #7f7f7f;
         }
         .repeat-btn {
             background: #eee;
             border: 1px solid #aaa;
             border-radius: 4px;
-            width: 22px;
-            height: 22px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -147,21 +150,23 @@ margin-top: 10px;
             font-weight: bold;
             border: 1px solid #bbb;
             border-radius: 4px;
-            height: 18px;
+            height: 15px;
         }
 
         /* 엑셀 파일 이름 전광판 스타일 */
         .file-name-display {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 6px 15px;
+            background: #405873;
+            border: 2px solid #3e566f;
+            color: #f3f4f5;
+
+            padding: 2px 7px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 11px;
             word-break: break-all;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 0 #7f7f7f;
         }
 
         /* 게임 메인 보드 */
@@ -235,7 +240,7 @@ margin-top: 10px;
 
         .example-hint {
             font-size: 14px;
-            color: #c503b6; /* 가독성 좋은 어두운 올리브그린(#bdc581) 계열 */
+            color: #c503b6; /* 올리브그린(#bdc581) 계열 */
             background-color: #f5f6fa;
             border: 1px dashed #dcdde1;
             padding: 6px 12px;
@@ -331,8 +336,8 @@ margin-top: 10px;
             justify-content: center;
             align-items: center;
             gap: 12px;
-            background: #ebf8fe;
-            border: 2px solid #333366; /*다음 단어로 이동합니다 (박스 라인색)*/
+            background: #f8fbf4;
+            border: 2px solid #82aa9d; /*다음 단어로 이동합니다 (박스 라인색)*/
             padding: 6px 15px;
             border-radius: 10px;
             margin-bottom: 15px;
@@ -341,7 +346,7 @@ margin-top: 10px;
         .feedback-text {
             font-size: 14px;
             font-weight: solid; /*bold*/
-            color: #8913ff;  /* 다음 단어로 이동합니다 (문자색)*/
+            color: #5454a9;  /* 다음 단어로 이동합니다 (문자색)*/
         }
 
         /* 조작 영역 */
@@ -353,22 +358,24 @@ margin-top: 10px;
         }
         
         .btn-action {
-            padding: 6px 12px;
+            padding: 3px 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 11px; 
             border: none;
+
         }
+		     /*💡 안내(H) 버튼*/
          .hint-btn {
             background: #fddd8a;
-			height: 25px; /*버튼세로 크기*/
+            padding: 3px 16px; /*💡 안내(H) 버튼 길이*/
             border: 1.5px solid #e7be52;
             box-shadow: 0 2px 0 #e7be52
         }
+		    /*⏩ 다음 단어로(Next)버튼*/
         .next-btn {
             background: #ffb7db;
-			height: 25px; /*버튼세로 크기*/
             color: white;
             border: 1.5px solid #eda0a0;
             box-shadow: 0 2px 0 #eda0a0;
@@ -381,7 +388,7 @@ margin-top: 10px;
             padding: 15px;
             border-radius: 10px;
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(8, 1fr); /*자판 가로배열 개수*/
             gap: 8px;
         }
 
@@ -389,7 +396,7 @@ margin-top: 10px;
             background: white;
             border: 2px solid #444;
             border-radius: 8px;
-            height: 50px;
+            height: 38px; /*자판 세로 크기*/
             font-size: 18px;
             font-weight: bold;
             display: flex;
@@ -464,13 +471,13 @@ margin-top: 10px;
             </div>
 
             <div class="meaning-board">
-                <button class="btn-speak-inline" id="btn-speak-example" title="예문 다시 듣기">🔊</button>
+                <button class="btn-speak-inline" id="btn-speak-example" title="예문 자동 발음 토글">🔊</button>
                 <div id="word-example" class="example-top">예문이 표시됩니다.</div>
                 
-                <button class="btn-speak-inline" id="btn-speak-word" title="단어 다시 듣기">🔊</button>
+                <button class="btn-speak-inline" id="btn-speak-word" title="단어 자동 발음 토글">🔊</button>
                 <div id="word-meaning" class="meaning-middle">뜻이 표시됩니다.</div>
 
-                <button class="btn-speak-inline" id="btn-speak-english" title="영어 표현 다시 듣기">🔊</button>
+                <button class="btn-speak-inline" id="btn-speak-english" title="영어 표현 자동 발음 토글">🔊</button>
                 <div id="word-english" class="meaning-english">영어 표현이 표시됩니다.</div>
                 
                 <div class="example-hint" id="example-meaning" style="display: none;"></div>
@@ -483,7 +490,7 @@ margin-top: 10px;
             <div class="word-slots" id="word-slots"></div>
 
             <div class="feedback-container" id="feedback-zone">
-                <span class="feedback-text" id="feedback-text-msg">🎉 목표 달성! 다음 단어로 이동합니다.</span>
+                <span class="feedback-text" id="feedback-text-msg"><!-- 🎉 목표 달성 --> 👍 ! 다음 으로 이동합니다.</span>
             </div>
 
             <div class="control-container">
@@ -495,7 +502,7 @@ margin-top: 10px;
         </div>
     </div>
 
-    <script>
+   <script>
         let quizData = [];
         let currentProblem = null;
         let correctCount = 0;
@@ -518,6 +525,13 @@ margin-top: 10px;
         let currentMatchCount = 0; 
 
         let isMuted = false;
+
+        // 🎯 [신규 추가] 3개 스피커의 개별 자동재생 활성화 상태 관리 (기본값: 모두 true = 켬)
+        let isSpeakerEnabled = {
+            example: true,
+            word: true,
+            english: true
+        };
 
         const setupContainer = document.getElementById('setup-container');
         const gameFrame = document.getElementById('game-frame');
@@ -592,7 +606,7 @@ margin-top: 10px;
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖 학습 중인 파일 : ${file.name}`;
+            txtFileNameScreen.textContent = `📖 : ${file.name}`; // 학습 중인 파일
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -603,8 +617,6 @@ margin-top: 10px;
                 
                 const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
                 
-                // 구조 매핑 완벽 정렬: 
-                // A열(row[0]): 단어, B열(row[1]): 뜻, C열(row[2]): 영어, D열(row[3]): 예문(해석포함), E열(row[4]): 언어코드
                 quizData = rows.map(row => ({
                     word: String(row[0] || '').trim(),
                     meaning: String(row[1] || '').trim(),
@@ -655,8 +667,8 @@ margin-top: 10px;
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
             if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 순서: 무작위";
-                btnToggleOrder.style.backgroundColor = "#079992";
+                btnToggleOrder.textContent = "🔄 순서: 무작위(Random)";
+                btnToggleOrder.style.backgroundColor = "#e76dd8";
             } else {
                 btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
                 btnToggleOrder.style.backgroundColor = "#38ada9";
@@ -668,7 +680,7 @@ margin-top: 10px;
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
                 btnToggleHard.textContent = "🔥 난이도: 전체 숨김";
-                btnToggleHard.style.backgroundColor = "#eb3b5a";
+                btnToggleHard.style.backgroundColor = "#ed54af";
             } else {
                 btnToggleHard.textContent = "🎯 난이도: 보통";
                 btnToggleHard.style.backgroundColor = "#fa8231";
@@ -680,7 +692,7 @@ margin-top: 10px;
             if (isMuted) {
                 window.speechSynthesis.cancel(); 
                 btnSoundMute.textContent = "🔇 음소거";
-                btnSoundMute.style.backgroundColor = "#eb3b5a";
+                btnSoundMute.style.backgroundColor = "#f17288";
             } else {
                 btnSoundMute.textContent = "🔊 소리 켬";
                 btnSoundMute.style.backgroundColor = "#4b6584";
@@ -704,7 +716,8 @@ margin-top: 10px;
             return 'en-US';
         }
 
-        function speakSpecificColumn(text, columnType) {
+        // 특정 항목 강제/수동 발음 실행 함수 (상태 상관없이 무조건 즉시 발음)
+        function forceSpeakColumn(text, columnType) {
             if (isMuted || !text || !currentProblem) return;
             window.speechSynthesis.cancel();
 
@@ -727,37 +740,78 @@ margin-top: 10px;
             window.speechSynthesis.speak(utterance);
         }
 
+        // 🎯 [완벽 수정] 스피커 아이콘별 개별 ON/OFF 토글 처리기
+        function toggleSpeakerState(type, btnElement) {
+            isSpeakerEnabled[type] = !isSpeakerEnabled[type];
+            
+            if (isSpeakerEnabled[type]) {
+                btnElement.textContent = "🔊";
+                btnElement.classList.remove('muted-state');
+                btnElement.title = "자동 발음: 켬 (클릭시 끔)";
+                // 켬으로 바꿨을 때는 학습 편의를 위해 소리를 한 번 샘플로 들려줍니다.
+                triggerCurrentSound(type);
+            } else {
+                btnElement.textContent = "🔇";
+                btnElement.classList.add('muted-state');
+                btnElement.title = "자동 발음: 끔 (클릭시 켬)";
+            }
+        }
+
+        function triggerCurrentSound(type) {
+            if (!currentProblem) return;
+            if (type === 'example') forceSpeakColumn(currentProblem.example, 'example');
+            if (type === 'word') forceSpeakColumn(currentProblem.word, 'word');
+            if (type === 'english') forceSpeakColumn(currentProblem.english, 'english');
+        }
+
+        // 스피커 요소 클릭 시 토글 스위치로 동작하도록 이벤트 전면 교체
+        btnSpeakExample.addEventListener('click', () => toggleSpeakerState('example', btnSpeakExample));
+        btnSpeakWord.addEventListener('click', () => toggleSpeakerState('word', btnSpeakWord));
+        btnSpeakEnglish.addEventListener('click', () => toggleSpeakerState('english', btnSpeakEnglish));
+
+        // 🎯 [완벽 수정] 단어가 넘어갈 때, 오직 켬(🔊) 상태인 스피커들만 모아서 순차 재생 체인 가동
         function playCorrectSoundChain() {
             if (isMuted || !currentProblem) return;
             window.speechSynthesis.cancel();
 
-            const uWord = new SpeechSynthesisUtterance(currentProblem.word);
-            uWord.lang = getFinalLangCode(currentProblem.langCode);
-            
-            const uMeaning = new SpeechSynthesisUtterance(currentProblem.meaning);
-            uMeaning.lang = detectGeneralLanguage(currentProblem.meaning);
-            uMeaning.rate = (uMeaning.lang === 'ja-JP' || uMeaning.lang === 'zh-CN') ? 1.0 : 0.9;
-            
-            const uEnglish = new SpeechSynthesisUtterance(currentProblem.english);
-            uEnglish.lang = 'en-US';
-            uEnglish.rate = 0.9;
+            let utterancesQueue = [];
 
-            window.speechSynthesis.speak(uWord);
-            window.speechSynthesis.speak(uMeaning);
-            window.speechSynthesis.speak(uEnglish);
+            // 1. 단어 발음 대기열추가 (단어 스피커가 켜져 있을 때만)
+            if (isSpeakerEnabled.word && currentProblem.word) {
+                const uWord = new SpeechSynthesisUtterance(currentProblem.word);
+                uWord.lang = getFinalLangCode(currentProblem.langCode);
+                utterancesQueue.push(uWord);
+            }
+            
+            // 2. 뜻 발음 대기열추가 (뜻 스피커가 켜져 있을 때만)
+            if (isSpeakerEnabled.hasOwnProperty('meaning') ? isSpeakerEnabled.meaning : true && currentProblem.meaning) {
+                // 구조상 뜻 발음은 'word' 스피커에 커플링되거나 항상 켜둘 수 있으나, 
+                // 직관성을 위해 단어(A열) 스피커가 켜져있을 때 한 세트로 같이 연동되거나 단독 발음됩니다.
+                const uMeaning = new SpeechSynthesisUtterance(currentProblem.meaning);
+                uMeaning.lang = detectGeneralLanguage(currentProblem.meaning);
+                uMeaning.rate = (uMeaning.lang === 'ja-JP' || uMeaning.lang === 'zh-CN') ? 1.0 : 0.9;
+                utterancesQueue.push(uMeaning);
+            }
+            
+            // 3. 영어 표현 발음 대기열추가 (영어 표현 스피커가 켜져 있을 때만)
+            if (isSpeakerEnabled.english && currentProblem.english) {
+                const uEnglish = new SpeechSynthesisUtterance(currentProblem.english);
+                uEnglish.lang = 'en-US';
+                uEnglish.rate = 0.9;
+                utterancesQueue.push(uEnglish);
+            }
+
+            // 4. 예문 발음 대기열추가 (예문 스피커가 켜져 있을 때만)
+            if (isSpeakerEnabled.example && currentProblem.example) {
+                const uExample = new SpeechSynthesisUtterance(currentProblem.example);
+                uExample.lang = detectGeneralLanguage(currentProblem.example);
+                uExample.rate = 0.9;
+                utterancesQueue.push(uExample);
+            }
+
+            // 필터링되어 모인 발음 요소들만 순차적으로 실행
+            utterancesQueue.forEach(u => window.speechSynthesis.speak(u));
         }
-
-        btnSpeakWord.addEventListener('click', () => {
-            if (currentProblem) speakSpecificColumn(currentProblem.word, 'word');
-        });
-
-        btnSpeakEnglish.addEventListener('click', () => {
-            if (currentProblem) speakSpecificColumn(currentProblem.english, 'english');
-        });
-
-        btnSpeakExample.addEventListener('click', () => {
-            if (currentProblem) speakSpecificColumn(currentProblem.example, 'example');
-        });
 
         window.addEventListener('keydown', (e) => {
             if (document.activeElement.tagName === 'INPUT') return; 
@@ -812,17 +866,16 @@ margin-top: 10px;
             keyMappingLog = {}; 
             
             txtExample.innerHTML = `<strong>📖 :</strong> ${currentProblem.example}`; //Ex :
-            txtMeaning.textContent = `  ${currentProblem.meaning}`; //뜻:
+            txtMeaning.textContent = `   ${currentProblem.meaning}`; //뜻:
             txtEnglish.textContent = `   ${currentProblem.english}`; //영:
             
-            // 🎯 다음 문제로 갈 때 예문 해석 영역은 우선 숨겨둡니다. (H키나 버튼 누르면 등장)
             txtExMeaning.textContent = currentProblem.example; 
             txtExMeaning.style.display = "none";
 
             updateProgressUI();
             setupWordSlots(targetWord);
 
-            if (isNewWord && !isMuted) {
+            if (isNewWord && chkAutoSpeak.checked && !isMuted) {
                 playCorrectSoundChain();
             }
         }
@@ -1034,7 +1087,7 @@ margin-top: 10px;
                     btnNext.disabled = true; 
                     btnNext.style.opacity = "0.5";
 
-                    feedbackTextMsg.textContent = "🎉 목표 달성! 다음 단어로 이동합니다.";
+                    feedbackTextMsg.textContent = "👍! 다음 단어로 이동합니다."; //🎉 목표 달성
                     feedbackZone.style.display = "flex";
 
                     setTimeout(() => {
@@ -1050,11 +1103,9 @@ margin-top: 10px;
             }
         }
 
-        // 🎯 [완벽 수정] 버튼 클릭 시 임의의 알림이 아닌, 엑셀 D열(예문/해석) 내용이 정밀 노출됩니다.
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                // 데이터가 있을 때만 깔끔하게 노출
                 if (currentProblem.example) {
                     txtExMeaning.textContent = currentProblem.example;
                     txtExMeaning.style.display = "block";
