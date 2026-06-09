@@ -216,7 +216,7 @@
         }
 
         .example-hint {
-            font-size: 14px;
+            font-size: 17px;
             color: #c503b6; /* (전광판 Hint 글씨 컬러) (#bdc581) 계열 */
             background-color: #f5f6fa;
             border: 1px dashed #dcdde1;
@@ -1053,7 +1053,7 @@
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡 : ${currentProblem.word}`; // 정답 안내
+                txtExMeaning.textContent = `💡  ${currentProblem.word}`; // 정답 안내 : 
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
