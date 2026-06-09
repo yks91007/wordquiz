@@ -43,7 +43,7 @@
             background-color: #4a69bd;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -80,7 +80,7 @@
 
       /* 오디오🔊 소리켬 끔 컨트롤 바(정답 시 자동발음) */
         .audio-control-box {
-		    height: 18px;
+		    height: 17px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -105,6 +105,7 @@
 
         /* 목표 맞춤 횟수 설정 컨트롤러 스타일 */
         .repeat-control-box {
+		    height: 17px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -127,6 +128,7 @@
         }
         .repeat-btn:active { background: #ddd; }
         .repeat-input {
+
             width: 30px;
             text-align: center;
             font-weight: bold;
@@ -1034,7 +1036,7 @@
                     btnNext.disabled = true; 
                     btnNext.style.opacity = "0.5";
 
-                    feedbackTextMsg.textContent = "🎉 목표 달성! 다음 단어로 이동합니다.";
+                    feedbackTextMsg.textContent = " Next 👍 다음 으로 이동합니다."; //🎉 목표 달성 다음 단어
                     feedbackZone.style.display = "flex";
 
                     setTimeout(() => {
