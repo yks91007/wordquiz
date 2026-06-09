@@ -493,7 +493,6 @@
         let currentBlankIndices = []; 
         let keyMappingLog = {}; 
 
-        // 사용자가 미리 설정할 수 있도록 기본 상태 대기화
         let isRandomMode = false; 
         let sequentialIndex = 0; 
         let isCorrectAnswered = false; 
@@ -548,7 +547,6 @@
         
         const txtFileNameScreen = document.getElementById('file-name-screen');
 
-        // [사전 지정 가능] 반복 맞춤 횟수 변경 이벤트
         btnRepeatMinus.addEventListener('click', () => {
             let val = parseInt(inputRepeatCount.value) || 1;
             if (val > 1) {
@@ -579,7 +577,6 @@
             lblTotalTarget.textContent = targetMatchCount;
         }
 
-        // [사전 지정 가능] 무작위 / 순차적 순서 토글 버튼
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
             if (isRandomMode) {
@@ -591,7 +588,6 @@
             }
         });
 
-        // [사전 지정 가능] 난이도 토글 버튼
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
@@ -602,7 +598,6 @@
                 btnToggleHard.style.backgroundColor = "#fa8231";
             }
         });
-
         // [사전 지정 가능] 전체 음소거 버튼
         btnSoundMute.addEventListener('click', () => {
             isMuted = !isMuted;
@@ -619,7 +614,7 @@
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖  : ${file.name}`; //학습 중인 파일
+            txtFileNameScreen.textContent = `📖 : ${file.name}`; //학습 중인 파일
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -643,7 +638,6 @@
                     return;
                 }
 
-                // 스코어 및 인덱스 초기화 (유저가 사전 설정한 옵션값은 그대로 유지됨!)
                 correctCount = 0;
                 wrongCount = 0;
                 sequentialIndex = 0; 
@@ -652,7 +646,7 @@
                 lblWrong.textContent = wrongCount;
                 
                 currentMatchCount = 0;
-                nextQuiz(true); // 파일 연 직후, 유저가 사전 설정해둔 조건으로 첫 단어 매칭 시작!
+                nextQuiz(true); 
             };
             reader.readAsArrayBuffer(file);
         }
@@ -687,7 +681,7 @@
             if (isMuted || !text || !currentProblem) return;
             window.speechSynthesis.cancel();
 
-            let cleanText = text.replace(/^<strong>📖:<\/strong>\s*/i, ''); // Ex:
+            let cleanText = text.replace(/^<strong>Ex:<\/strong>\s*/i, '');
             let targetLang = 'en-US';
 
             if (columnType === 'word') {
@@ -816,11 +810,12 @@
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong>    </strong> ${currentProblem.example}`; //Ex:
-            txtMeaning.textContent = `      ${currentProblem.meaning}`; //뜻:
-            txtEnglish.textContent = `      ${currentProblem.english}`; //영:
+            txtExample.innerHTML = `<strong>     </strong> ${currentProblem.example}`; //Ex:
+            txtMeaning.textContent = `    ${currentProblem.meaning}`; //뜻:
+            txtEnglish.textContent = `    ${currentProblem.english}`; //영:
             
-            txtExMeaning.textContent = currentProblem.example; 
+            // 💡 힌트 기능을 A열 정답 단어로 교체하여 대기시킵니다.
+            txtExMeaning.textContent = `💡 ${currentProblem.word}`; //정답 안내 :
             txtExMeaning.style.display = "none";
 
             updateProgressUI();
@@ -1038,7 +1033,7 @@
                     btnNext.disabled = true; 
                     btnNext.style.opacity = "0.5";
 
-                    feedbackTextMsg.textContent = "👍! 다음 단어로 이동합니다."; //🎉 목표 달성
+                    feedbackTextMsg.textContent = "🎉 목표 달성! 다음 단어로 이동합니다.";
                     feedbackZone.style.display = "flex";
 
                     setTimeout(() => {
@@ -1054,16 +1049,12 @@
             }
         }
 
+        // 💡 힌트 작동 시 A열의 단어를 직관적으로 보여주도록 수정 완료!
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                if (currentProblem.example) {
-                    txtExMeaning.textContent = currentProblem.example;
-                    txtExMeaning.style.display = "block";
-                } else {
-                    txtExMeaning.textContent = "등록된 예문(D열)이 없습니다.";
-                    txtExMeaning.style.display = "block";
-                }
+                txtExMeaning.textContent = `💡 : ${currentProblem.word}`; // 정답 안내
+                txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
             }
