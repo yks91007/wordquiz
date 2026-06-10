@@ -484,9 +484,9 @@
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡 안내 (Hint)</button>
-                <button class="btn-action shuffle-btn" id="shuffle-button">🔀 자판 섞기 <!-- (A)+(C) : 켬 --></button>
-                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어<!-- 로 --> (Next)</button>
+                <button class="btn-action hint-btn" id="hint-button">💡 안내 (H)</button>
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀 자판 섞기 (A)+(C) : 켬</button>
+                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어로 (Next)</button>
             </div>
 
             <div class="keyboard" id="keyboard"></div>
@@ -516,7 +516,6 @@
         let targetMatchCount = 1;  
         let currentMatchCount = 0; 
 
-        // 🔀 자판 섞기 토글 모드 제어 변수 (기본값 true = A+C 켬)
         let isMixModeAC = true; 
 
         let isMuted = false;
@@ -525,6 +524,14 @@
             example: true,
             word: true,
             english: true
+        };
+
+        // 국가별 안전한 기본 알파벳/Spelling 풀 정의 (공백 및 특수문자 전면 원천 배제)
+        const countryLettersPool = {
+            'en': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'ja': 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ',
+            'zh': 'abcdefghijklmnopqrstuvwxyz',
+            'es': 'abcdefghijklmnopqrstuvwxyzñáéíóúüABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜ'
         };
 
         const gameFrame = document.getElementById('game-frame');
@@ -649,7 +656,7 @@
                     meaning: String(row[1] || '').trim(),
                     english: String(row[2] || '').trim(),
                     example: String(row[3] || '').trim(),
-                    langCode: String(row[4] || 'ja').trim().toLowerCase() 
+                    langCode: String(row[4] || 'en').trim().toLowerCase() // E열 언어 설정 기본값 en
                 })).filter(item => item.word.length > 0);
 
                 if (quizData.length === 0) {
@@ -793,7 +800,7 @@
                 toggleHint();
             } else if (e.key === 's' || e.key === 'S' || e.key === 'ㄴ') {
                 e.preventDefault();
-                toggleShuffleModeAndTrigger(); // 단축키 연동
+                toggleShuffleModeAndTrigger(); 
             }
         });
 
@@ -898,19 +905,28 @@
                 slotsContainer.appendChild(slot);
             }
 
-            // 현재 설정된 토글 스위치 상태에 맞춰 자판 초기 빌드 진행
             buildDynamicKeyboard();
         }
 
-        // 🎯 [핵심] 현재 설정된 토글 상태에 맞춰 글자 풀(Letters Pool)을 조합하고 셔플하는 통합 엔진
+        // 🎯 [완전 보강] 문자부호 및 공백 필터링 함수
+        function cleanCharactersOnly(text) {
+            // 공백, 마침표, 쉼표, 물음표, 느낌표, 슬래시, 대시, 대괄호 등 모든 부호 무력화 정규식
+            return Array.from(text).filter(c => {
+                return c !== ' ' && c !== '.' && c !== ',' && c !== '?' && c !== '!' && 
+                       c !== '-' && c !== '_' && c !== '/' && c !== '\\' && c !== '(' && c !== ')';
+            });
+        }
+
+        // 🎯 [정밀 개조] 현재 설정된 상태에 맞춰 순수 글자들만 조합하고 E열 국가 언어로 셔플하는 매커니즘
         function buildDynamicKeyboard() {
             if (!currentProblem) return;
 
-            let finalKeyList = Array.from(targetWord).filter(c => c !== ' ');
+            // 정답 단어(A열)에서 공백과 문자부호를 완전히 탈탈 털어 순수 문자열만 필터링
+            let finalKeyList = cleanCharactersOnly(targetWord);
 
             if (isMixModeAC) {
-                // 켬 상태: A열 단어에 C열 영어 표현 문자들까지 추출해서 결합
-                let cleanEnglish = Array.from(currentProblem.english).filter(c => c !== ' ' && c !== '.' && c !== ',' && c !== '?' && c !== '!');
+                // (A)+(C) 켬 상태일 때: C열 영어 표현에서 순수 문자만 걸러서 결합
+                let cleanEnglish = cleanCharactersOnly(currentProblem.english);
                 for (let i = 0; i < cleanEnglish.length; i++) {
                     if (finalKeyList.length >= 15) break; 
                     if (!finalKeyList.includes(cleanEnglish[i])) {
@@ -918,40 +934,42 @@
                     }
                 }
             }
-            // 끔 상태일 경우 자동으로 위 if문을 패스하여 오직 a열 문자중에서만 처리됨
 
-            // 기본 더미 글자 채우기 균형 조절
-            const baseCharCode = targetWord.charCodeAt(0) || 65; 
+            // 🔀 [E열 연동 핵심] 자판 여백 채우기용 더미 알파벳 공급 장치
+            let lang = currentProblem.langCode || 'en';
+            if (lang === 'jp') lang = 'ja';
+            if (lang === 'cn') lang = 'zh';
+
+            // 사전 정의된 국가별 언어 Spelling 풀에서 가져옴 (없으면 영어 풀 사용)
+            let selectedPool = countryLettersPool[lang] || countryLettersPool['en'];
+
+            // 자판 칸수가 부족할 경우 공백이나 특수문자 대신 해당 국가 전용 풀에서 랜덤 자판 문자 충원
             while (finalKeyList.length < 11) {
-                let randChar = String.fromCharCode(baseCharCode + Math.floor(Math.random() * 20));
-                if (randChar !== ' ' && !finalKeyList.includes(randChar)) {
+                let randChar = selectedPool.charAt(Math.floor(Math.random() * selectedPool.length));
+                if (!finalKeyList.includes(randChar)) {
                     finalKeyList.push(randChar);
                 }
             }
 
             keyboardLetters = finalKeyList;
-            keyboardLetters.sort(() => Math.random() - 0.5); // 랜덤 나열 키보드셔플
+            keyboardLetters.sort(() => Math.random() - 0.5); // 완전한 무작위 셔플
             renderKeyboard();
         }
 
-        // 🔀 [핵심] 버튼 누를 때마다 "켬" <-> "끔" 텍스트와 기능을 스위칭하는 셔플 제어 로직
         function toggleShuffleModeAndTrigger() {
             if (isCorrectAnswered || quizData.length === 0) return;
 
-            // 상태 반전 토글
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C)"; // : 켬
+                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C) : 켬";
             } else {
-                btnShuffle.textContent = "🔀 자판 섞기 (A) "; // : 끔
+                btnShuffle.textContent = "🔀 자판 섞기 (A) : 끔";
             }
 
-            // 바뀐 기준의 문자 풀로 즉시 새로고침 자판 셔플 실행
             buildDynamicKeyboard();
         }
 
-        // 자판 UI 화면 렌더링 함수
         function renderKeyboard() {
             keyboardContainer.innerHTML = "";
 
@@ -961,7 +979,6 @@
                 btn.textContent = char;
                 btn.style.order = "1"; 
 
-                // 셔플 변환 중에도 이미 정답란에 기입된 글자의 회색(used) 상태 유지 연동
                 const activeMappedButtons = Object.values(keyMappingLog);
                 const matchIndex = activeMappedButtons.findIndex(b => b.textContent === char && !b.id);
                 if (matchIndex !== -1) {
@@ -1097,7 +1114,7 @@
                     btnNext.disabled = true; 
                     btnNext.style.opacity = "0.5";
 
-                    feedbackTextMsg.textContent = "👍 Next ! 다음 단어로 이동합니다."; //🎉단어 목표 달성
+                    feedbackTextMsg.textContent = "🎉 목표 달성! 다음 단어로 이동합니다.";
                     feedbackZone.style.display = "flex";
 
                     setTimeout(() => {
@@ -1116,7 +1133,7 @@
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡:  ${currentProblem.word}`; //정답 안내:
+                txtExMeaning.textContent = `💡 정답 안내: ${currentProblem.word}`;
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
@@ -1124,8 +1141,6 @@
         }
 
         btnHint.addEventListener('click', toggleHint);
-        
-        // 🔀 자판 섞기 토글 스위치 이벤트 핸들러 장착
         btnShuffle.addEventListener('click', toggleShuffleModeAndTrigger);
 
         btnNext.addEventListener('click', () => {
