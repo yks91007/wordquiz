@@ -24,7 +24,6 @@
 
         /* 메인 게임 프레임 */
         #game-frame {
-            margin-top: 10px;
             width: 100%;
             max-width: 550px;
         }
@@ -39,12 +38,12 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-      /* 📁 Excel 파일 불러오기 컨트롤 바 */
+     /* 📁 Excel 파일 불러오기 컨트롤 바 */
         .btn-file-trigger {
             background-color: #4a69bd;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 3px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -57,7 +56,7 @@
             background-color: #38ada9; 
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 3px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -70,7 +69,7 @@
             background-color: #fa8231;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 3px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -86,7 +85,7 @@
             align-items: center;
             gap: 8px;
             background: #98b76a;
-            padding: 4px 10px;
+            padding: 2px 10px;
             border-radius: 8px;
             border: 2px solid #a5b1c2;
             font-size: 12px;
@@ -98,7 +97,7 @@
             background-color: #4b6584;
             color: white;
             border: none;
-            padding: 3px 8px;
+            padding: 1px 8px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 11px;
@@ -106,36 +105,35 @@
 
         /* 목표 맞춤 횟수 설정 컨트롤러 스타일 */
         .repeat-control-box {
-		    height: 17px;
+		    height: 16px;
             display: flex;
             align-items: center;
             gap: 5px;
             background: #ffffff;
             padding: 4px 10px;
             border-radius: 8px;
-            border: 2px solid #ccc;
+            border: 1px solid #ccc;
             font-size: 12px;
             font-weight: bold;
-            box-shadow: 0 1px 0 #7f7f7f;
+		    box-shadow: 0 1px 0 #6b8741;
         }
         .repeat-btn {
             background: #eee;
             border: 1px solid #aaa;
             border-radius: 4px;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             font-weight: bold;
             cursor: pointer;
         }
         .repeat-btn:active { background: #ddd; }
         .repeat-input {
-
             width: 30px;
             text-align: center;
             font-weight: bold;
             border: 1px solid #bbb;
             border-radius: 4px;
-            height: 18px;
+            height: 14px;
         }
 
         /* 엑셀 파일 이름 전광판 스타일 */
@@ -208,8 +206,9 @@
             font-size: 18px;
             font-weight: bold;
             color: #2c2c2c;
+            margin-bottom: 10px;
             padding-right: 45px;
-            margin-bottom: 5px;
+
         }
 
         .meaning-english {
@@ -219,17 +218,19 @@
             padding-right: 45px;
         }
 
+        /* 💡 힌트 팝업 디자인 */
         .example-hint {
-            font-size: 17px;
+            font-size: 15px;
             color: #c503b6; /* (전광판 Hint 글씨 컬러) (#bdc581) 계열 */
             background-color: #f5f6fa;
             border: 1px dashed #dcdde1;
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 6px;
             margin-top: 10px;
             font-weight: bold;
-            width: 90%;
+            width: 85%;
             word-break: break-all;
+            /*box-shadow: 0 2px 4px rgba(0,0,0,0.05);*/
         }
 
         /* 보드 내부 발음 아이콘 버튼 */
@@ -295,15 +296,13 @@
             user-select: none;
         }
         
-        .slot.blank {
             border: 2px dashed #6db31a;  /*문자 박스 테두리색*/
             background: #fefae7;  /*문자 박스 바탕색*/
             box-shadow: 0 4px 0 #c0c0c0;
             cursor: pointer;
             transition: transform 0.1s, border-color 0.1s;
         }
-        
-                /* 🎯 마우스를 올리면 오타 지우기/수정이 가능하다는 피드백 시각화 */
+       /* 🎯 마우스를 올리면 오타 지우기/수정이 가능하다는 피드백 시각화 */        
         .slot.blank.filled:hover {
             transform: scale(1.08);
             border: 2px solid #e84118;
@@ -326,28 +325,30 @@
             align-items: center;
             gap: 12px;
             background: #f8fbf4;
-            border: 2px solid #82aa9d; /*다음 단어로 이동합니다 (박스 라인색)*/
-            padding: 6px 15px;
-            border-radius: 10px;
+            border: 2px solid #a48c7d; /*다음 단어로 이동합니다 (박스 라인색)*/
+            padding: 3px 15px;
+            border-radius: 8px;
             margin-bottom: 15px;
-            box-shadow: 3 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 0 #c6b6ac;
         }
         .feedback-text {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: solid; /*bold*/
-            color: #5454a9;  /* 다음 단어로 이동합니다 (문자색)*/
+            color: #243f7d;  /* 다음 단어로 이동합니다 (문자색)*/
         }
 
         /* 조작 영역 */
         .control-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /*버튼아이템을 배치위치*/
+            /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
             align-items: center;
             margin-bottom: 15px;
+            gap: 10px;
         }
         
         .btn-action {
-            padding: 8px 15px;
+            padding: 2px 8px; /* 🔀자판 섞기버튼여백 */
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
@@ -357,14 +358,23 @@
 		     /*💡 안내(Hint) 버튼*/
          .hint-btn {
             background: #fddd8a;
-            padding: 3px 16px; /*💡 안내(H) 버튼 길이*/
+            padding: 2px 16px;  /*💡 안내(H) 버튼여백 */
             border: 1.5px solid #e7be52;
             box-shadow: 0 2px 0 #e7be52
+        }
+        /* 🔀 자판 섞기 토글 버튼 고유 스타일 */
+        .shuffle-btn {
+            background: #a367bc;
+            color: white;
+            border: 1.5px solid #80409b;
+            box-shadow: 0 2px 0 #8e44ad;
+            min-width: 140px; /* 텍스트가 길어져도 잘리지 않도록 크기 고정 */
+            text-align: center;
         }
 		    /*⏩ 다음 단어로(Next)버튼*/
         .next-btn {
             background: #ffb7db;
-            padding: 3px 16px; /*⏩ 다음 단어로(Next)버튼 길이*/
+            padding: 2px 16px; /*⏩ 다음 단어로(Next)버튼 길이*/
             color: white;
             border: 1.5px solid #eda0a0;
             box-shadow: 0 2px 0 #eda0a0;
@@ -401,8 +411,7 @@
             color: #888;
             border-color: #aaa;
             box-shadow: none;
-            /* 🎯 자판 토글 기능을 위해 pointer-events: none; 과 cursor: not-allowed; 제거 */
-            cursor: pointer;  
+            cursor: pointer; 
         }
         .key-btn.backspace {
             background: #ffeaa7;
@@ -476,7 +485,8 @@
 
             <div class="control-container">
                 <button class="btn-action hint-btn" id="hint-button">💡 안내 (Hint)</button>
-                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어로 (Next)</button>
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀 자판 섞기 <!-- (A)+(C) : 켬 --></button>
+                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어<!-- 로 --> (Next)</button>
             </div>
 
             <div class="keyboard" id="keyboard"></div>
@@ -496,6 +506,7 @@
         let targetWord = "";   
         let currentBlankIndices = []; 
         let keyMappingLog = {}; 
+        let keyboardLetters = []; 
 
         let isRandomMode = false; 
         let sequentialIndex = 0; 
@@ -504,6 +515,9 @@
 
         let targetMatchCount = 1;  
         let currentMatchCount = 0; 
+
+        // 🔀 자판 섞기 토글 모드 제어 변수 (기본값 true = A+C 켬)
+        let isMixModeAC = true; 
 
         let isMuted = false;
 
@@ -535,6 +549,7 @@
         const slotsContainer = document.getElementById('word-slots');
         const keyboardContainer = document.getElementById('keyboard');
         const btnHint = document.getElementById('hint-button');
+        const btnShuffle = document.getElementById('shuffle-button');
         const btnNext = document.getElementById('next-button');
         
         const feedbackZone = document.getElementById('feedback-zone');
@@ -602,13 +617,13 @@
                 btnToggleHard.style.backgroundColor = "#fa8231";
             }
         });
-        // [사전 지정 가능] 전체 음소거 버튼
+
         btnSoundMute.addEventListener('click', () => {
             isMuted = !isMuted;
             if (isMuted) {
                 window.speechSynthesis.cancel(); 
                 btnSoundMute.textContent = "🔇 음소거";
-                btnSoundMute.style.backgroundColor = "#f17288";
+                btnSoundMute.style.backgroundColor = "#eb3b5a";
             } else {
                 btnSoundMute.textContent = "🔊 소리 켬";
                 btnSoundMute.style.backgroundColor = "#4b6584";
@@ -618,7 +633,7 @@
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖 : ${file.name}`; //학습 중인 파일
+            txtFileNameScreen.textContent = `📖 : ${file.name}`; // 학습 중인 파일
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -776,6 +791,9 @@
             } else if (e.key === 'h' || e.key === 'H' || e.key === 'ㅗ') {
                 e.preventDefault();
                 toggleHint();
+            } else if (e.key === 's' || e.key === 'S' || e.key === 'ㄴ') {
+                e.preventDefault();
+                toggleShuffleModeAndTrigger(); // 단축키 연동
             }
         });
 
@@ -814,12 +832,12 @@
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong>     </strong> ${currentProblem.example}`; //Ex:
+            txtExample.innerHTML = `<strong>       </strong> ${currentProblem.example}`; //Ex:
             txtMeaning.textContent = `    ${currentProblem.meaning}`; //뜻:
             txtEnglish.textContent = `    ${currentProblem.english}`; //영:
             
             // 💡 힌트 기능을 A열 정답 단어로 교체하여 대기시킵니다.
-            txtExMeaning.textContent = `💡 ${currentProblem.word}`; //정답 안내 :
+            txtExMeaning.textContent = `💡 : ${currentProblem.word}`; //정답 안내
             txtExMeaning.style.display = "none";
 
             updateProgressUI();
@@ -880,23 +898,30 @@
                 slotsContainer.appendChild(slot);
             }
 
-            buildKeyboard(word, currentProblem.example);
+            // 현재 설정된 토글 스위치 상태에 맞춰 자판 초기 빌드 진행
+            buildDynamicKeyboard();
         }
 
-        function buildKeyboard(word, example) {
-            keyboardContainer.innerHTML = "";
+        // 🎯 [핵심] 현재 설정된 토글 상태에 맞춰 글자 풀(Letters Pool)을 조합하고 셔플하는 통합 엔진
+        function buildDynamicKeyboard() {
+            if (!currentProblem) return;
 
-            let finalKeyList = Array.from(word).filter(c => c !== ' ');
-            let cleanExample = Array.from(example).filter(c => c !== ' ' && c !== '.' && c !== ',' && c !== '?' && c !== '!');
-            
-            for (let i = 0; i < cleanExample.length; i++) {
-                if (finalKeyList.length >= 11) break; 
-                if (!finalKeyList.includes(cleanExample[i])) {
-                    finalKeyList.push(cleanExample[i]);
+            let finalKeyList = Array.from(targetWord).filter(c => c !== ' ');
+
+            if (isMixModeAC) {
+                // 켬 상태: A열 단어에 C열 영어 표현 문자들까지 추출해서 결합
+                let cleanEnglish = Array.from(currentProblem.english).filter(c => c !== ' ' && c !== '.' && c !== ',' && c !== '?' && c !== '!');
+                for (let i = 0; i < cleanEnglish.length; i++) {
+                    if (finalKeyList.length >= 15) break; 
+                    if (!finalKeyList.includes(cleanEnglish[i])) {
+                        finalKeyList.push(cleanEnglish[i]);
+                    }
                 }
             }
+            // 끔 상태일 경우 자동으로 위 if문을 패스하여 오직 a열 문자중에서만 처리됨
 
-            const baseCharCode = word.charCodeAt(0) || 65; 
+            // 기본 더미 글자 채우기 균형 조절
+            const baseCharCode = targetWord.charCodeAt(0) || 65; 
             while (finalKeyList.length < 11) {
                 let randChar = String.fromCharCode(baseCharCode + Math.floor(Math.random() * 20));
                 if (randChar !== ' ' && !finalKeyList.includes(randChar)) {
@@ -904,13 +929,48 @@
                 }
             }
 
-            finalKeyList.sort(() => Math.random() - 0.5);
+            keyboardLetters = finalKeyList;
+            keyboardLetters.sort(() => Math.random() - 0.5); // 랜덤 나열 키보드셔플
+            renderKeyboard();
+        }
 
-            finalKeyList.forEach(char => {
+        // 🔀 [핵심] 버튼 누를 때마다 "켬" <-> "끔" 텍스트와 기능을 스위칭하는 셔플 제어 로직
+        function toggleShuffleModeAndTrigger() {
+            if (isCorrectAnswered || quizData.length === 0) return;
+
+            // 상태 반전 토글
+            isMixModeAC = !isMixModeAC;
+
+            if (isMixModeAC) {
+                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C)"; // : 켬
+            } else {
+                btnShuffle.textContent = "🔀 자판 섞기 (A) "; // : 끔
+            }
+
+            // 바뀐 기준의 문자 풀로 즉시 새로고침 자판 셔플 실행
+            buildDynamicKeyboard();
+        }
+
+        // 자판 UI 화면 렌더링 함수
+        function renderKeyboard() {
+            keyboardContainer.innerHTML = "";
+
+            keyboardLetters.forEach(char => {
                 const btn = document.createElement('div');
                 btn.classList.add('key-btn');
                 btn.textContent = char;
                 btn.style.order = "1"; 
+
+                // 셔플 변환 중에도 이미 정답란에 기입된 글자의 회색(used) 상태 유지 연동
+                const activeMappedButtons = Object.values(keyMappingLog);
+                const matchIndex = activeMappedButtons.findIndex(b => b.textContent === char && !b.id);
+                if (matchIndex !== -1) {
+                    btn.classList.add('used');
+                    const originalKey = Object.keys(keyMappingLog).find(k => keyMappingLog[k] === activeMappedButtons[matchIndex]);
+                    keyMappingLog[originalKey] = btn;
+                    activeMappedButtons.splice(matchIndex, 1);
+                }
+
                 btn.addEventListener('click', () => handleKeyPress(char, btn));
                 keyboardContainer.appendChild(btn);
             });
@@ -1037,7 +1097,7 @@
                     btnNext.disabled = true; 
                     btnNext.style.opacity = "0.5";
 
-                    feedbackTextMsg.textContent = " Next 👍 다음 으로 이동합니다."; //🎉 목표 달성 다음 단어
+                    feedbackTextMsg.textContent = "👍 Next ! 다음 단어로 이동합니다."; //🎉단어 목표 달성
                     feedbackZone.style.display = "flex";
 
                     setTimeout(() => {
@@ -1053,11 +1113,10 @@
             }
         }
 
-        // 💡 힌트 작동 시 A열의 단어를 직관적으로 보여주도록 수정 완료!
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡  ${currentProblem.word}`; // 정답 안내 : 
+                txtExMeaning.textContent = `💡:  ${currentProblem.word}`; //정답 안내:
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
@@ -1065,6 +1124,9 @@
         }
 
         btnHint.addEventListener('click', toggleHint);
+        
+        // 🔀 자판 섞기 토글 스위치 이벤트 핸들러 장착
+        btnShuffle.addEventListener('click', toggleShuffleModeAndTrigger);
 
         btnNext.addEventListener('click', () => {
             if (!currentProblem) return;
