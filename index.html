@@ -25,7 +25,7 @@
         /* 메인 게임 프레임 */
         #game-frame {
             width: 100%;
-            max-width: 550px;
+            max-width: 480px;
         }
 
         /* 상단 컨트롤 바 */
@@ -35,7 +35,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            gap: 10px;
+            gap: 5px;
             flex-wrap: wrap;
         }
      /* 📁 Excel 파일 불러오기 컨트롤 바 */
@@ -48,6 +48,7 @@
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 5px;
             box-shadow: 0 3px 0 #385196;
         }
         .btn-file-trigger:active { transform: translateY(2px); box-shadow: none; }
@@ -115,6 +116,7 @@
             border: 1px solid #ccc;
             font-size: 12px;
             font-weight: bold;
+            margin-top: 5px;
 		    box-shadow: 0 1px 0 #6b8741;
         }
         .repeat-btn {
@@ -145,7 +147,8 @@
             font-size: 13px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 12px;
+
+            margin-bottom: 10px;
             word-break: break-all;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -484,9 +487,9 @@
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡 안내 (H)</button>
-                <button class="btn-action shuffle-btn" id="shuffle-button">🔀 자판 섞기 (A)+(C) : 켬</button>
-                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어로 (Next)</button>
+                <button class="btn-action hint-btn" id="hint-button">💡 안내 (Hint)</button>
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀 자판 섞기 (A)+(C<!-- ) : 켬 --></button>
+                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어 (Next)</button>
             </div>
 
             <div class="keyboard" id="keyboard"></div>
@@ -606,7 +609,7 @@
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
             if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 순서: 무작위(Random)";
+                btnToggleOrder.textContent = "🔄 순서: (Random)"; //무작위
                 btnToggleOrder.style.backgroundColor = "#e76dd8";
             } else {
                 btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
@@ -617,7 +620,7 @@
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥 난이도: 전체 숨김";
+                btnToggleHard.textContent = "🔥 난이도: 높음 "; //전체 숨김
                 btnToggleHard.style.backgroundColor = "#ed54af";
             } else {
                 btnToggleHard.textContent = "🎯 난이도: 보통";
@@ -962,9 +965,9 @@
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C) : 켬";
+                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C)"; // : 켬
             } else {
-                btnShuffle.textContent = "🔀 자판 섞기 (A) : 끔";
+                btnShuffle.textContent = "🔀 자판 섞기 (A) "; // : 끔
             }
 
             buildDynamicKeyboard();
