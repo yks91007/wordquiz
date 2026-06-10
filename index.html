@@ -348,6 +348,7 @@
             align-items: center;
             margin-bottom: 15px;
             gap: 10px;
+			flex-wrap: wrap; /* 자동줄바꿈 */
         }
         
         .btn-action {
@@ -388,10 +389,18 @@
         .keyboard {
             background: rgba(255,255,255,0.5);
             padding: 15px;
+            border-radius: 10px;  			
+            display: flex;  /*입력문자 박스간격*/
+            flex-wrap: wrap;   /*입력문자 박스 개수증가시 자동줄바꿈*/
+            gap: 8px;
+
+          /* 하단 글자 선택 키패드1줄에 8개씩 배치
+		    background: rgba(255,255,255,0.5);
+            padding: 15px;
             border-radius: 10px;
             display: grid;
-            grid-template-columns: repeat(8, 1fr); /*자판 가로배열 개수*/
-            gap: 8px;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;*/
         }
 
         .key-btn {
@@ -399,6 +408,7 @@
             border: 2px solid #444;
             border-radius: 8px;
             height: 38px; /*자판 세로 크기*/
+            width: 38px; /*자판 세로 크기*/
             font-size: 18px;
             font-weight: bold;
             display: flex;
@@ -620,7 +630,7 @@
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥 난이도: 높음 "; //전체 숨김
+                btnToggleHard.textContent = "🔥 난이도: 높음  "; //전체 숨김
                 btnToggleHard.style.backgroundColor = "#ed54af";
             } else {
                 btnToggleHard.textContent = "🎯 난이도: 보통";
