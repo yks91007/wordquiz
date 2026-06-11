@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임</title>
+    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임<!--Sparta Multi-language Master Word Quiz Game --></title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -43,34 +43,37 @@
             background-color: #4a69bd;
             color: white;
             border: none;
-            padding: 3px 12px;
+            padding: 4px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 5px;
+            margin-top: 3px;
             box-shadow: 0 3px 0 #385196;
         }
         .btn-file-trigger:active { transform: translateY(2px); box-shadow: none; }
 
+     /* 🔢 순서: 작위 (순차적) 컨트롤 바 */
         .btn-order-toggle {
             background-color: #38ada9; 
             color: white;
             border: none;
-            padding: 3px 12px;
+            padding: 4.5px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 0 #2b8a87;
         }
+
         .btn-order-toggle:active { transform: translateY(2px); box-shadow: none; }
 
+     /* 🎯 난이도: 보통  컨트롤 바 */
         .btn-hard-toggle {
             background-color: #fa8231;
             color: white;
             border: none;
-            padding: 3px 12px;
+            padding: 4.5px 12px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -91,6 +94,7 @@
             border: 2px solid #a5b1c2;
             font-size: 12px;
             font-weight: bold;
+			margin-top: 3px;
 		    box-shadow: 0 3px 0 #6b8741;
         }
 
@@ -116,7 +120,7 @@
             border: 1px solid #ccc;
             font-size: 12px;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 3px;
 		    box-shadow: 0 1px 0 #6b8741;
         }
         .repeat-btn {
@@ -144,11 +148,10 @@
             color: #ecf0f1;
             padding: 8px 15px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             text-align: center;
-
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             word-break: break-all;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -347,7 +350,7 @@
             /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
             align-items: center;
             margin-bottom: 15px;
-            gap: 10px;
+            gap: 7px;
 			flex-wrap: wrap; /* 자동줄바꿈 */
         }
         
@@ -357,7 +360,7 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 13px; 
-            border: none;
+            border: 1.5px solid;
         }
 		     /*💡 안내(Hint) 버튼*/
          .hint-btn {
@@ -369,6 +372,7 @@
         /* 🔀 자판 섞기 토글 버튼 고유 스타일 */
         .shuffle-btn {
             background: #a367bc;
+			 padding: 2px 16px;  /*💡 안내(H) 버튼여백 */
             color: white;
             border: 1.5px solid #80409b;
             box-shadow: 0 2px 0 #8e44ad;
@@ -464,7 +468,7 @@
             <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">⚠️ 원하는 옵션을 미리 지정한 후, [📁 Excel 파일 불러오기]를 눌러주세요!</div>
+        <div class="file-name-display" id="file-name-screen">⚠️원하는 옵션을 미리 지정한 후,  "📁 Excel 파일 불러오기" 를 눌러주세요!</div>
 
         <div id="game-container">
             <div class="status-bar">
@@ -478,10 +482,10 @@
                 <div id="word-example" class="example-top">Ex: 문장이 여기에 표시됩니다.</div>
                 
                 <button class="btn-speak-inline" id="btn-speak-word" title="단어 자동 발음 토글">🔊</button>
-                <div id="word-meaning" class="meaning-middle">뜻이 여기에 표시됩니다.</div>
+                <div id="word-meaning" class="meaning-middle">뜻:이 여기에 표시됩니다.</div>
 
                 <button class="btn-speak-inline" id="btn-speak-english" title="영어 표현 자동 발음 토글">🔊</button>
-                <div id="word-english" class="meaning-english">영어 표현이 여기에 표시됩니다.</div>
+                <div id="word-english" class="meaning-english">영어: 표현이 여기에 표시됩니다.</div>
                 
                 <div class="example-hint" id="example-meaning" style="display: none;"></div>
             </div>
