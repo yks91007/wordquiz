@@ -189,7 +189,7 @@
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
             box-sizing: border-box;
             position: relative;
-            gap: 12px;
+            gap: 3px; /* 12px문단긴격 */
         }
 
         /* 동적 생성되는 각 열의 행 컨테이너 */
@@ -198,7 +198,7 @@
             display: flex;
             align-items: center;
             position: relative;
-            padding: 2px 45px 2px 45px; /* 좌측 눈버튼, 우측 스피커 공간 확보 */
+            padding: 2px 25px 2px 25px; /* 좌측 눈버튼, 우측 스피커, text와 공간 확보 */
             box-sizing: border-box;
             font-size: 16px;
             font-weight: 500;
@@ -219,17 +219,18 @@
         }
         /* 🙈 숨김 처리용 블라인드 스타일 */
         .row-text-content.hidden-blind {
-            background-color: #eae5d9;
-            color: #eae5d9;
+            /*background-color: #eae5d9;*/ /* text 블라인드background 컬러 */
+            /*color: #eae5d9;*/ /* text 블라인드 컬러 */
             user-select: none;
             border-radius: 4px;
-            padding: 0 4px;
+            padding: 0 0px;
+            height: 33px; /* 블라인드 가로 크기 */
         }
 
         /* 👁️ 좌측 보이게/안보이게 버튼 스타일 */
         .btn-visibility-inline {
             position: absolute;
-            left: 10px;
+            left: 1px; /* 👁️버튼 우측간격 */
             top: 50%;
             transform: translateY(-50%);
             background: #ffffff;
@@ -256,7 +257,7 @@
         /* 🔊 우측 발음 아이콘 버튼 스타일 */
         .btn-speak-inline {
             position: absolute;
-            right: 10px;
+            right: 1px; /* 발음버튼 우측간격 */
             top: 50%;
             transform: translateY(-50%);
             background: #ffffff;
@@ -316,8 +317,8 @@
         }
 
         .slot {
-            width: 30px;  /*입력문자 박스 가로 크기*/
-            height: 33px; /*입력문자 박스 세로 크기*/
+            width: 28px;  /*입력문자 박스 가로 크기*/
+            height: 30px; /*입력문자 박스 세로 크기*/
             background: white;
             border: 2px solid #555;
             border-radius: 8px;
@@ -415,7 +416,7 @@
             padding: 2px 3px;
             border: 1.5px solid #80409b;
             box-shadow: 0 2px 0 #8e44ad;
-            min-width: 60px; /* 텍스트가 길어져도 잘리지 않도록 크기 고정 */
+            min-width: 60px; /* 텍스트가 잘리지 않도록 */
             text-align: center;
         }
         /* 🎧 버튼 listen 디자인 */
@@ -508,14 +509,14 @@
             </div>
 
             <div class="repeat-control-box">
-                <span>🔄목표횟수:</span><!-- 🔄 목표 맞춤 횟수: -->
+                <span>🔄반복횟수:</span><!-- 🔄 목표 맞춤 횟수: -->
                 <button class="repeat-btn" id="btn-streak-minus">-</button>
                 <input type="text" class="repeat-input" id="input-streak-count" value="1" />
                 <button class="repeat-btn" id="btn-streak-plus">+</button>
             </div>
 
             <div class="repeat-control-box">
-                <span>🔊TTS반복:</span>
+                <span>🔊반복듣기:</span><!--🔊 TTS 반복: -->
                 <button class="repeat-btn" id="btn-repeat-minus">-</button>
                 <input type="text" class="repeat-input" id="input-repeat-count" value="1" />
                 <button class="repeat-btn" id="btn-repeat-plus">+</button>
@@ -525,7 +526,7 @@
             <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">⚠️ 원하는 옵션을 미리 지정한 후, [📁 Excel 파일 불러오기]를 눌러주세요!</div>
+        <div class="file-name-display" id="file-name-screen">⚠️ 원하는 옵션을 미리 지정 한 후, [📁 Excel 파일 불러오기]를 눌러주세요!</div>
 
         <div id="game-container">
             <div class="status-bar">
@@ -535,7 +536,7 @@
             </div>
 
             <div class="meaning-board" id="dynamic-meaning-board">
-                <div style="color:#777; font-size:14px;">엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다.</div>
+                <div style="color:#777; font-size:14px; ">엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다.</div>
             </div>
             
             <div style="display: flex; justify-content: center;">
@@ -835,7 +836,7 @@
                 btnElement.textContent = "🙈";
                 btnElement.classList.add('hidden-state');
                 textSpan.classList.add('hidden-blind');
-                textSpan.textContent = "█".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 5));
+                textSpan.textContent = "".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 0)); //█   //.length, 5))
             }
         }
 
@@ -1002,7 +1003,7 @@
                     visibilityBtn.textContent = "🙈";
                     visibilityBtn.classList.add('hidden-state');
                     textSpan.classList.add('hidden-blind');
-                    textSpan.textContent = "█".repeat(Math.max(fullRowText.length, 5));
+                    textSpan.textContent = "         ".repeat(Math.max(fullRowText.length, 0)); //█
                 }
 
                 visibilityBtn.addEventListener('click', (e) => {
