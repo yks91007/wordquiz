@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임<!--Sparta Multi-language Master Word Quiz Game --></title>
+    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -25,7 +25,7 @@
         /* 메인 게임 프레임 */
         #game-frame {
             width: 100%;
-            max-width: 480px;
+            max-width: 550px;  /*오리지널550*/
         }
 
         /* 상단 컨트롤 바 */
@@ -35,45 +35,40 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            gap: 5px;
+            gap: 10px;
             flex-wrap: wrap;
         }
-     /* 📁 Excel 파일 불러오기 컨트롤 바 */
         .btn-file-trigger {
             background-color: #4a69bd;
             color: white;
             border: none;
-            padding: 4px 12px;
+            padding: 4px 6px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 3px;
             box-shadow: 0 3px 0 #385196;
         }
         .btn-file-trigger:active { transform: translateY(2px); box-shadow: none; }
 
-     /* 🔢 순서: 작위 (순차적) 컨트롤 바 */
         .btn-order-toggle {
             background-color: #38ada9; 
             color: white;
             border: none;
-            padding: 4.5px 12px;
+            padding: 4px 6px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px 0 #2b8a87;
         }
-
         .btn-order-toggle:active { transform: translateY(2px); box-shadow: none; }
 
-     /* 🎯 난이도: 보통  컨트롤 바 */
         .btn-hard-toggle {
             background-color: #fa8231;
             color: white;
             border: none;
-            padding: 4.5px 12px;
+            padding: 4px 6px;
             border-radius: 8px;
             font-size: 12px;
             font-weight: bold;
@@ -82,64 +77,61 @@
         }
         .btn-hard-toggle:active { transform: translateY(2px); box-shadow: none; }
 
-      /* 오디오🔊 소리켬 끔 컨트롤 바(정답 시 자동발음) */
+        /* 오디오 컨트롤 바 */
         .audio-control-box {
-		    height: 17px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: #98b76a;
-            padding: 2px 10px;
+            gap: 3px;
+            background: #ffffff;
+            padding: 4px 4px;
             border-radius: 8px;
-            border: 2px solid #a5b1c2;
+            border: 1px solid #a5b1c2;
             font-size: 12px;
             font-weight: bold;
-			margin-top: 3px;
-		    box-shadow: 0 3px 0 #6b8741;
         }
 
         .btn-sound-mute {
             background-color: #4b6584;
             color: white;
             border: none;
-            padding: 1px 8px;
+            padding: 2px 3px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 11px;
         }
 
-        /* 목표 맞춤 횟수 설정 컨트롤러 스타일 */
+        /* 반복 횟수 설정 컨트롤러 스타일 (공통) */
         .repeat-control-box {
-		    height: 16px;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
             background: #ffffff;
-            padding: 4px 10px;
+            padding: 6px 6px;
+            width: 135px;
             border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 12px;
             font-weight: bold;
-            margin-top: 3px;
-		    box-shadow: 0 1px 0 #6b8741;
         }
         .repeat-btn {
             background: #eee;
             border: 1px solid #aaa;
             border-radius: 4px;
-            width: 18px;
-            height: 18px;
+            width: 15px;
+            height: 15px;
             font-weight: bold;
             cursor: pointer;
         }
         .repeat-btn:active { background: #ddd; }
         .repeat-input {
-            width: 30px;
+            /*width: 30px;*/
             text-align: center;
             font-weight: bold;
             border: 1px solid #bbb;
             border-radius: 4px;
-            height: 14px;
+            width: 20px;
+            height: 11px;
         }
 
         /* 엑셀 파일 이름 전광판 스타일 */
@@ -148,10 +140,10 @@
             color: #ecf0f1;
             padding: 8px 15px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             word-break: break-all;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -180,7 +172,7 @@
             margin-bottom: 15px;
         }
 
-        /* 뜻풀이 전광판 */
+        /* 다국어 통합형 뜻풀이 전광판 */
         .meaning-board {
             background-color: var(--board-color);
             border: 3px solid #bcaba0;
@@ -197,58 +189,82 @@
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
             box-sizing: border-box;
             position: relative;
-        }
-        
-        .example-top {
-            font-size: 16px;
-            font-weight: 500;
-            color: #4b6584;
-            margin-bottom: 10px;
-            word-break: break-all;
-            padding-right: 45px;
+            gap: 12px;
         }
 
-        .meaning-middle {
+        /* 동적 생성되는 각 열의 행 컨테이너 */
+        .board-row-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 2px 45px 2px 45px; /* 좌측 눈버튼, 우측 스피커 공간 확보 */
+            box-sizing: border-box;
+            font-size: 16px;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        
+        /* 1번째 열(A열 정답용)은 조금 더 강조 */
+        .board-row-item.primary-target {
             font-size: 18px;
             font-weight: bold;
             color: #2c2c2c;
-            margin-bottom: 10px;
-            padding-right: 45px;
-
         }
 
-        .meaning-english {
-            font-size: 15px;
-            color: #57606f;
-            font-weight: 500;
-            padding-right: 45px;
+        /* 행 내부 실제 텍스트 스팬 */
+        .row-text-content {
+            flex: 1;
+            text-align: center;
+        }
+        /* 🙈 숨김 처리용 블라인드 스타일 */
+        .row-text-content.hidden-blind {
+            background-color: #eae5d9;
+            color: #eae5d9;
+            user-select: none;
+            border-radius: 4px;
+            padding: 0 4px;
         }
 
-        /* 💡 힌트 팝업 디자인 */
-        .example-hint {
-            font-size: 15px;
-            color: #c503b6; /* (전광판 Hint 글씨 컬러) (#bdc581) 계열 */
-            background-color: #f5f6fa;
-            border: 1px dashed #dcdde1;
-            padding: 5px 12px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-weight: bold;
-            width: 85%;
-            word-break: break-all;
-            /*box-shadow: 0 2px 4px rgba(0,0,0,0.05);*/
-        }
-
-        /* 보드 내부 발음 아이콘 버튼 */
-        .btn-speak-inline {
+        /* 👁️ 좌측 보이게/안보이게 버튼 스타일 */
+        .btn-visibility-inline {
             position: absolute;
-            right: 15px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 14px; /* 발음 아이콘 가로 */
-            height: 14px; /* 발음 아이콘 세로 */
-            font-size: 15px;
+            width: 23px; /* 발음 아이콘 세로 */
+            height: 23px; /* 발음 아이콘 가로 */
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        .btn-visibility-inline:hover { background: #f1f2f6; }
+        .btn-visibility-inline:active { transform: translateY(-50%) scale(0.92); }
+        .btn-visibility-inline.hidden-state {
+            background: #eee;
+            border-color: #999;
+            color: #777;
+        }
+
+        /* 🔊 우측 발음 아이콘 버튼 스타일 */
+        .btn-speak-inline {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ffffff;
+            border: 1.5px solid #bbb;
+            border-radius: 50%;
+            width: 23px; /* 발음 아이콘 세로 */
+            height: 23px; /* 발음 아이콘 가로 */
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -257,19 +273,31 @@
             transition: all 0.2s;
         }
         .btn-speak-inline:hover { background: #f1f2f6; }
-        .btn-speak-inline:active { transform: scale(0.92); }
-        
+        .btn-speak-inline:active { transform: translateY(-50%) scale(0.92); }
         .btn-speak-inline.muted-state {
             background: #ffeae6;
             border-color: #ffb8b8;
             color: #ff4757;
         }
 
-        #btn-speak-example { top: 15px; }
-        #btn-speak-word { top: 60px; }
-        #btn-speak-english { top: 105px; }
+        /* 💡 힌트 팝업 디자인 */
+        .example-hint {
+            font-size: 15px;
+            color: #008000; 
+            background-color: #fff5f5;
+            border: 1.5px solid #fff5f5;
+            padding: 3px 12px;
+            border-radius: 6px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            width: 90%;
+            word-break: break-all;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
 
-        /* 현재 단어 반복 진행 상황판 스타일 */
+        /* 현재 단어 반복 입력 진행 상황판 스타일 */
         .loop-progress-bar {
             text-align: center;
             font-size: 13px;
@@ -302,14 +330,25 @@
             user-select: none;
         }
         
-            border: 2px dashed #6db31a;  /*문자 박스 테두리색*/
-            background: #fefae7;  /*문자 박스 바탕색*/
-            box-shadow: 0 4px 0 #c0c0c0;
+        .slot.blank {
+            /*border: 1.5px dashed #6db31a;*/   /*점선 박스 테두리색*/
+            background: #efefef;
+            box-shadow: 0 4px 0 #c5ef8f;
             cursor: pointer;
             transition: transform 0.1s, border-color 0.1s;
         }
-       /* 🎯 마우스를 올리면 오타 지우기/수정이 가능하다는 피드백 시각화 */        
-        .slot.blank.filled:hover {
+        
+        /*문자 박스 테두리색*/
+       /* .slot.blank {
+            border: 2px dashed #6db31a;  /*문자 박스 테두리색*/
+        /*    background: #fefae7; */  /*문자 박스 바탕색*/
+        /*    box-shadow: 0 4px 0 #c0c0c0; */
+        /*    cursor: pointer;
+            transition: transform 0.1s, border-color 0.1s;
+        }
+		*/
+
+		.slot.blank.filled:hover {
             transform: scale(1.08);
             border: 2px solid #e84118;
             background-color: #ffeae6;
@@ -350,39 +389,49 @@
             /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
             align-items: center;
             margin-bottom: 15px;
-            gap: 7px;
-			flex-wrap: wrap; /* 자동줄바꿈 */
+            gap: 5px;
+            flex-wrap: wrap; /* 줄이 좁혀지면 다음줄로  */
         }
         
         .btn-action {
-            padding: 2px 8px; /* 🔀자판 섞기버튼여백 */
+            padding: 2px 3px; /* 🔀자판 섞기버튼여백 */
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 13px; 
-            border: 1.5px solid;
+            border: none;
         }
 		     /*💡 안내(Hint) 버튼*/
          .hint-btn {
             background: #fddd8a;
-            padding: 2px 16px;  /*💡 안내(H) 버튼여백 */
+            padding: 2px 3px;/*💡 안내(H) 버튼여백 */
             border: 1.5px solid #e7be52;
             box-shadow: 0 2px 0 #e7be52
         }
         /* 🔀 자판 섞기 토글 버튼 고유 스타일 */
         .shuffle-btn {
             background: #a367bc;
-			 padding: 2px 16px;  /*💡 안내(H) 버튼여백 */
             color: white;
+            padding: 2px 3px;
             border: 1.5px solid #80409b;
             box-shadow: 0 2px 0 #8e44ad;
-            min-width: 140px; /* 텍스트가 길어져도 잘리지 않도록 크기 고정 */
+            min-width: 60px; /* 텍스트가 길어져도 잘리지 않도록 크기 고정 */
             text-align: center;
+        }
+        /* 🎧 버튼 listen 디자인 */
+        .listen-btn {
+            background: #10ac84;
+            padding: 2px 3px;
+            color: white;
+            border: 1.5px solid #0f8f6e;
+						height:25px;
+            box-shadow: 0 2px 0 #0f8f6e;
+            /*margin-left: auto; */
         }
 		    /*⏩ 다음 단어로(Next)버튼*/
         .next-btn {
             background: #ffb7db;
-            padding: 2px 16px; /*⏩ 다음 단어로(Next)버튼 길이*/
+            padding: 2px 3px; /*⏩ 다음 단어로(Next)버튼 길이*/
             color: white;
             border: 1.5px solid #eda0a0;
             box-shadow: 0 2px 0 #eda0a0;
@@ -393,18 +442,10 @@
         .keyboard {
             background: rgba(255,255,255,0.5);
             padding: 15px;
-            border-radius: 10px;  			
-            display: flex;  /*입력문자 박스간격*/
-            flex-wrap: wrap;   /*입력문자 박스 개수증가시 자동줄바꿈*/
-            gap: 8px;
-
-          /* 하단 글자 선택 키패드1줄에 8개씩 배치
-		    background: rgba(255,255,255,0.5);
-            padding: 15px;
             border-radius: 10px;
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 8px;*/
+            grid-template-columns: repeat(8, 1fr); /*자판 가로배열 개수*/
+            gap: 8px;
         }
 
         .key-btn {
@@ -412,7 +453,6 @@
             border: 2px solid #444;
             border-radius: 8px;
             height: 38px; /*자판 세로 크기*/
-            width: 38px; /*자판 세로 크기*/
             font-size: 18px;
             font-weight: bold;
             display: flex;
@@ -447,28 +487,35 @@
 
     <div id="game-frame">
         <div class="top-loader-bar">
-            <button class="btn-order-toggle" id="btn-toggle-order">🔢 순서: 작위 (순차적)</button>
-            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 난이도: 보통</button>
+            <button class="btn-order-toggle" id="btn-toggle-order">🔢순서<!-- 작위 -->(순차적)</button>
+            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯난이:보통</button>
             
             <div class="audio-control-box">
-                <button class="btn-sound-mute" id="btn-sound-mute">🔊 소리 켬</button>
+                <button class="btn-sound-mute" id="btn-sound-mute">🔊소리켬</button>
                 <label style="cursor:pointer; display:flex; align-items:center; gap:3px;">
-                    <input type="checkbox" id="chk-auto-speak" checked /> 정답 시 자동발음
+                    <input type="checkbox" id="chk-auto-speak" checked /> 자동발음:켬
                 </label>
             </div>
 
             <div class="repeat-control-box">
-                <span>🔄 목표 맞춤 횟수:</span>
+                <span>🔄목표횟수:</span><!-- 🔄 목표 맞춤 횟수: -->
+                <button class="repeat-btn" id="btn-streak-minus">-</button>
+                <input type="text" class="repeat-input" id="input-streak-count" value="1" />
+                <button class="repeat-btn" id="btn-streak-plus">+</button>
+            </div>
+
+            <div class="repeat-control-box">
+                <span>🔊TTS반복:</span>
                 <button class="repeat-btn" id="btn-repeat-minus">-</button>
                 <input type="text" class="repeat-input" id="input-repeat-count" value="1" />
                 <button class="repeat-btn" id="btn-repeat-plus">+</button>
             </div>
 
-            <button class="btn-file-trigger" id="btn-change-file">📁 Excel 파일 불러오기</button>
+            <button class="btn-file-trigger" id="btn-change-file">📁Excel 파일 불러오기</button>
             <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">⚠️원하는 옵션을 미리 지정한 후,  "📁 Excel 파일 불러오기" 를 눌러주세요!</div>
+        <div class="file-name-display" id="file-name-screen">⚠️ 원하는 옵션을 미리 지정한 후, [📁 Excel 파일 불러오기]를 눌러주세요!</div>
 
         <div id="game-container">
             <div class="status-bar">
@@ -477,33 +524,30 @@
                 <div>⏱️ 시간: <span id="timer">0</span>초</div>
             </div>
 
-            <div class="meaning-board">
-                <button class="btn-speak-inline" id="btn-speak-example" title="예문 자동 발음 토글">🔊</button>
-                <div id="word-example" class="example-top">Ex: 문장이 여기에 표시됩니다.</div>
-                
-                <button class="btn-speak-inline" id="btn-speak-word" title="단어 자동 발음 토글">🔊</button>
-                <div id="word-meaning" class="meaning-middle">뜻:이 여기에 표시됩니다.</div>
-
-                <button class="btn-speak-inline" id="btn-speak-english" title="영어 표현 자동 발음 토글">🔊</button>
-                <div id="word-english" class="meaning-english">영어: 표현이 여기에 표시됩니다.</div>
-                
+            <div class="meaning-board" id="dynamic-meaning-board">
+                <div style="color:#777; font-size:14px;">엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다.</div>
+            </div>
+            
+            <div style="display: flex; justify-content: center;">
                 <div class="example-hint" id="example-meaning" style="display: none;"></div>
             </div>
 
-            <div class="loop-progress-bar" id="loop-progress-zone">
+            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">
                 🎯 현재 단어 맞춘 횟수: <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
             </div>
 
             <div class="word-slots" id="word-slots"></div>
 
             <div class="feedback-container" id="feedback-zone">
-                <span class="feedback-text" id="feedback-text-msg">🎉 목표 달성! 다음 단어로 이동합니다.</span>
+                <span class="feedback-text" id="feedback-text-msg"><!-- 🎉 목표 달성 -->! 다음 단어로 이동합니다.</span>
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡 안내 (Hint)</button>
-                <button class="btn-action shuffle-btn" id="shuffle-button">🔀 자판 섞기 (A)+(C<!-- ) : 켬 --></button>
-                <button class="btn-action next-btn" id="next-button">⏩ 다음 단어 (Next)</button>
+                <button class="btn-action hint-btn" id="hint-button">💡안내(Hint)</button>
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀자판<!-- 섞기(A)+(C) -->A+C:켬</button>
+                
+                <button class="btn-action listen-btn" id="listen-button">🎧듣기:정지(끔)</button>
+                <button class="btn-action next-btn" id="next-button">⏩다음<!-- 단어 으로-->(Next)</button>
             </div>
 
             <div class="keyboard" id="keyboard"></div>
@@ -511,7 +555,9 @@
     </div>
 
     <script>
-        let quizData = [];
+        let quizData = [];          
+        let columnLanguages = [];   
+        
         let currentProblem = null;
         let correctCount = 0;
         let wrongCount = 0;
@@ -530,50 +576,50 @@
         let isCorrectAnswered = false; 
         let isAllBlankMode = false; 
 
-        let targetMatchCount = 1;  
-        let currentMatchCount = 0; 
+        let matchStreakCount = 0;     
+        let targetStreakLimit = 1;    
+        let ttsRepeatTarget = 1;  
 
         let isMixModeAC = true; 
-
         let isMuted = false;
 
-        let isSpeakerEnabled = {
-            example: true,
-            word: true,
-            english: true
-        };
+        let speakerMuteStates = {};    
+        let visibilityStates = {};     
 
-        // 국가별 안전한 기본 알파벳/Spelling 풀 정의 (공백 및 특수문자 전면 원천 배제)
+        let listenModeState = 0; 
+        let autoNextTimeoutToken = null;
+
         const countryLettersPool = {
             'en': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'ja': 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ',
+            'ja': 'あいうえおかきくけこさしす세そたちつてとなにぬねのはひふへほまみむめも야유よらりる레로わ을ん가ぎぐ게ござじずぜ조다ぢづで도ば비부べ보ぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미むめ도야유よらりる레로わ을ンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ',
             'zh': 'abcdefghijklmnopqrstuvwxyz',
-            'es': 'abcdefghijklmnopqrstuvwxyzñáéíóúüABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜ'
+            'es': 'abcdefghijklmnopqrstuvwxyzñáéíóúüABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜ',
+            'ko': 'ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ'
         };
 
-        const gameFrame = document.getElementById('game-frame');
-        const gameContainer = document.getElementById('game-container');
-        
         const fileRuntime = document.getElementById('excel-file-runtime');
         const btnChangeFile = document.getElementById('btn-change-file');
         const btnToggleOrder = document.getElementById('btn-toggle-order'); 
         const btnToggleHard = document.getElementById('btn-toggle-hard'); 
         
+        const btnStreakMinus = document.getElementById('btn-streak-minus');
+        const btnStreakPlus = document.getElementById('btn-streak-plus');
+        const inputStreakCount = document.getElementById('input-streak-count');
+        const lblCurrentStreak = document.getElementById('current-match-streak');
+        const lblTotalTargetStreak = document.getElementById('total-target-streak');
+
         const btnRepeatMinus = document.getElementById('btn-repeat-minus');
         const btnRepeatPlus = document.getElementById('btn-repeat-plus');
         const inputRepeatCount = document.getElementById('input-repeat-count');
-        const lblCurrentMatch = document.getElementById('current-match-streak');
-        const lblTotalTarget = document.getElementById('total-target-streak');
         const feedbackTextMsg = document.getElementById('feedback-text-msg');
 
-        const txtExample = document.getElementById('word-example'); 
-        const txtMeaning = document.getElementById('word-meaning');
-        const txtEnglish = document.getElementById('word-english');
+        const dynamicMeaningBoard = document.getElementById('dynamic-meaning-board');
         const txtExMeaning = document.getElementById('example-meaning');
         const slotsContainer = document.getElementById('word-slots');
         const keyboardContainer = document.getElementById('keyboard');
         const btnHint = document.getElementById('hint-button');
         const btnShuffle = document.getElementById('shuffle-button');
+        const btnListen = document.getElementById('listen-button');
         const btnNext = document.getElementById('next-button');
         
         const feedbackZone = document.getElementById('feedback-zone');
@@ -584,49 +630,58 @@
 
         const btnSoundMute = document.getElementById('btn-sound-mute');
         const chkAutoSpeak = document.getElementById('chk-auto-speak');
-        const btnSpeakWord = document.getElementById('btn-speak-word');
-        const btnSpeakEnglish = document.getElementById('btn-speak-english');
-        const btnSpeakExample = document.getElementById('btn-speak-example');
-        
         const txtFileNameScreen = document.getElementById('file-name-screen');
+
+        btnStreakMinus.addEventListener('click', () => {
+            let val = parseInt(inputStreakCount.value) || 1;
+            if (val > 1) {
+                val--;
+                inputStreakCount.value = val;
+                targetStreakLimit = val;
+                lblTotalTargetStreak.textContent = val;
+            }
+        });
+        btnStreakPlus.addEventListener('click', () => {
+            let val = parseInt(inputStreakCount.value) || 1;
+            val++;
+            inputStreakCount.value = val;
+            targetStreakLimit = val;
+            lblTotalTargetStreak.textContent = val;
+        });
+        inputStreakCount.addEventListener('input', () => {
+            let val = parseInt(inputStreakCount.value);
+            if (isNaN(val) || val < 1) val = 1;
+            targetStreakLimit = val;
+            lblTotalTargetStreak.textContent = val;
+        });
 
         btnRepeatMinus.addEventListener('click', () => {
             let val = parseInt(inputRepeatCount.value) || 1;
             if (val > 1) {
                 val--;
                 inputRepeatCount.value = val;
-                targetMatchCount = val;
-                updateProgressUI();
+                ttsRepeatTarget = val;
             }
         });
-
         btnRepeatPlus.addEventListener('click', () => {
             let val = parseInt(inputRepeatCount.value) || 1;
             val++;
             inputRepeatCount.value = val;
-            targetMatchCount = val;
-            updateProgressUI();
+            ttsRepeatTarget = val;
         });
-
         inputRepeatCount.addEventListener('input', () => {
             let val = parseInt(inputRepeatCount.value);
             if (isNaN(val) || val < 1) val = 1;
-            targetMatchCount = val;
-            updateProgressUI();
+            ttsRepeatTarget = val;
         });
-
-        function updateProgressUI() {
-            lblCurrentMatch.textContent = currentMatchCount;
-            lblTotalTarget.textContent = targetMatchCount;
-        }
 
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
             if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 순서: (Random)"; //무작위
+                btnToggleOrder.textContent = "🔄 Random";  //🔄 순서: 무작위
                 btnToggleOrder.style.backgroundColor = "#e76dd8";
             } else {
-                btnToggleOrder.textContent = "🔢 순서: 작위 (순차적)";
+                btnToggleOrder.textContent = "🔢 순서:순차적"; //🔢 순서: 작위 (순차적)
                 btnToggleOrder.style.backgroundColor = "#38ada9";
             }
         });
@@ -634,11 +689,11 @@
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥 난이도: 높음  "; //전체 숨김
+                btnToggleHard.textContent = "🔥난이도:높음"; //🔥 난이도: 전체 숨김
                 btnToggleHard.style.backgroundColor = "#ed54af";
             } else {
-                btnToggleHard.textContent = "🎯 난이도: 보통";
-                btnToggleHard.style.backgroundColor = "#fa8231";
+                btnToggleHard.textContent = "🎯 난이도:보통"; //🎯 난이도: 보통
+                btnToggleHard.style.backgroundColor = "#fb914a";
             }
         });
 
@@ -654,10 +709,14 @@
             }
         });
 
+        chkAutoSpeak.addEventListener('change', () => {
+            chkAutoSpeak.parentElement.childNodes[1].textContent = chkAutoSpeak.checked ? " 자동 발음: 켬" : " 자동 발음: 끔";
+        });
+
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖 : ${file.name}`; // 학습 중인 파일
+            txtFileNameScreen.textContent = `📖  : ${file.name}`; //학습 중인 파일
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -666,18 +725,37 @@
                 const sheetName = workbook.SheetNames[0];
                 const sheet = workbook.Sheets[sheetName];
                 
-                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
                 
-                quizData = rows.map(row => ({
-                    word: String(row[0] || '').trim(),
-                    meaning: String(row[1] || '').trim(),
-                    english: String(row[2] || '').trim(),
-                    example: String(row[3] || '').trim(),
-                    langCode: String(row[4] || 'en').trim().toLowerCase() // E열 언어 설정 기본값 en
-                })).filter(item => item.word.length > 0);
+                if (rows.length < 2) {
+                    alert("최소한 1행(TTS코드)과 2행(데이터) 이상의 구조가 필요합니다.");
+                    return;
+                }
+
+                const firstRow = rows[0];
+                columnLanguages = firstRow.map(cell => String(cell || 'en').trim().toLowerCase());
+
+                speakerMuteStates = {};
+                visibilityStates = {};
+                columnLanguages.forEach((_, colIdx) => {
+                    speakerMuteStates[colIdx] = true; 
+                    visibilityStates[colIdx] = true;  
+                });
+
+                quizData = [];
+                for (let r = 1; r < rows.length; r++) {
+                    let currentRow = rows[r];
+                    if (!currentRow[0] || String(currentRow[0]).trim() === "") continue;
+
+                    let rowDataArray = [];
+                    for (let c = 0; c < columnLanguages.length; c++) {
+                        rowDataArray.push(String(currentRow[c] || '').trim());
+                    }
+                    quizData.push(rowDataArray);
+                }
 
                 if (quizData.length === 0) {
-                    alert("엑셀 데이터가 올바르지 않거나 비어있습니다.");
+                    alert("2행 이후에 읽을 수 있는 단어 데이터가 존재하지 않습니다.");
                     return;
                 }
 
@@ -688,8 +766,7 @@
                 lblCorrect.textContent = correctCount;
                 lblWrong.textContent = wrongCount;
                 
-                currentMatchCount = 0;
-                nextQuiz(true); 
+                nextQuiz(); 
             };
             reader.readAsArrayBuffer(file);
         }
@@ -703,106 +780,125 @@
             e.target.value = ''; 
         });
 
-        function getFinalLangCode(configCode) {
-            if (configCode === 'ja' || configCode === 'jp') return 'ja-JP';
-            if (configCode === 'zh' || configCode === 'cn') return 'zh-CN';
-            if (configCode === 'es') return 'es-ES';
+        function getStandardLangLocale(code) {
+            if (code === 'ja' || code === 'jp') return 'ja-JP';
+            if (code === 'zh' || code === 'cn') return 'zh-CN';
+            if (code === 'es') return 'es-ES';
+            if (code === 'ko' || code === 'kr') return 'ko-KR';
             return 'en-US';
         }
 
-        function detectGeneralLanguage(text) {
-            const koRegex = /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/;
-            if (koRegex.test(text)) return 'ko-KR';
-            
-            const esRegex = /[áéíóúüñÁÉÍÓÚÜÑ¡¿]/;
-            if (esRegex.test(text)) return 'es-ES';
-            
-            return 'en-US';
-        }
-
-        function forceSpeakColumn(text, columnType) {
-            if (isMuted || !text || !currentProblem) return;
+        function forceSpeakColumnIndex(text, colIndex) {
+            if (isMuted || !text) return;
             window.speechSynthesis.cancel();
 
-            let cleanText = text.replace(/^<strong>Ex:<\/strong>\s*/i, '');
-            let targetLang = 'en-US';
+            let targetLang = getStandardLangLocale(columnLanguages[colIndex]);
 
-            if (columnType === 'word') {
-                targetLang = getFinalLangCode(currentProblem.langCode);
-            } else if (columnType === 'meaning') {
-                targetLang = detectGeneralLanguage(cleanText);
-            } else if (columnType === 'english') {
-                targetLang = 'en-US';
-            } else if (columnType === 'example') {
-                targetLang = detectGeneralLanguage(cleanText);
-            }
-
-            const utterance = new SpeechSynthesisUtterance(cleanText);
+            const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = targetLang;
             utterance.rate = (targetLang === 'ja-JP' || targetLang === 'zh-CN') ? 1.0 : 0.9;
             window.speechSynthesis.speak(utterance);
         }
 
-        function toggleSpeakerState(type, btnElement) {
-            isSpeakerEnabled[type] = !isSpeakerEnabled[type];
+        function toggleSpeakerElement(colIndex, btnElement) {
+            speakerMuteStates[colIndex] = !speakerMuteStates[colIndex];
             
-            if (isSpeakerEnabled[type]) {
+            if (speakerMuteStates[colIndex]) {
                 btnElement.textContent = "🔊";
                 btnElement.classList.remove('muted-state');
-                btnElement.title = "자동 발음: 켬 (클릭시 끔)";
-                triggerCurrentSound(type);
+                if (currentProblem) forceSpeakColumnIndex(currentProblem[colIndex], colIndex);
             } else {
                 btnElement.textContent = "🔇";
                 btnElement.classList.add('muted-state');
-                btnElement.title = "자동 발음: 끔 (클릭시 켬)";
             }
         }
 
-        function triggerCurrentSound(type) {
-            if (!currentProblem) return;
-            if (type === 'example') forceSpeakColumn(currentProblem.example, 'example');
-            if (type === 'word') forceSpeakColumn(currentProblem.word, 'word');
-            if (type === 'english') forceSpeakColumn(currentProblem.english, 'english');
+        function toggleVisibilityElement(colIndex, btnElement, textSpan) {
+            visibilityStates[colIndex] = !visibilityStates[colIndex];
+            
+            if (visibilityStates[colIndex]) {
+                btnElement.textContent = "👁️";
+                btnElement.classList.remove('hidden-state');
+                textSpan.classList.remove('hidden-blind');
+                textSpan.textContent = textSpan.getAttribute('data-raw-text');
+            } else {
+                btnElement.textContent = "🙈";
+                btnElement.classList.add('hidden-state');
+                textSpan.classList.add('hidden-blind');
+                textSpan.textContent = "█".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 5));
+            }
         }
 
-        btnSpeakExample.addEventListener('click', () => toggleSpeakerState('example', btnSpeakExample));
-        btnSpeakWord.addEventListener('click', () => toggleSpeakerState('word', btnSpeakWord));
-        btnSpeakEnglish.addEventListener('click', () => toggleSpeakerState('english', btnSpeakEnglish));
-
+        // 전체 오디오 사슬 연속 재생 엔진
         function playCorrectSoundChain() {
             if (isMuted || !currentProblem) return;
             window.speechSynthesis.cancel();
+            if (autoNextTimeoutToken) clearTimeout(autoNextTimeoutToken);
 
-            let utterancesQueue = [];
+            let singleLoopUtterances = [];
 
-            if (isSpeakerEnabled.word && currentProblem.word) {
-                const uWord = new SpeechSynthesisUtterance(currentProblem.word);
-                uWord.lang = getFinalLangCode(currentProblem.langCode);
-                utterancesQueue.push(uWord);
-            }
-            
-            if (currentProblem.meaning) {
-                const uMeaning = new SpeechSynthesisUtterance(currentProblem.meaning);
-                uMeaning.lang = detectGeneralLanguage(currentProblem.meaning);
-                uMeaning.rate = (uMeaning.lang === 'ja-JP' || uMeaning.lang === 'zh-CN') ? 1.0 : 0.9;
-                utterancesQueue.push(uMeaning);
-            }
-            
-            if (isSpeakerEnabled.english && currentProblem.english) {
-                const uEnglish = new SpeechSynthesisUtterance(currentProblem.english);
-                uEnglish.lang = 'en-US';
-                uEnglish.rate = 0.9;
-                utterancesQueue.push(uEnglish);
+            currentProblem.forEach((text, colIdx) => {
+                if (!text || !speakerMuteStates[colIdx]) return;
+
+                let targetLang = getStandardLangLocale(columnLanguages[colIdx]);
+                const utt = new SpeechSynthesisUtterance(text);
+                utt.lang = targetLang;
+                utt.rate = (targetLang === 'ja-JP' || targetLang === 'zh-CN') ? 1.0 : 0.9;
+                singleLoopUtterances.push(utt);
+            });
+
+            if (singleLoopUtterances.length === 0) {
+                handleListeningEndAction();
+                return;
             }
 
-            if (isSpeakerEnabled.example && currentProblem.example) {
-                const uExample = new SpeechSynthesisUtterance(currentProblem.example);
-                uExample.lang = detectGeneralLanguage(currentProblem.example);
-                uExample.rate = 0.9;
-                utterancesQueue.push(uExample);
+            let finalChainQueue = [];
+            for (let r = 0; r < ttsRepeatTarget; r++) {
+                singleLoopUtterances.forEach(u => {
+                    const clonedUtterance = new SpeechSynthesisUtterance(u.text);
+                    clonedUtterance.lang = u.lang;
+                    clonedUtterance.rate = u.rate;
+                    finalChainQueue.push(clonedUtterance);
+                });
             }
 
-            utterancesQueue.forEach(u => window.speechSynthesis.speak(u));
+            const totalLength = finalChainQueue.length;
+            finalChainQueue.forEach((utt, index) => {
+                // 사슬의 마지막 발음이 완전히 끝났을 때 넘김 조건 처리
+                if (index === totalLength - 1) {
+                    utt.onend = () => {
+                        handleListeningEndAction();
+                    };
+                }
+                window.speechSynthesis.speak(utt);
+            });
+        }
+
+        // 🎯 [핵심 수정 기지] 오디오 발음이 완전히 끝났을 때의 행동 정의
+        function handleListeningEndAction() {
+            // 1. 듣기 자동 모드일 때: 정답 여부와 상관없이 소리가 끝나면 무조건 다음 단어로!
+            if (listenModeState === 1) {
+                feedbackTextMsg.textContent = "🎧 듣기 자동 모드: 잠시 후 다음 단어로 자동 이동합니다.";
+                feedbackZone.style.display = "flex";
+                
+                autoNextTimeoutToken = setTimeout(() => {
+                    nextQuiz();
+                }, 1200);
+            } 
+            // 2. 듣기 수동 모드일 때: 소리가 끝나면 가만히 멈춰 서서 사용자의 클릭을 대기합니다.
+            else if (listenModeState === 2) {
+                feedbackTextMsg.textContent = "🎧 듣기 수동 모드: 다음 단어로 넘어가려면 [Next] 버튼을 누르세요.";
+                feedbackZone.style.display = "flex";
+            }
+            // 3. 일반 모드(듣기 꺼짐)에서 타이핑 훈련 목표 스트릭을 채웠을 때
+            else if (listenModeState === 0 && matchStreakCount >= targetStreakLimit) {
+                feedbackTextMsg.textContent = " 👍 ! 잠시 후 다음 단어로 자동 이동합니다."; //🎉 목표 달성
+                feedbackZone.style.display = "flex";
+                
+                autoNextTimeoutToken = setTimeout(() => {
+                    nextQuiz();
+                }, 1200);
+            }
         }
 
         window.addEventListener('keydown', (e) => {
@@ -821,14 +917,13 @@
             }
         });
 
-        function nextQuiz(isNewWord = false) {
+        function nextQuiz() {
             if (quizData.length === 0) return;
+            if (autoNextTimeoutToken) clearTimeout(autoNextTimeoutToken);
 
             isCorrectAnswered = false;
             feedbackZone.style.display = "none";
             keyboardContainer.classList.remove('disabled');
-            btnNext.disabled = false;
-            btnNext.style.opacity = "1";
 
             clearInterval(timerInterval);
             timeElapsed = 0;
@@ -838,38 +933,98 @@
                 lblTimer.textContent = timeElapsed;
             }, 1000);
 
-            if (isNewWord) {
-                currentMatchCount = 0; 
-                if (isRandomMode) {
-                    const randomIndex = Math.floor(Math.random() * quizData.length);
-                    currentProblem = quizData[randomIndex];
-                } else {
-                    currentProblem = quizData[sequentialIndex];
-                    sequentialIndex++;
-                    if (sequentialIndex >= quizData.length) {
-                        sequentialIndex = 0; 
-                    }
+            matchStreakCount = 0;
+            lblCurrentStreak.textContent = matchStreakCount;
+            lblTotalTargetStreak.textContent = targetStreakLimit;
+
+            if (isRandomMode) {
+                const randomIndex = Math.floor(Math.random() * quizData.length);
+                currentProblem = quizData[randomIndex];
+            } else {
+                currentProblem = quizData[sequentialIndex];
+                sequentialIndex++;
+                if (sequentialIndex >= quizData.length) {
+                    sequentialIndex = 0; 
                 }
             }
             
-            targetWord = currentProblem.word; 
+            targetWord = currentProblem[0]; 
             answerArray = Array.from(targetWord); 
             keyMappingLog = {}; 
             
-            txtExample.innerHTML = `<strong>       </strong> ${currentProblem.example}`; //Ex:
-            txtMeaning.textContent = `    ${currentProblem.meaning}`; //뜻:
-            txtEnglish.textContent = `    ${currentProblem.english}`; //영:
+            renderDynamicMeaningBoard();
             
-            // 💡 힌트 기능을 A열 정답 단어로 교체하여 대기시킵니다.
-            txtExMeaning.textContent = `💡 : ${currentProblem.word}`; //정답 안내
+            txtExMeaning.textContent = `💡 정답 안내: ${targetWord}`; 
             txtExMeaning.style.display = "none";
 
-            updateProgressUI();
             setupWordSlots(targetWord);
 
-            if (isNewWord && chkAutoSpeak.checked && !isMuted) {
+            // 자동 발음이 켜져 있거나, 듣기 모드가 켜져 있다면 다음 단어로 오자마자 재생 시작
+            if ((chkAutoSpeak.checked || listenModeState > 0) && !isMuted) {
                 playCorrectSoundChain();
             }
+        }
+
+        function renderDynamicMeaningBoard() {
+            dynamicMeaningBoard.innerHTML = "";
+
+            currentProblem.forEach((text, colIdx) => {
+                if(!text) return; 
+
+                const rowDiv = document.createElement('div');
+                rowDiv.classList.add('board-row-item');
+                if(colIdx === 0) rowDiv.classList.add('primary-target'); 
+
+                let labelPrefix = colIdx === 0 ? "📖: " : (colIdx === 1 ? " 📖: " : `📖${colIdx}: `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
+                let fullRowText = `${labelPrefix}${text}`;
+
+                const textSpan = document.createElement('span');
+                textSpan.classList.add('row-text-content');
+                textSpan.setAttribute('data-raw-text', fullRowText);
+
+                const visibilityBtn = document.createElement('button');
+                visibilityBtn.classList.add('btn-visibility-inline');
+                
+                if (visibilityStates[colIdx]) {
+                    visibilityBtn.textContent = "👁️";
+                    textSpan.textContent = fullRowText;
+                } else {
+                    visibilityBtn.textContent = "🙈";
+                    visibilityBtn.classList.add('hidden-state');
+                    textSpan.classList.add('hidden-blind');
+                    textSpan.textContent = "█".repeat(Math.max(fullRowText.length, 5));
+                }
+
+                visibilityBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleVisibilityElement(colIdx, visibilityBtn, textSpan);
+                });
+
+                const speakBtn = document.createElement('button');
+                speakBtn.classList.add('btn-speak-inline');
+                speakBtn.textContent = speakerMuteStates[colIdx] ? "🔊" : "🔇";
+                if(!speakerMuteStates[colIdx]) speakBtn.classList.add('muted-state');
+                
+                speakBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleSpeakerElement(colIdx, speakBtn);
+                });
+
+                rowDiv.appendChild(visibilityBtn); 
+                rowDiv.appendChild(textSpan);       
+                rowDiv.appendChild(speakBtn);       
+                
+                dynamicMeaningBoard.appendChild(rowDiv);
+            });
+        }
+
+        function resetSlotsForStreak() {
+            isCorrectAnswered = false;
+            feedbackZone.style.display = "none";
+            keyboardContainer.classList.remove('disabled');
+            answerArray = Array.from(targetWord);
+            keyMappingLog = {};
+            setupWordSlots(targetWord);
         }
 
         function setupWordSlots(word) {
@@ -925,42 +1080,37 @@
             buildDynamicKeyboard();
         }
 
-        // 🎯 [완전 보강] 문자부호 및 공백 필터링 함수
         function cleanCharactersOnly(text) {
-            // 공백, 마침표, 쉼표, 물음표, 느낌표, 슬래시, 대시, 대괄호 등 모든 부호 무력화 정규식
             return Array.from(text).filter(c => {
                 return c !== ' ' && c !== '.' && c !== ',' && c !== '?' && c !== '!' && 
                        c !== '-' && c !== '_' && c !== '/' && c !== '\\' && c !== '(' && c !== ')';
             });
         }
 
-        // 🎯 [정밀 개조] 현재 설정된 상태에 맞춰 순수 글자들만 조합하고 E열 국가 언어로 셔플하는 매커니즘
         function buildDynamicKeyboard() {
             if (!currentProblem) return;
 
-            // 정답 단어(A열)에서 공백과 문자부호를 완전히 탈탈 털어 순수 문자열만 필터링
             let finalKeyList = cleanCharactersOnly(targetWord);
 
             if (isMixModeAC) {
-                // (A)+(C) 켬 상태일 때: C열 영어 표현에서 순수 문자만 걸러서 결합
-                let cleanEnglish = cleanCharactersOnly(currentProblem.english);
-                for (let i = 0; i < cleanEnglish.length; i++) {
-                    if (finalKeyList.length >= 15) break; 
-                    if (!finalKeyList.includes(cleanEnglish[i])) {
-                        finalKeyList.push(cleanEnglish[i]);
+                currentProblem.forEach((text, idx) => {
+                    if (idx === 0) return; 
+                    let cleanedData = cleanCharactersOnly(text);
+                    for (let i = 0; i < cleanedData.length; i++) {
+                        if (finalKeyList.length >= 16) break;
+                        if (!finalKeyList.includes(cleanedData[i])) {
+                            finalKeyList.push(cleanedData[i]);
+                        }
                     }
-                }
+                });
             }
 
-            // 🔀 [E열 연동 핵심] 자판 여백 채우기용 더미 알파벳 공급 장치
-            let lang = currentProblem.langCode || 'en';
-            if (lang === 'jp') lang = 'ja';
-            if (lang === 'cn') lang = 'zh';
+            let primaryLang = columnLanguages[0] || 'en';
+            if (primaryLang === 'jp') primaryLang = 'ja';
+            if (primaryLang === 'cn') primaryLang = 'zh';
 
-            // 사전 정의된 국가별 언어 Spelling 풀에서 가져옴 (없으면 영어 풀 사용)
-            let selectedPool = countryLettersPool[lang] || countryLettersPool['en'];
+            let selectedPool = countryLettersPool[primaryLang] || countryLettersPool['en'];
 
-            // 자판 칸수가 부족할 경우 공백이나 특수문자 대신 해당 국가 전용 풀에서 랜덤 자판 문자 충원
             while (finalKeyList.length < 11) {
                 let randChar = selectedPool.charAt(Math.floor(Math.random() * selectedPool.length));
                 if (!finalKeyList.includes(randChar)) {
@@ -969,7 +1119,7 @@
             }
 
             keyboardLetters = finalKeyList;
-            keyboardLetters.sort(() => Math.random() - 0.5); // 완전한 무작위 셔플
+            keyboardLetters.sort(() => Math.random() - 0.5); 
             renderKeyboard();
         }
 
@@ -979,12 +1129,37 @@
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C)"; // : 켬
+                btnShuffle.textContent = "🔀자판A+C:켬"; // 🔀 자판섞기 (A)+(C) 
             } else {
-                btnShuffle.textContent = "🔀 자판 섞기 (A) "; // : 끔
+                btnShuffle.textContent = "🔀자판 (A):끔"; //🔀 자판(A) : 끔
             }
 
-            buildDynamicKeyboard();
+            buildDynamicKeyboard(); // 섞기
+        }
+
+        function toggleListenModeSwitcher() {
+            if (quizData.length === 0) return;
+
+            listenModeState = (listenModeState + 1) % 3;
+
+            if (listenModeState === 1) {
+                btnListen.textContent = "🎧 듣기:자동넘김";
+                btnListen.style.backgroundColor = "#2e86de";
+                btnListen.style.borderColor = "#246ebb";
+                playCorrectSoundChain(); 
+            } else if (listenModeState === 2) {
+                btnListen.textContent = "🎧 듣기:수동대기";
+                btnListen.style.backgroundColor = "#ff9f43";
+                btnListen.style.borderColor = "#e67e22";
+                playCorrectSoundChain();
+            } else {
+                btnListen.textContent = "🎧 듣기:정지(끔)";
+                btnListen.style.backgroundColor = "#10ac84";
+                btnListen.style.borderColor = "#0f8f6e";
+                window.speechSynthesis.cancel();
+                if (autoNextTimeoutToken) clearTimeout(autoNextTimeoutToken);
+                feedbackZone.style.display = "none";
+            }
         }
 
         function renderKeyboard() {
@@ -1103,10 +1278,7 @@
             answerArray[idx] = "";
             
             const dynamicBtn = keyMappingLog[idx];
-            if (dynamicBtn) {
-                dynamicBtn.classList.remove('used');
-                delete keyMappingLog[idx];
-            }
+            if (dynamicBtn) { dynamicBtn.classList.remove('used'); delete keyMappingLog[idx]; }
         }
 
         function checkAnswer() {
@@ -1116,30 +1288,28 @@
                 isCorrectAnswered = true; 
                 clearInterval(timerInterval); 
                 
-                currentMatchCount++; 
                 correctCount++;      
                 lblCorrect.textContent = correctCount;
+                matchStreakCount++;
+                lblCurrentStreak.textContent = matchStreakCount;
 
-                updateProgressUI();
+                if (chkAutoSpeak.checked && listenModeState === 0) { playCorrectSoundChain(); }
 
-                if (chkAutoSpeak.checked) {
-                    playCorrectSoundChain(); 
-                }
-
-                if (currentMatchCount >= targetMatchCount) {
-                    keyboardContainer.classList.add('disabled'); 
-                    btnNext.disabled = true; 
-                    btnNext.style.opacity = "0.5";
-
-                    feedbackTextMsg.textContent = "👍 Next ! 다음 단어로 이동합니다."; //🎉단어 목표 달성
-                    feedbackZone.style.display = "flex";
-
-                    setTimeout(() => {
-                        nextQuiz(true); 
-                    }, 1200);
+                // 일반 모드(듣기 꺼짐)일 때는 입력 완료 기준으로 다음 단어 체크 작동하도록 연동유지
+                if (listenModeState === 0) {
+                    if (matchStreakCount >= targetStreakLimit) {
+                        handleListeningEndAction();
+                    } else {
+                        feedbackTextMsg.textContent = `🎯 정답! (${matchStreakCount}/${targetStreakLimit}) 반복 훈련 중...`;
+                        feedbackZone.style.display = "flex";
+                        autoNextTimeoutToken = setTimeout(() => { resetSlotsForStreak(); }, 1000);
+                    }
                 } else {
-                    nextQuiz(false); 
+                    // 듣기 모드가 켜져 있을 때 정답을 입력했다면 피드백만 노출 (오디오 종료 이벤트가 다음 단어로 넘겨줌)
+                    feedbackTextMsg.textContent = "🎯 정답입니다! 원어 오디오 청취가 종료되면 자동 이동합니다.";
+                    feedbackZone.style.display = "flex";
                 }
+
             } else {
                 alert("❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.");
                 wrongCount++;
@@ -1150,7 +1320,7 @@
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡 정답 안내: ${currentProblem.word}`;
+                txtExMeaning.textContent = `💡 정답 안내: ${targetWord}`;
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
@@ -1159,10 +1329,11 @@
 
         btnHint.addEventListener('click', toggleHint);
         btnShuffle.addEventListener('click', toggleShuffleModeAndTrigger);
+        btnListen.addEventListener('click', toggleListenModeSwitcher);
 
         btnNext.addEventListener('click', () => {
             if (!currentProblem) return;
-            nextQuiz(true);   
+            nextQuiz();   
         });
     </script>
 </body>
