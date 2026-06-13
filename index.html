@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임</title>
+    <title>Spartan Multilingual Master Word Quiz Game</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -107,8 +107,8 @@
             align-items: center;
             gap: 3px;
             background: #ffffff;
-            padding: 6px 6px;
-            width: 135px;
+            padding: 4px 6px;
+            width: 140px;
             border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 12px;
@@ -140,8 +140,8 @@
             color: #ecf0f1;
             padding: 8px 15px;
             border-radius: 8px;
-            font-size: 13px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: solid ; /*bold*/
             text-align: center;
             margin-bottom: 12px;
             word-break: break-all;
@@ -177,7 +177,7 @@
             background-color: var(--board-color);
             border: 3px solid #bcaba0;
             border-radius: 8px;
-            min-height: 140px;
+            min-height: 90px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -390,7 +390,7 @@
             /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
             align-items: center;
             margin-bottom: 15px;
-            gap: 5px;
+            gap: 2px;
             flex-wrap: wrap; /* 줄이 좁혀지면 다음줄로  */
         }
         
@@ -498,53 +498,53 @@
 
     <div id="game-frame">
         <div class="top-loader-bar">
-            <button class="btn-order-toggle" id="btn-toggle-order">🔢순서<!-- 작위 -->(순차적)</button>
-            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯난이:보통</button>
+            <button class="btn-order-toggle" id="btn-toggle-order">🔢sequential</button><!-- 작위 순서(순차적)-->
+            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 level:low</button><!-- 난이:보통 -->
             
             <div class="audio-control-box">
-                <button class="btn-sound-mute" id="btn-sound-mute">🔊소리켬</button>
+                <button class="btn-sound-mute" id="btn-sound-mute">🔊 sound</button><!-- 소리켬 -->
                 <label style="cursor:pointer; display:flex; align-items:center; gap:3px;">
-                    <input type="checkbox" id="chk-auto-speak" checked /> 자동발음:켬
-                </label>
+                    <input type="checkbox" id="chk-auto-speak" checked />auto tts: on
+                </label><!-- 자동발음:켬 -->
             </div>
 
             <div class="repeat-control-box">
-                <span>🔄반복횟수:</span><!-- 🔄 목표 맞춤 횟수: -->
+                <span>🔄Quiz반복:</span><!-- 🔄 목표 맞춤 횟수: -->
                 <button class="repeat-btn" id="btn-streak-minus">-</button>
                 <input type="text" class="repeat-input" id="input-streak-count" value="1" />
                 <button class="repeat-btn" id="btn-streak-plus">+</button>
             </div>
 
             <div class="repeat-control-box">
-                <span>🔊반복듣기:</span><!--🔊 TTS 반복: -->
+                <span>🔊Listening:</span><!--🔊 TTS 반복듣기: -->
                 <button class="repeat-btn" id="btn-repeat-minus">-</button>
                 <input type="text" class="repeat-input" id="input-repeat-count" value="1" />
                 <button class="repeat-btn" id="btn-repeat-plus">+</button>
             </div>
 
-            <button class="btn-file-trigger" id="btn-change-file">📁Excel 파일 불러오기</button>
+            <button class="btn-file-trigger" id="btn-change-file">📁 Import Excel File</button><!-- Excel 파일 불러오기 -->
             <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">⚠️ 원하는 옵션을 미리 지정 한 후, [📁 Excel 파일 불러오기]를 눌러주세요!</div>
+        <div class="file-name-display" id="file-name-screen">⚠️Please specify the options you want in advance,<br> and then click [📁 Import Excel File]!</div><!-- ⚠️ 원하는 옵션을 미리 지정 한 후, [📁 Excel 파일 불러오기]를 눌러주세요! -->
 
         <div id="game-container">
             <div class="status-bar">
-                <div>정답: <span id="score-correct" style="color:blue;">0</span></div>
-                <div>오답: <span id="score-wrong" style="color:red;">0</span></div>
-                <div>⏱️ 시간: <span id="timer">0</span>초</div>
+                <div>correct : <span id="score-correct" style="color:blue;">0</span></div><!-- 정답 -->
+                <div>wrong : <span id="score-wrong" style="color:red;">0</span></div><!-- 오답 -->
+                <div>⏱️time : <span id="timer">0</span> sec</div><!-- ⏱️ 시간: 0초 -->
             </div>
 
             <div class="meaning-board" id="dynamic-meaning-board">
-                <div style="color:#777; font-size:14px; ">엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다.</div>
+                <div style="color:#777; font-size:14px; ">load the Excel file, the data will be displayed here.</div><!-- 엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다. -->
             </div>
             
             <div style="display: flex; justify-content: center;">
                 <div class="example-hint" id="example-meaning" style="display: none;"></div>
             </div>
 
-            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">
-                🎯 현재 단어 맞춘 횟수: <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
+            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">🎯 <!-- 현재 단어 맞춘 횟수 -->Current number of words
+                : <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
             </div>
 
             <div class="word-slots" id="word-slots"></div>
@@ -554,11 +554,11 @@
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡안내(Hint)</button>
-                <button class="btn-action shuffle-btn" id="shuffle-button">🔀자판<!-- 섞기(A)+(C) -->A+C:켬</button>
+                <button class="btn-action hint-btn" id="hint-button">💡Info(Hint) </button><!-- 안내(Hint) -->
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀Keyboard :mix<!-- 자판 섞기 A+C:켬 --></button>
                 
-                <button class="btn-action listen-btn" id="listen-button">🎧듣기:정지(끔)</button>
-                <button class="btn-action next-btn" id="next-button">⏩다음<!-- 단어 으로-->(Next)</button>
+                <button class="btn-action listen-btn" id="listen-button">🎧Listen:off</button><!-- 듣기:정지(끔) -->
+                <button class="btn-action next-btn" id="next-button">⏩word(Next)</button><!--다음 단어 로-->
             </div>
 
             <div class="keyboard" id="keyboard"></div>
@@ -692,7 +692,7 @@
                 btnToggleOrder.textContent = "🔄 Random";  //🔄 순서: 무작위
                 btnToggleOrder.style.backgroundColor = "#e76dd8";
             } else {
-                btnToggleOrder.textContent = "🔢 순서:순차적"; //🔢 순서: 작위 (순차적)
+                btnToggleOrder.textContent = "🔢 sequential"; //🔢 순서: 작위 (순차적) 순서:순차적
                 btnToggleOrder.style.backgroundColor = "#38ada9";
             }
         });
@@ -700,10 +700,10 @@
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥난이도:높음"; //🔥 난이도: 전체 숨김
+                btnToggleHard.textContent = "🔥level:high"; //🔥 난이도: 높음 전체 숨김high[low]
                 btnToggleHard.style.backgroundColor = "#ed54af";
             } else {
-                btnToggleHard.textContent = "🎯 난이도:보통"; //🎯 난이도: 보통
+                btnToggleHard.textContent = "🎯 level:low"; //🎯 난이도: 보통
                 btnToggleHard.style.backgroundColor = "#fb914a";
             }
         });
@@ -712,10 +712,10 @@
             isMuted = !isMuted;
             if (isMuted) {
                 window.speechSynthesis.cancel(); 
-                btnSoundMute.textContent = "🔇 음소거";
+                btnSoundMute.textContent = "🔇 sound off "; //음소거
                 btnSoundMute.style.backgroundColor = "#eb3b5a";
             } else {
-                btnSoundMute.textContent = "🔊 소리 켬";
+                btnSoundMute.textContent = "🔊 sound on"; //소리 켬
                 btnSoundMute.style.backgroundColor = "#4b6584";
             }
         });
@@ -727,7 +727,7 @@
         function parseExcel(file) {
             if (!file) return;
 
-            txtFileNameScreen.textContent = `📖  : ${file.name}`; //학습 중인 파일
+            txtFileNameScreen.textContent = `📖   ${file.name}`; //: 학습 중인 파일
 
             const reader = new FileReader();
             reader.onload = (evt) => {
@@ -836,7 +836,7 @@
                 btnElement.textContent = "🙈";
                 btnElement.classList.add('hidden-state');
                 textSpan.classList.add('hidden-blind');
-                textSpan.textContent = "".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 0)); //█   //.length, 5))
+                textSpan.textContent = "           ".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 0)); //█   //.length, 5))
             }
         }
 
@@ -986,7 +986,7 @@
                 rowDiv.classList.add('board-row-item');
                 if(colIdx === 0) rowDiv.classList.add('primary-target'); 
 
-                let labelPrefix = colIdx === 0 ? "📖: " : (colIdx === 1 ? " 📖: " : `📖${colIdx}: `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
+                let labelPrefix = colIdx === 0 ? "📖 " : (colIdx === 1 ? " 📖 " : `📖${colIdx}      .     `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
                 let fullRowText = `${labelPrefix}${text}`;
 
                 const textSpan = document.createElement('span');
@@ -1140,9 +1140,9 @@
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀자판A+C:켬"; // 🔀 자판섞기 (A)+(C) 
+                btnShuffle.textContent = "🔀Keyboard :mix"; // 🔀 자판섞기 (A)+(C) // 🔀자판A+C:켬
             } else {
-                btnShuffle.textContent = "🔀자판 (A):끔"; //🔀 자판(A) : 끔
+                btnShuffle.textContent = "🔀Keyboard :normal"; //🔀 자판(A) : 끔
             }
 
             buildDynamicKeyboard(); // 섞기
@@ -1154,17 +1154,17 @@
             listenModeState = (listenModeState + 1) % 3;
 
             if (listenModeState === 1) {
-                btnListen.textContent = "🎧 듣기:자동넘김";
+                btnListen.textContent = "🎧Listen:auto"; //듣기:자동넘김
                 btnListen.style.backgroundColor = "#2e86de";
                 btnListen.style.borderColor = "#246ebb";
                 playCorrectSoundChain(); 
             } else if (listenModeState === 2) {
-                btnListen.textContent = "🎧 듣기:수동대기";
+                btnListen.textContent = "🎧Listen:normal"; //듣기:수동대기
                 btnListen.style.backgroundColor = "#ff9f43";
                 btnListen.style.borderColor = "#e67e22";
                 playCorrectSoundChain();
             } else {
-                btnListen.textContent = "🎧 듣기:정지(끔)";
+                btnListen.textContent = "🎧Listen:off"; //듣기:정지(끔)
                 btnListen.style.backgroundColor = "#10ac84";
                 btnListen.style.borderColor = "#0f8f6e";
                 window.speechSynthesis.cancel();
@@ -1331,7 +1331,7 @@
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡 정답 안내: ${targetWord}`;
+                txtExMeaning.textContent = `💡    : ${targetWord}`; //💡 정답 안내:
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
