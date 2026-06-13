@@ -1322,9 +1322,13 @@
                 }
 
             } else {
-                alert("❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.");
+                // 🎯 [핵심 개조] 팝업창을 띄우지 않고, 정답 입력칸 바로 아랫부분 메인 화면 패널에 오답 메시지 주입
                 wrongCount++;
                 lblWrong.textContent = wrongCount;
+
+                feedbackZone.className = "feedback-container wrong-state"; // 적색 오답 스타일 주입
+                feedbackTextMsg.textContent = "❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.";
+                feedbackZone.style.display = "flex";
             }
         }
 
