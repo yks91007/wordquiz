@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spartan Multilingual Master Word Quiz Game</title>
+    <title>Spartan Multilingual </title><!-- Master Word Quiz Game -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -50,6 +50,35 @@
             box-shadow: 0 3px 0 #385196;
         }
         .btn-file-trigger:active { transform: translateY(2px); box-shadow: none; }
+
+
+        /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일- 시작- */
+        .btn-lang-link-toggle {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #5143d2;
+        }
+        .btn-lang-link-toggle:active { transform: translateY(2px); box-shadow: none; }
+
+        .btn-order-toggle {
+            background-color: #38ada9; 
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #2b8a87;
+        }
+
+        /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일 - 끝-*/
 
         .btn-order-toggle {
             background-color: #38ada9; 
@@ -390,7 +419,7 @@
             /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
             align-items: center;
             margin-bottom: 15px;
-            gap: 2px;
+            gap: 0px;
             flex-wrap: wrap; /* 줄이 좁혀지면 다음줄로  */
         }
         
@@ -413,7 +442,7 @@
         .shuffle-btn {
             background: #a367bc;
             color: white;
-            padding: 2px 3px;
+            padding: 2px 2px;
             border: 1.5px solid #80409b;
             box-shadow: 0 2px 0 #8e44ad;
             min-width: 60px; /* 텍스트가 잘리지 않도록 */
@@ -498,6 +527,9 @@
 
     <div id="game-frame">
         <div class="top-loader-bar">
+
+            <!-- <button class="btn-lang-link-toggle" id="btn-toggle-lang-page">🌐 --> <!-- 언어: --> <!-- en</button> -->
+
             <button class="btn-order-toggle" id="btn-toggle-order">🔢sequential</button><!-- 작위 순서(순차적)-->
             <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 level:low</button><!-- 난이:보통 -->
             
@@ -600,14 +632,18 @@
         let listenModeState = 0; 
         let autoNextTimeoutToken = null;
 
+        // 🌐 언어 상태 변수 (ko = 한국어 메인 페이지 / en = 영어 번역 버튼 페이지)
+        let currentLanguageMode = "en";
+
         const countryLettersPool = {
             'en': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'ja': 'あいうえおかきくけこさしす세そたちつてとなにぬねのはひふへほまみむめも야유よらりる레로わ을ん가ぎぐ게ござじずぜ조다ぢづで도ば비부べ보ぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미むめ도야유よらりる레로わ을ンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ',
+            'ja': 'あいうえおかきくけこさしす세そたちつてとなにぬねのはひふへほまみむめ도야유よらりる레로わ을ん가ぎぐ게ござじずぜ조다ぢづ데도ば비부べ보ぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미むめ도야유よらりる레로わ을ンガギグゲゴザジズゼゾダヂヅデドバ비부베보파피푸페포',
             'zh': 'abcdefghijklmnopqrstuvwxyz',
             'es': 'abcdefghijklmnopqrstuvwxyzñáéíóúüABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜ',
             'ko': 'ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ'
         };
 
+        const btnToggleLangPage = document.getElementById('btn-toggle-lang-page');
         const fileRuntime = document.getElementById('excel-file-runtime');
         const btnChangeFile = document.getElementById('btn-change-file');
         const btnToggleOrder = document.getElementById('btn-toggle-order'); 
@@ -642,6 +678,27 @@
         const btnSoundMute = document.getElementById('btn-sound-mute');
         const chkAutoSpeak = document.getElementById('chk-auto-speak');
         const txtFileNameScreen = document.getElementById('file-name-screen');
+
+        // 🌐 [핵심 탑재] 언어 링커 버튼 클릭시 작동 로직
+        btnToggleLangPage.addEventListener('click', () => {
+            if (currentLanguageMode === "en") {
+                // 현재 ko 상태에서 한 번 더 클릭 시 -> en 모드로 스위칭
+                currentLanguageMode = "ko";
+                btnToggleLangPage.textContent = "🌐  ko"; //언어:
+                
+                // 💡 [안내] 나중에 각 언어 문자로 바꾼 en버튼용 html 주소를 여기에 적어주시면 됩니다!
+                // 예: window.location.href = "index_en.html"; 또는 "english.html";
+                window.location.href = "ko_index.html"; 
+                
+            } else {
+                // 현재 en 상태에서 다시 한 번 클릭 시 -> ko 모드로 스위칭
+                currentLanguageMode = "ko";
+                btnToggleLangPage.textContent = "🌐  ko"; //언어:
+                
+                // 원본 한국어 메인 페이지로 복귀
+                window.location.href = "en_index.html";
+            }
+        });
 
         btnStreakMinus.addEventListener('click', () => {
             let val = parseInt(inputStreakCount.value) || 1;
@@ -1140,9 +1197,9 @@
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀Keyboard :mix"; // 🔀 자판섞기 (A)+(C) // 🔀자판A+C:켬
+                btnShuffle.textContent = "🔀Keyboard:mix"; // 🔀 자판섞기 (A)+(C) // 🔀자판A+C:켬
             } else {
-                btnShuffle.textContent = "🔀Keyboard :normal"; //🔀 자판(A) : 끔
+                btnShuffle.textContent = "🔀Keyboard:normal"; //🔀 자판(A) : 끔
             }
 
             buildDynamicKeyboard(); // 섞기
@@ -1353,3 +1410,4 @@
     </script>
 </body>
 </html>
+
