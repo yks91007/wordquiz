@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spartan Multilingual </title><!-- Master Word Quiz Game -->
+    <title>Spartan Multilingual</title> <!-- Master Word Quiz Game -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -346,16 +347,16 @@
         }
 
         .slot {
-            width: 28px;  /*입력문자 박스 가로 크기*/
-            height: 30px; /*입력문자 박스 세로 크기*/
+            width: 24px;  /*입력문자 박스 가로 크기*/
+            height: 26px; /*입력문자 박스 세로 크기*/
             background: white;
             border: 2px solid #555;
             border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px; 
-            font-weight: bold;
+            font-size: 18px; 
+            font-weight: bold; /*solid*/
             box-shadow: 0 4px 0 #bbb;
             user-select: none;
         }
@@ -418,7 +419,7 @@
             justify-content: space-between; /*버튼아이템을 배치위치*/
             /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             gap: 0px;
             flex-wrap: wrap; /* 줄이 좁혀지면 다음줄로  */
         }
@@ -430,6 +431,7 @@
             font-weight: bold;
             font-size: 13px; 
             border: none;
+            margin-bottom: 6px;
         }
 		     /*💡 안내(Hint) 버튼*/
          .hint-btn {
@@ -437,6 +439,7 @@
             padding: 2px 3px;/*💡 안내(H) 버튼여백 */
             border: 1.5px solid #e7be52;
             box-shadow: 0 2px 0 #e7be52
+            margin-bottom: 6px;
         }
         /* 🔀 자판 섞기 토글 버튼 고유 스타일 */
         .shuffle-btn {
@@ -491,8 +494,8 @@
             background: white;
             border: 2px solid #444;
             border-radius: 8px;
-            width: 38px; /*자판 세로 크기*/
-            height: 36px; /*자판 세로 크기*/
+            width: 32px; /*자판 세로 크기*/
+            height: 30px; /*자판 세로 크기*/
             font-size: 18px;
             font-weight: bold;
             display: flex;
@@ -528,7 +531,7 @@
     <div id="game-frame">
         <div class="top-loader-bar">
 
-            <button class="btn-lang-link-toggle" id="btn-toggle-lang-page"> 🌐en </button> <!-- 언어: -->
+            <button class="btn-lang-link-toggle" id="btn-toggle-lang-page">🌐 en</button><!-- : ko -->
 
             <button class="btn-order-toggle" id="btn-toggle-order">🔢sequential</button><!-- 작위 순서(순차적)-->
             <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 level:low</button><!-- 난이:보통 -->
@@ -633,7 +636,7 @@
         let autoNextTimeoutToken = null;
 
         // 🌐 언어 상태 변수 (ko = 한국어 메인 페이지 / en = 영어 번역 버튼 페이지)
-        let currentLanguageMode = "en";
+        let currentLanguageMode = "ko";
 
         const countryLettersPool = {
             'en': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
@@ -681,22 +684,22 @@
 
         // 🌐 [핵심 탑재] 언어 링커 버튼 클릭시 작동 로직
         btnToggleLangPage.addEventListener('click', () => {
-            if (currentLanguageMode === "en") {
+            if (currentLanguageMode === "ko") {
                 // 현재 ko 상태에서 한 번 더 클릭 시 -> en 모드로 스위칭
-                currentLanguageMode = "ko";
-                btnToggleLangPage.textContent = "🌐  ko"; //언어:
+                currentLanguageMode = "en";
+                btnToggleLangPage.textContent = "🌐 언어: en";
                 
                 // 💡 [안내] 나중에 각 언어 문자로 바꾼 en버튼용 html 주소를 여기에 적어주시면 됩니다!
-                // 예: window.location.href = "./main/index_en.html"; 또는 "english.html";
-                window.location.href = "./main/ko_index.html"; 
+                // 예: window.location.href = "index_en.html"; 또는 "english.html";
+                window.location.href = "en_index.html"; 
                 
             } else {
                 // 현재 en 상태에서 다시 한 번 클릭 시 -> ko 모드로 스위칭
                 currentLanguageMode = "ko";
-                btnToggleLangPage.textContent = "🌐  ko"; //언어:
+                btnToggleLangPage.textContent = "🌐 언어: ko";
                 
                 // 원본 한국어 메인 페이지로 복귀
-                window.location.href = "./main/en_index.html";
+                window.location.href = "index.html";
             }
         });
 
