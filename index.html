@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -29,7 +31,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         /* 메인 게임 프레임 */
         #game-frame {
             width: 100%;
-            max-width: 470px;  /*오리지널550*/
+            max-width: 460px;  /*오리지널550*/
         }
 
         /* 상단 컨트롤 바 */
@@ -181,6 +183,64 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             box-shadow: 0 3px 0 #1811ae;
         }
         .btn-url-loader:active { transform: translateY(2px); box-shadow: none; }
+/* 📁 로컬 파일 불러오기 버튼 고급 디자인 스타일 */
+.btn-local-hub-style {
+    background: linear-gradient(135deg, #10ac84, #0eb880);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 6px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px;
+}
+
+.btn-local-hub-style:hover {
+    background: linear-gradient(135deg, #0f8f6e, #10ac84);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-local-hub-style:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔄 메인으로 Restart 버튼 고급 디자인 스타일 */
+.btn-restart-style {
+    background: linear-gradient(135deg, #1d2c96, #7684e4);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 3px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px;
+}
+
+.btn-restart-style:hover {
+    background: linear-gradient(135deg, #602b95, #401d63);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-restart-style:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* == Restart 버튼 디자인 스타일==끝== */
 
         /* 📁 Excel 파일 불러오기 버튼 스타일 */
         .btn-excel-loader {
@@ -199,7 +259,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         /* 📋 Excel 파일 불러오기 버튼의 아래 / 기존 안내 창의 위쪽에 고정 노출되는 새 창 */
         .excel-link-hub-panel {
             width: 100%;
-            max-height: 80px; /*160px*/
+            max-height: 90px; /*160px*/
             overflow-y: auto;  
             background-color: #fffaff;
             border: 3px solid #9b59b6; /*dashed #9b59b6*/
@@ -689,12 +749,22 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                 <input type="text" class="repeat-input" id="input-repeat-count" value="1" />
                 <button class="repeat-btn" id="btn-repeat-plus">+</button>
             </div>
-
+<!-- 🔗 로컬엑셀 불러오기-->  
+<button id="btn-load-local-hub" class="btn-local-hub-style" onclick="triggerLocalHubLoader()">
+    📁 <!-- [ -->🔗 <!-- 로컬 허브 엑셀 불러오기-->Language Lab<!-- ] -->
+</button>
+<input type="file" id="local-hub-file-loader" accept=".xlsx, .xls" style="display: none;" />
+<!-- 🔗 로컬엑셀 불러오기 끝-->     
             <button class="btn-url-loader" id="btn-load-url">🔗 웹 url</button><!-- 🔗 웹 주소로 불러오기 -->
             
             <button class="btn-excel-loader" id="btn-load-excel">📁 Excel 파일 불러오기</button>
             
             <input type="file" id="excel-file-hidden-loader" accept=".xlsx, .xls" style="display: none;" />
+
+<button id="btn-restart-hub" class="btn-restart-style" onclick="restartToMainHub()">
+    🔄 <!-- 메인으로 --> (Restart)
+</button>
+
         </div>
 
         <div class="excel-link-hub-panel" id="hub-menu-panel"></div>
@@ -738,7 +808,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         </div>
     </div>
 
- <script>
+    <script>
         let quizData = [];          
         let columnLanguages = [];   
         
@@ -820,7 +890,25 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         const chkAutoSpeak = document.getElementById('chk-auto-speak');
         const txtFileNameScreen = document.getElementById('file-name-screen');
         
-        const hubMenuPanel = document.getElementById('hub-menu-panel');
+        const hubMenuPanel = document.getElementById('hub-menu-panel'); //////////==기존꺼====///////////
+
+
+        // ==========================================
+        // 🔒 [순수 로컬 전용] 시스템 제어부 (인터넷/구글 흔적 제거)
+        // ==========================================
+
+        const localHubFileLoader = document.getElementById('local-hub-file-loader');
+
+ 
+       // 🚀 버튼 클릭 시 숨겨진 로컬 파일 탐색기 트리거 함수
+        function triggerLocalHubLoader() {
+            localHubFileLoader.click();
+        }
+
+
+
+
+
 
         btnToggleLangPage.addEventListener('click', () => {
             if (currentLanguageMode === "ko") {
@@ -881,6 +969,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             e.target.value = ''; 
         });
 
+////////////////////////===///////////////////////////////////////
 
 
         // 🔗 구글 드라이브 주소 자동 탐지 및 다운로드 주소 파싱 우회 로직
@@ -942,26 +1031,79 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                 });
         }
 
-        // 📋 허브 메뉴 주소록 그리드 배열 디자인 빌더
+     
+    // 📁 로컬 허브용 .xlsx 파일을 직접 선택해 불러왔을 때 처리하는 온클릭 핸들러 스크립트
+        localHubFileLoader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+                if (rows.length === 0) {
+                    alert("비어있는 엑셀 파일입니다.");
+                    return;
+                }
+
+                // 🔍 0행 또는 1행에서 "local" 마크 단어가 있는지 철저히 검증 (A열~F열 결합 검사)
+                let localMarkRowIndex = -1;
+                for (let i = 0; i < Math.min(rows.length, 3); i++) {
+                    const rowStr = rows[i].join(" ").toLowerCase();
+                    if (rowStr.includes("local")) {
+                        localMarkRowIndex = i;
+                        break;
+                    }
+                }
+
+                // 🛡️ 보라색 허브 전용 파일 검증 안전장치 ("local"이 없으면 일반 워드 게임용 파일로 간주하거나 경고)
+                if (localMarkRowIndex === -1) {
+                    alert("❌ [허브 메뉴 오류] 본 파일은 허브 리스트용 엑셀이 아닙니다.\n1행 혹은 2행에 'local' 표기 문자가 반드시 포함되어야 합니다.");
+                    return;
+                }
+
+                // 🎯 "local" 문자 행은 완벽하게 화면에서 배제(은폐)하고, 그 다음 행부터 잘라냅니다.
+                const validRowsFrom = rows.slice(localMarkRowIndex + 1);
+
+                if (validRowsFrom.length === 0 || validRowsFrom[0].join("").trim() === "") {
+                    alert("표출할 로컬 경로(GO 버튼) 데이터 행이 존재하지 않습니다.");
+                    return;
+                }
+
+                // 💜 보라색 바둑판 창에 바인딩하여 출력
+                txtFileNameScreen.textContent = `📁 불러온 허브 목록 : ${file.name}`;
+                buildHubMenuGrid(validRowsFrom);
+            };
+            reader.readAsArrayBuffer(file);
+            e.target.value = ''; // 핸들러 초기화
+        });
+
+        // 💜 로컬 엑셀 데이터를 바둑판식 배열로 예쁘게 화면에 배치해주는 빌더 함수
         function buildHubMenuGrid(rows) {
             hubMenuPanel.innerHTML = ""; 
             hubMenuPanel.style.display = "block"; 
 
             const panelTitle = document.createElement('div');
             panelTitle.classList.add('hub-panel-title');
-            panelTitle.innerHTML = "✨ 🔗 원격 웹 단어장 리스트 창 (학습할 단어장을 아래에서 선택해 주세요)";
+            panelTitle.innerHTML = "✨ 📁 내 컴퓨터 로컬 단어장 리스트 창 (학습할 단어장을 아래에서 선택해 주세요)";
             hubMenuPanel.appendChild(panelTitle);
 
             rows.forEach((row) => {
+                // A열, C열, E열(이름) 중 하나라도 있으면 출력 프로세스 실행
                 if (!row[0] && !row[2] && !row[4]) return;
 
                 const gridRowDiv = document.createElement('div');
                 gridRowDiv.classList.add('hub-grid-row');
 
+                // 💡 요청 사양에 정확히 맞춘 데이터 인덱스 매핑 구조 (A-B / C-D / E-F)
                 const columnsMap = [
-                    { titleIdx: 0, urlIdx: 1 }, 
-                    { titleIdx: 2, urlIdx: 3 }, 
-                    { titleIdx: 4, urlIdx: 5 }  
+                    { titleIdx: 0, pathIdx: 1 },  // A열(이름) & B열(로컬경로)
+                    { titleIdx: 2, pathIdx: 3 },  // C열(이름) & D열(로컬경로)
+                    { titleIdx: 4, pathIdx: 5 }   // E열(이름) & F열(로컬경로)
                 ];
 
                 columnsMap.forEach(set => {
@@ -969,25 +1111,25 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                     cellPair.classList.add('hub-cell-pair');
 
                     const titleVal = String(row[set.titleIdx] || '').trim();
-                    const urlVal = String(row[set.urlIdx] || '').trim();
+                    const pathVal = String(row[set.pathIdx] || '').trim();
 
-                    if (titleVal || urlVal) {
+                    if (titleVal || pathVal) {
                         const titleSpan = document.createElement('span');
                         titleSpan.classList.add('hub-file-title');
                         titleSpan.textContent = titleVal ? titleVal : "이름 없음";
-                        
-                        if(urlVal) {
-                            titleSpan.style.cursor = "pointer";
-                            titleSpan.addEventListener('click', () => { fetchTargetExcelData(urlVal, titleVal); });
-                        }
 
                         const actionBtn = document.createElement('button');
                         actionBtn.classList.add('btn-hub-action');
                         actionBtn.textContent = "GO";
                         
-                        if (urlVal) {
+                        // 🔒 클릭 시 외부 서버(http)를 타지 않고 순수 내부 파일 시스템으로 Fetch 처리
+                        if (pathVal) {
                             actionBtn.addEventListener('click', () => {
-                                fetchTargetExcelData(urlVal, titleVal);
+                                loadPureLocalWordGameData(pathVal, titleVal);
+                            });
+                            titleSpan.style.cursor = "pointer";
+                            titleSpan.addEventListener('click', () => {
+                                loadPureLocalWordGameData(pathVal, titleVal);
                             });
                         } else {
                             actionBtn.style.opacity = "0.3";
@@ -1006,6 +1148,39 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                 hubMenuPanel.appendChild(gridRowDiv);
             });
         }
+
+        // 🎯 GO 버튼 누르면 내부 정해진 경로(/, ./, ././)의 실제 단어 데이터를 게임판으로 올려주는 특화 함수
+        function loadPureLocalWordGameData(filePath, customName) {
+            txtFileNameScreen.textContent = `⏳ [${customName}] 데이터를 폴더 내부에서 읽어오는 중...`;
+
+            // 외부 Proxy 주소를 일절 섞지 않고 완전한 순수 파일명 경로로 직접 로드 요청
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) throw new Error("로컬 경로에 해당 엑셀 파일이 존재하지 않거나 보안 제약이 있습니다.");
+                    return response.arrayBuffer();
+                })
+                .then(buffer => {
+                    const data = new Uint8Array(buffer);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+                    // 게임화면 활성화 처리부로 바인딩 전송
+                    txtFileNameScreen.textContent = `🎮 순수 로컬 연동 학습 중 : ${customName}`;
+                    hubMenuPanel.style.display = "none"; // 단어장이 떴으므로 허브 창은 숨김
+                    processExcelRows(rows); // 기존에 내장된 단어 퀴즈 생성 원본 프로세서 가동!
+                })
+                .catch(error => {
+                    alert(`❌ 로컬 파일 접근 실패!\n\n동일 폴더 내에 [ ${filePath} ] 파일이 실재하는지 정확히 확인해 주세요.\n(에러내용: ${error.message})`);
+                    txtFileNameScreen.textContent = "❌ 로컬 단어 데이터 로드에 실패하였습니다.";
+                });
+        }
+
+
+
+//////////////////////////////////////////////////////////
+
 
 
 
@@ -1708,132 +1883,117 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             if (!currentProblem) return;
             nextQuiz();   
         });
+/////////////////////////=========////////////////////////
 
-        // 🚀 카톡 링크 클릭 등으로 페이지가 켜지자마자 구글 드라이브의 엑셀을 강제 다운로드해 시작하는 모듈
-        window.addEventListener('DOMContentLoaded', () => {
-            // ⚠️ [중요] 아래 큰따옴표 안에 '구글 드라이브에서 복사한 공유 링크 주소'를 그대로 넣어주세요!
-            const myGoogleDriveUrl = "GOOGLE_DRIVE_LINK_HERE";
+        // 🔄 [원터치 재시작] 처음 main_list.xlsx 바둑판 화면으로 리셋하는 함수
+
+        function restartToMainHub() {
+            // 1. 진행 중이던 단어 퀴즈 관련 UI 엘리먼트가 있다면 숨기거나 초기화 처리를 진행합니다.
+            // (사용 중이신 메인 단어 전광판이나 퀴즈 컨테이너 ID가 있다면 상황에 맞게 스타일을 조절할 수 있습니다)
+            const wordGameDisplay = document.getElementById('word-game-container'); // 예시 ID
+            if (wordGameDisplay) {
+                wordGameDisplay.style.display = "none"; 
+            }
+
+            // 2. 닫혀있을지 모르는 보라색 허브 패널을 다시 활성화합니다.
+            if (hubMenuPanel) {
+                hubMenuPanel.style.display = "block";
+            }
+
+            // 3. 켜지자마자 실행되었던 main_list.xlsx 추적 함수를 재가동하여 깨끗한 3열 바둑판을 새로고침합니다!
+            initDefaultHubMenu();
             
-            if(myGoogleDriveUrl && myGoogleDriveUrl !== "GOOGLE_DRIVE_LINK_HERE") {
-                fetchTargetExcelData(myGoogleDriveUrl, "기본 원격 단어장");
-            } else {
-                txtFileNameScreen.textContent = "⚠️ 원하는 옵션을 미리 지정한 후, 상단 불러오기 버튼을 눌러주세요!";
-            }
-        });
-
-
-
-        // 📊 공통 버퍼 분석기 (구글 시트 & 내부 상대경로 전용 통합)
-        function parseBufferData(buffer, titleName) {
-            const data = new Uint8Array(buffer);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const sheetName = workbook.SheetNames[0];
-            const sheet = workbook.Sheets[sheetName];
-            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-
-            if (rows.length > 0 && String(rows[0][1]).trim().toLowerCase().includes("http")) {
-                txtFileNameScreen.textContent = "⚠️ 하단 허브 메뉴에서 원하시는 단어장을 클릭해 주세요!";
-                buildHubMenuGrid(rows); 
-            } else {
-                txtFileNameScreen.textContent = `📁 단어장 학습 중 : ${titleName}`;
-                processExcelRows(rows);
-            }
+            console.log("🚀 시스템이 성공적으로 초기 메인 허브 화면으로 Restart 되었습니다.");
         }
+        // 🔄 [원터치 재시작] 처음 main_list.xlsx 바둑판 화면으로 리셋하는 함수 ==끝==
 
-        // 🔗 2중 CORS 온라인 우회 및 내부 폴더 상대 경로 완벽 융합 함수
-        function fetchTargetExcelData(url, customName = "") {
-            const cleanUrl = url.trim();
-            const urlFileName = customName ? customName : "단어장 파일";
+
+    // 🎯 [최종 완성] 켜지자마자 에러 없이 main_list.xlsx를 강제 로드하여 보라색 창에 GO 버튼을 즉시 정렬하는 함수
+        function initDefaultHubMenu() {
+            if (!hubMenuPanel) return;
             
-            if (!cleanUrl.startsWith("http") && !cleanUrl.startsWith("https")) {
-                txtFileNameScreen.textContent = `⏳ 내부 상대경로에서 [${cleanUrl}] 파일 로드 중...`; 
-                
-                fetch(cleanUrl)
-                    .then(res => {
-                        if (!res.ok) throw new Error(`파일을 찾을 수 없습니다. 경로와 파일명을 다시 확인해 주세요. (상태코드: ${res.status})`);
-                        return res.arrayBuffer();
-                    })
-                    .then(buffer => {
-                        parseBufferData(buffer, cleanUrl);
-                    })
-                    .catch(err => {
-                        alert(`❌ 내부 로컬 파일 로드 실패\n\n경로: ${cleanUrl}\n원인: ${err.message}\n\n★ 팁: 파일명 확장자(.xlsx)까지 정확히 적었는지 확인해 주세요!`);
-                        txtFileNameScreen.textContent = "❌ 로컬 파일 로드 실패.";
-                    });
-                return;
-            }
+            // 1. 화면을 깨끗하게 비우고 타이틀을 먼저 배치합니다.
+            hubMenuPanel.innerHTML = ""; 
+            hubMenuPanel.style.display = "block"; 
             
-            const proxyUrl1 = "https://api.allorigins.win/raw?url=" + encodeURIComponent(cleanUrl);
-            const proxyUrl2 = "https://corsproxy.io/?" + encodeURIComponent(cleanUrl);
+            const panelTitle = document.createElement('div');
+            panelTitle.classList.add('hub-panel-title');
+            panelTitle.innerHTML = "✨ 📁 내 컴퓨터 로컬 단어장 리스트 창 (학습할 단어장을 아래에서 선택해 주세요)";
+            hubMenuPanel.appendChild(panelTitle);
 
-            txtFileNameScreen.textContent = `⏳ [${urlFileName}] 온라인 서버 보안 우회 로딩 중...`;
+            // 로딩 중임을 알려주는 안내 메시지
+            const loadingNotice = document.createElement('div');
+            loadingNotice.style.color = "#ffffff";
+            loadingNotice.style.textAlign = "center";
+            loadingNotice.style.padding = "35px";
+            loadingNotice.style.fontSize = "16px";
+            loadingNotice.textContent = "⏳ 로컬 서버로부터 main_list.xlsx 메뉴를 자동으로 분석하여 정렬 중입니다...";
+            hubMenuPanel.appendChild(loadingNotice);
 
-            fetch(proxyUrl1)
-                .then(res => {
-                    if (!res.ok) throw new Error("1차 프록시 서버 응답 지연");
-                    return res.arrayBuffer();
+            txtFileNameScreen.textContent = "⏳ 시스템 구동 및 메인 리스트 동기화 중...";
+
+            // 💡 [핵심 보정] 서버 환경(192.168.35.35:8000)에서 브라우저가 경로를 오인하거나 
+            // 캐시 때문에 '가져오기 실패'를 일으키지 않도록 고유 타임스탬프 쿼리를 주소 뒤에 강제로 붙여 추적합니다.
+            const targetPathWithCacheBuster = "./main_list.xlsx?v=" + new Date().getTime();
+
+            // 2. 프로그램 시작과 동시에 main_list.xlsx 자동 로드 개시!
+            fetch(targetPathWithCacheBuster)
+                .then(response => {
+                    if (!response.ok) throw new Error("main_list.xlsx 파일을 불러오지 못했습니다. index.html과 '동일한 폴더'에 파일이 실제로 존재하는지 꼭 확인해 주세요.");
+                    return response.arrayBuffer();
                 })
                 .then(buffer => {
-                    parseBufferData(buffer, urlFileName);
-                })
-                .catch(() => {
-                    txtFileNameScreen.textContent = `🔄 1차 보안 채널 우회 실패로 인한 2차 백업망 재접속 중...`;
+                    const data = new Uint8Array(buffer);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+                    if (rows.length === 0) {
+                        loadingNotice.textContent = "❌ main_list.xlsx 파일 내부에 데이터가 존재하지 않습니다.";
+                        return;
+                    }
+
+                    // 🔍 3. 0행 또는 1행에서 "local" 마크 단어가 있는지 철저히 검증 (혼동 방지)
+                    let localMarkRowIndex = -1;
+                    for (let i = 0; i < Math.min(rows.length, 3); i++) {
+                        const rowStr = rows[i].join(" ").toLowerCase();
+                        if (rowStr.includes("local")) {
+                            localMarkRowIndex = i;
+                            break;
+                        }
+                    }
+
+                    // "local" 문자가 없다면 경고를 띄우고 중단합니다.
+                    if (localMarkRowIndex === -1) {
+                        alert("❌ [메인 리스트 검증 오류]\nmain_list.xlsx 파일의 0행 또는 1행에 'local' 표기 문자가 반드시 포함되어야 합니다.");
+                        loadingNotice.textContent = "❌ 파일 검증 실패 ('local' 마크 없음)";
+                        txtFileNameScreen.textContent = "❌ 메인 메뉴 로드 실패";
+                        return;
+                    }
+
+                    // 🎯 4. "local" 문자 행은 보이지 않게 완벽하게 제외(잘라내기)하고 그 다음 행(2행부터)만 정제합니다.
+                    const validRowsFrom = rows.slice(localMarkRowIndex + 1);
+
+                    if (validRowsFrom.length === 0 || validRowsFrom[0].join("").trim() === "") {
+                        loadingNotice.textContent = "❌ 표출할 하위 로컬 경로 데이터가 존재하지 않습니다.";
+                        return;
+                    }
+
+                    // 임시 로딩 안내 문구를 지우고, 보라색 바둑판 창에 GO 버튼들을 즉시 촥 정렬하여 펼쳐줍니다!
+                    loadingNotice.remove();
+                    txtFileNameScreen.textContent = "🎁 로컬 폴더 안의 단어장을 선택하시면 즉시 하위 목록 리스트가 보라색 창에 펼쳐집니다!";
                     
-                    fetch(proxyUrl2)
-                        .then(res => {
-                            if (!res.ok) throw new Error("원격 파일 서버에 접근할 수 없습니다.");
-                            return res.arrayBuffer();
-                        })
-                        .then(buffer => {
-                            parseBufferData(buffer, urlFileName);
-                        })
-                        .catch(err => {
-                            alert(`❌ 온라인 파일 로드 실패: 모든 보안 우회 축이 차단되었거나 링크 주소가 올바르지 않습니다.\n\n원인: ${err.message}`);
-                            txtFileNameScreen.textContent = "❌ 파일 로드 실패. 주소를 다시 확인해 주세요.";
-                        });
+                    // A열~F열 구조대로 가로 3개씩 GO 버튼 나열 바인딩 실행!
+                    buildHubMenuGrid(validRowsFrom);
+                })
+                .catch(error => {
+                    // 에러 발생 시 UI에 명확하게 상태를 표시합니다.
+                    loadingNotice.innerHTML = `❌ <b>메인 메뉴 자동 로드 실패!</b><br><span style='font-size:13px; color:#ff8282;'>원인: ${error.message}</span><br><br><span style='font-size:14px;'>[해결책] main_list.xlsx 파일명이 대소문자까지 정확한지, index.html과 완벽히 같은 폴더에 들어있는지 한 번 더 확인해 주세요.</span>`;
+                    txtFileNameScreen.textContent = "❌ main_list.xlsx 자동 추적 실패";
                 });
         }
-
-// 🌟 [수정] 초기 화면의 4개 단어장도 가로 3개씩 정렬되도록 완벽 보완한 함수
-        function initDefaultHubMenu() {
-            const defaultExcelList = [
-                { name: "🎯 의학 인체부위명 단어장", path: "web경로url_01.xlsx" },
-                { name: "📚 필수 영단어 마스터", path: "web경로url_02.xlsx" },
-                { name: "✈️ 생활 여행 회화", path: "web경로url_03.xlsx" },
-                { name: "🔥 스파르타 고급 단어", path: "web경로url_04.xlsx" }
-            ];
-
-            // 💡 핵심 수정: 원래 엑셀 파일에서 읽어온 것처럼 첫 행에 타이틀(헤더)을 임의로 넣어주고,
-            // 3개씩 한 행(Row)에 묶여서 들어가도록 데이터 구조를 완벽하게 변환합니다.
-            const simulatedRows = [];
-            
-            // 1. 헤더 구조 생성 (구분용 더미 데이터)
-
-            //  simulatedRows.push(["이름", "경로"]); 
-
-            // 2. 가로 3개씩 한 묶음(한 줄)이 되도록 데이터를 쪼개어 담아줍니다.
-            let currentRow = [];
-            defaultExcelList.forEach((item, index) => {
-                currentRow.push(item.name);
-                currentRow.push(item.path);
-
-                // 3개째 채워졌거나, 마지막 데이터라면 하나의 행으로 등록하고 새로 시작합니다.
-                if ((index + 1) % 3 === 0 || index === defaultExcelList.length - 1) {
-                    simulatedRows.push(currentRow);
-                    currentRow = [];
-                }
-            });
-            
-            // 🎨 CSS 강제 바인딩 보완: 혹시 모를 레이아웃 틀어짐을 방지하기 위한 안전장치
-            const targetPanel = document.querySelector('.excel-link-hub-panel');
-            if (targetPanel) {
-                targetPanel.style.display = "block"; // 초기화면에 바로 보이도록 설정
-            }
-
-            // 이제 완벽한 구조로 데이터가 뿌려집니다!
-            buildHubMenuGrid(simulatedRows);
-            txtFileNameScreen.textContent = "🎁 원하시는 단어장을 클릭하시면 학습이 시작됩니다!";
-        }
+    // 🎯 [최종 완성] 켜지자마자 에러 없이 main_list.xlsx를 강제 로드하여 보라색 창에 GO 버튼을 즉시 정렬하는 함수 - 끝 -
 
         // 페이지 로드가 끝나면 자동으로 초기 허브 메뉴 버튼들을 화면에 배치합니다.
         window.addEventListener('DOMContentLoaded', () => {
