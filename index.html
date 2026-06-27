@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spartan Multilingual</title> <!-- Master Word Quiz Game -->
+    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -23,6 +22,10 @@
             align-items: center;
         }
 
+body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
+
+
+
         /* 메인 게임 프레임 */
         #game-frame {
             width: 100%;
@@ -36,7 +39,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            gap: 10px;
+            gap: 5px;
             flex-wrap: wrap;
         }
         .btn-file-trigger {
@@ -52,8 +55,7 @@
         }
         .btn-file-trigger:active { transform: translateY(2px); box-shadow: none; }
 
-
-        /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일- 시작- */
+        /* 🌐 다국어 파일 전환 버튼 스타일 */
         .btn-lang-link-toggle {
             background-color: #6c5ce7;
             color: white;
@@ -78,8 +80,9 @@
             cursor: pointer;
             box-shadow: 0 3px 0 #2b8a87;
         }
-
+        .btn-order-toggle:active { transform: translateY(2px); box-shadow: none; }
         /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일 - 끝-*/
+
 
         .btn-order-toggle {
             background-color: #38ada9; 
@@ -92,7 +95,6 @@
             cursor: pointer;
             box-shadow: 0 3px 0 #2b8a87;
         }
-        .btn-order-toggle:active { transform: translateY(2px); box-shadow: none; }
 
         .btn-hard-toggle {
             background-color: #fa8231;
@@ -105,6 +107,7 @@
             cursor: pointer;
             box-shadow: 0 3px 0 #d35400;
         }
+
         .btn-hard-toggle:active { transform: translateY(2px); box-shadow: none; }
 
         /* 오디오 컨트롤 바 */
@@ -119,6 +122,7 @@
             font-size: 12px;
             font-weight: bold;
         }
+
 
         .btn-sound-mute {
             background-color: #4b6584;
@@ -137,8 +141,8 @@
             align-items: center;
             gap: 3px;
             background: #ffffff;
-            padding: 4px 6px;
-            width: 140px;
+            padding: 6px 6px;
+            width: 135px;
             border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 12px;
@@ -164,14 +168,113 @@
             height: 11px;
         }
 
-        /* 엑셀 파일 이름 전광판 스타일 */
+        /* 🔗 웹 주소로 불러오기 버튼 스타일 */
+        .btn-url-loader {
+            background-color: #8080ff;
+            color: white;
+            border: none;
+            padding: 3px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #1811ae;
+        }
+        .btn-url-loader:active { transform: translateY(2px); box-shadow: none; }
+
+        /* 📁 Excel 파일 불러오기 버튼 스타일 */
+        .btn-excel-loader {
+            background-color: #808040;
+            color: white;
+            border: none;
+            padding: 3px 6px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0  #b8b872;
+        }
+        .btn-excel-loader:active { transform: translateY(2px); box-shadow: none; }
+
+        /* 📋 Excel 파일 불러오기 버튼의 아래 / 기존 안내 창의 위쪽에 고정 노출되는 새 창 */
+        .excel-link-hub-panel {
+            width: 100%;
+            max-height: 80px; /*160px*/
+            overflow-y: auto;  
+            background-color: #fffaff;
+            border: 3px solid #9b59b6; /*dashed #9b59b6*/
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 5px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: none; /* 클릭 작동 전에는 철저히 숨김 */
+        }
+
+        .hub-panel-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #8e44ad;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 3열 바둑판 배열 디자인 */
+        .hub-grid-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .hub-cell-pair {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #ffffff;
+            border: 1px solid #e1d5e7;
+            border-radius: 6px;
+            padding: 5px 6px;
+            font-size: 11px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .hub-file-title {
+            flex: 1;
+            font-weight: bold;
+            color: #2c3e50;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-hub-action {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 1.5px 0 #7e4397;
+        }
+        .btn-hub-action:active { transform: translateY(1px); box-shadow: none; }
+
+
+        /* 안내 및 파일 이름 전광판 스타일 */
         .file-name-display {
             background: #2c3e50;
             color: #ecf0f1;
             padding: 8px 15px;
             border-radius: 8px;
-            font-size: 11px;
-            font-weight: solid ; /*bold*/
+            font-size: 12px;
+            font-weight: solid;
             text-align: center;
             margin-bottom: 12px;
             word-break: break-all;
@@ -207,7 +310,7 @@
             background-color: var(--board-color);
             border: 3px solid #bcaba0;
             border-radius: 8px;
-            min-height: 90px;
+            min-height: 140px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -222,7 +325,7 @@
             gap: 3px; /* 12px문단긴격 */
         }
 
-        /* 동적 생성되는 각 열의 행 컨테이너 */
+        /* 동적 생성되는 각 행의 행 컨테이너 */
         .board-row-item {
             width: 100%;
             display: flex;
@@ -266,8 +369,8 @@
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 20px; /* 발음 아이콘 세로 */
-            height: 20px; /* 발음 아이콘 가로 */
+            width: 23px; /* 발음 아이콘 세로 */
+            height: 23px; /* 발음 아이콘 가로 */
             font-size: 14px;
             cursor: pointer;
             display: flex;
@@ -293,8 +396,8 @@
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 20px; /* 발음 아이콘 세로 */
-            height: 20px; /* 발음 아이콘 가로 */
+            width: 23px; /* 발음 아이콘 세로 */
+            height: 23px; /* 발음 아이콘 가로 */
             font-size: 14px;
             cursor: pointer;
             display: flex;
@@ -347,8 +450,8 @@
         }
 
         .slot {
-            width: 24px;  /*입력문자 박스 가로 크기*/
-            height: 26px; /*입력문자 박스 세로 크기*/
+            width: 28px;  /*입력문자 박스 가로 크기*/
+            height: 30px; /*입력문자 박스 세로 크기*/
             background: white;
             border: 2px solid #555;
             border-radius: 8px;
@@ -379,7 +482,7 @@
         }
 		*/
 
-		.slot.blank.filled:hover {
+        .slot.blank.filled:hover {
             transform: scale(1.08);
             border: 2px solid #e84118;
             background-color: #ffeae6;
@@ -406,11 +509,43 @@
             border-radius: 8px;
             margin-bottom: 15px;
             box-shadow: 0 2px 0 #c6b6ac;
-        }
+   
+		   }
         .feedback-text {
             font-size: 15px;
             font-weight: solid; /*bold*/
             color: #243f7d;  /* 다음 단어로 이동합니다 (문자색)*/
+        }
+        /* 조작 영역 */
+        .control-container {
+            display: flex;
+            justify-content: space-between; /*버튼아이템을 배치위치*/
+            /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 0px;
+            flex-wrap: wrap; /* 줄이 좁혀지면 다음줄로  */
+        }
+
+
+        .feedback-container.success-state {
+            background: #eef9f1;
+            border: 2px solid #20bf6b;
+        }
+        .feedback-container.success-state .feedback-text {
+            color: #20bf6b;
+        }
+        .feedback-container.wrong-state {
+            background: #fff5f5;
+            border: 2px solid #eb3b5a;
+        }
+        .feedback-container.wrong-state .feedback-text {
+            color: #eb3b5a;
+        }
+        
+        .feedback-text {
+            font-size: 15px;
+            font-weight: bold;
         }
 
         /* 조작 영역 */
@@ -489,7 +624,6 @@
             grid-template-columns: repeat(8, 1fr);
             gap: 8px;*/
         }
-
         .key-btn {
             background: white;
             border: 2px solid #444;
@@ -530,56 +664,60 @@
 
     <div id="game-frame">
         <div class="top-loader-bar">
-
-            <button class="btn-lang-link-toggle" id="btn-toggle-lang-page">🌐 en</button><!-- : ko -->
-
-            <button class="btn-order-toggle" id="btn-toggle-order">🔢sequential</button><!-- 작위 순서(순차적)-->
-            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 level:low</button><!-- 난이:보통 -->
+            <button class="btn-lang-link-toggle" id="btn-toggle-lang-page">🌐 언어: ko</button>
+            
+            <button class="btn-order-toggle" id="btn-toggle-order">🔢 순서:순차적</button><!-- 🔢 순서: 작위 (순차적) -->
+            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 난이도: 보통</button>
             
             <div class="audio-control-box">
-                <button class="btn-sound-mute" id="btn-sound-mute">🔊 sound</button><!-- 소리켬 -->
+                <button class="btn-sound-mute" id="btn-sound-mute">🔊 소리 켬</button>
                 <label style="cursor:pointer; display:flex; align-items:center; gap:3px;">
-                    <input type="checkbox" id="chk-auto-speak" checked />auto tts: on
-                </label><!-- 자동발음:켬 -->
+                    <input type="checkbox" id="chk-auto-speak" checked /> 자동 발음: 켬
+                </label>
             </div>
 
             <div class="repeat-control-box">
-                <span>🔄Quiz rep:</span><!-- 🔄 목표 맞춤 횟수: -->
+                <span>🔄반복횟수:</span><!-- 목표 맞춤 횟수 -->
                 <button class="repeat-btn" id="btn-streak-minus">-</button>
                 <input type="text" class="repeat-input" id="input-streak-count" value="1" />
                 <button class="repeat-btn" id="btn-streak-plus">+</button>
             </div>
 
             <div class="repeat-control-box">
-                <span>🔊Listen:</span><!--🔊 TTS 반복듣기: -->
+                <span>🔊TTS 반복:</span><!-- TTS 반복듣기 -->
                 <button class="repeat-btn" id="btn-repeat-minus">-</button>
                 <input type="text" class="repeat-input" id="input-repeat-count" value="1" />
                 <button class="repeat-btn" id="btn-repeat-plus">+</button>
             </div>
 
-            <button class="btn-file-trigger" id="btn-change-file">📁 Import Excel File</button><!-- Excel 파일 불러오기 -->
-            <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
+            <button class="btn-url-loader" id="btn-load-url">🔗 웹 url</button><!-- 🔗 웹 주소로 불러오기 -->
+            
+            <button class="btn-excel-loader" id="btn-load-excel">📁 Excel 파일 불러오기</button>
+            
+            <input type="file" id="excel-file-hidden-loader" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="file-name-display" id="file-name-screen">⚠️Please specify the options you want in advance,<br> and then click [📁 Import Excel File]!</div><!-- ⚠️ 원하는 옵션을 미리 지정 한 후, [📁 Excel 파일 불러오기]를 눌러주세요! -->
+        <div class="excel-link-hub-panel" id="hub-menu-panel"></div>
+
+        <div class="file-name-display" id="file-name-screen">⏳ 기본 추천 단어장 다운로드 분석 중...</div>
 
         <div id="game-container">
             <div class="status-bar">
-                <div>correct : <span id="score-correct" style="color:blue;">0</span></div><!-- 정답 -->
-                <div>wrong : <span id="score-wrong" style="color:red;">0</span></div><!-- 오답 -->
-                <div>⏱️time : <span id="timer">0</span> sec</div><!-- ⏱️ 시간: 0초 -->
+                <div>정답: <span id="score-correct" style="color:blue;">0</span></div>
+                <div>오답: <span id="score-wrong" style="color:red;">0</span></div>
+                <div>⏱️ 시간: <span id="timer">0</span>초</div>
             </div>
 
             <div class="meaning-board" id="dynamic-meaning-board">
-                <div style="color:#777; font-size:14px; ">load the Excel file, the data will be displayed here.</div><!-- 엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다. -->
+                <div style="color:#777; font-size:14px;">엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다.</div>
             </div>
             
             <div style="display: flex; justify-content: center;">
                 <div class="example-hint" id="example-meaning" style="display: none;"></div>
             </div>
 
-            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">🎯 <!-- 현재 단어 맞춘 횟수 -->Current number of words
-                : <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
+            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">
+                🎯 현재 단어 맞춘 횟수: <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
             </div>
 
             <div class="word-slots" id="word-slots"></div>
@@ -589,18 +727,18 @@
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡Info(Hint) </button><!-- 안내(Hint) -->
-                <button class="btn-action shuffle-btn" id="shuffle-button">🔀Keyboard :mix<!-- 자판 섞기 A+C:켬 --></button>
+                <button class="btn-action hint-btn" id="hint-button">💡 안내(Hint)</button>
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀자판<!-- 섞기(A)+(C) -->A+C:켬</button>
                 
-                <button class="btn-action listen-btn" id="listen-button">🎧Listen:off</button><!-- 듣기:정지(끔) -->
-                <button class="btn-action next-btn" id="next-button">⏩word(Next)</button><!--다음 단어 로-->
+                <button class="btn-action listen-btn" id="listen-button">🎧듣기:정지(끔)</button>
+                <button class="btn-action next-btn" id="next-button">⏩다음<!-- 단어 으로-->(Next)</button>
             </div>
 
             <div class="keyboard" id="keyboard"></div>
         </div>
     </div>
 
-    <script>
+ <script>
         let quizData = [];          
         let columnLanguages = [];   
         
@@ -635,20 +773,20 @@
         let listenModeState = 0; 
         let autoNextTimeoutToken = null;
 
-        // 🌐 언어 상태 변수 (ko = 한국어 메인 페이지 / en = 영어 번역 버튼 페이지)
         let currentLanguageMode = "ko";
 
         const countryLettersPool = {
             'en': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'ja': 'あいうえおかきくけこさしす세そたちつてとなにぬねのはひふへほまみむめ도야유よらりる레로わ을ん가ぎぐ게ござじずぜ조다ぢづ데도ば비부べ보ぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미むめ도야유よらりる레로わ을ンガギグゲゴザジズゼゾダヂヅデドバ비부베보파피푸페포',
+            'ja': 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめ모야유요라리루레로와을ん가기구게고ザじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイうエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ',
             'zh': 'abcdefghijklmnopqrstuvwxyz',
             'es': 'abcdefghijklmnopqrstuvwxyzñáéíóúüABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜ',
             'ko': 'ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ'
         };
 
         const btnToggleLangPage = document.getElementById('btn-toggle-lang-page');
-        const fileRuntime = document.getElementById('excel-file-runtime');
-        const btnChangeFile = document.getElementById('btn-change-file');
+        const btnLoadUrl = document.getElementById('btn-load-url');
+        const btnLoadExcel = document.getElementById('btn-load-excel'); 
+        const fileHiddenLoader = document.getElementById('excel-file-hidden-loader');
         const btnToggleOrder = document.getElementById('btn-toggle-order'); 
         const btnToggleHard = document.getElementById('btn-toggle-hard'); 
         
@@ -681,27 +819,195 @@
         const btnSoundMute = document.getElementById('btn-sound-mute');
         const chkAutoSpeak = document.getElementById('chk-auto-speak');
         const txtFileNameScreen = document.getElementById('file-name-screen');
+        
+        const hubMenuPanel = document.getElementById('hub-menu-panel');
 
-        // 🌐 [핵심 탑재] 언어 링커 버튼 클릭시 작동 로직
         btnToggleLangPage.addEventListener('click', () => {
             if (currentLanguageMode === "ko") {
-                // 현재 ko 상태에서 한 번 더 클릭 시 -> en 모드로 스위칭
                 currentLanguageMode = "en";
                 btnToggleLangPage.textContent = "🌐 언어: en";
-                
-                // 💡 [안내] 나중에 각 언어 문자로 바꾼 en버튼용 html 주소를 여기에 적어주시면 됩니다!
-                // 예: window.location.href = "index_en.html"; 또는 "english.html";
                 window.location.href = "en_index.html"; 
-                
             } else {
-                // 현재 en 상태에서 다시 한 번 클릭 시 -> ko 모드로 스위칭
                 currentLanguageMode = "ko";
                 btnToggleLangPage.textContent = "🌐 언어: ko";
-                
-                // 원본 한국어 메인 페이지로 복귀
                 window.location.href = "index.html";
             }
         });
+
+        // 🔗 웹 주소로 불러오기 버튼 클릭 핸들러
+        btnLoadUrl.addEventListener('click', () => {
+            const promptMessage = "원격 주소록 웹 주소(URL)를 입력하세요.\n\n★ 내 컴퓨터의 주소록 엑셀 파일을 가져오려면 공백 상태로 확인을 누르세요.";
+            const targetUrl = prompt(promptMessage, "");
+            
+            if (targetUrl === null || targetUrl.trim() === "" || targetUrl.trim().toLowerCase() === "file") {
+                fileHiddenLoader.click();
+            } else {
+                fetchTargetExcelData(targetUrl.trim());
+            }
+        });
+
+        // 📁 엑셀 파일 불러오기 버튼 핸들러
+        btnLoadExcel.addEventListener('click', () => {
+            fileHiddenLoader.click();
+        });
+
+        // 📁 로컬 파일 핸들러
+        fileHiddenLoader.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+                if (rows.length === 0) {
+                    alert("비어있는 엑셀 파일입니다.");
+                    return;
+                }
+
+                if (rows.length > 0 && String(rows[0][1]).trim().toLowerCase().includes("http")) {
+                    buildHubMenuGrid(rows);
+                } else {
+                    txtFileNameScreen.textContent = `📖 로컬 단어장 학습 중 : ${file.name}`;
+                    hubMenuPanel.style.display = "none"; 
+                    processExcelRows(rows);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+            e.target.value = ''; 
+        });
+
+
+
+        // 🔗 구글 드라이브 주소 자동 탐지 및 다운로드 주소 파싱 우회 로직
+        function convertToDirectDownloadUrl(url) {
+            let processedUrl = url.trim();
+            // 구글 드라이브 공유 링크 형태인 경우 직통 다운로드 주소 체계로 가공
+            if (processedUrl.includes("drive.google.com")) {
+                let fileId = "";
+                if (processedUrl.includes("/d/")) {
+                    fileId = processedUrl.split("/d/")[1].split("/")[0];
+                } else if (processedUrl.includes("id=")) {
+                    fileId = processedUrl.split("id=")[1].split("&")[0];
+                }
+                if (fileId) {
+                    return `https://docs.google.com/spreadsheets/d/${fileId}/export?format=xlsx`;
+                }
+            }
+            return processedUrl;
+        }
+
+        // 🔗 원격 웹 주소 데이터 Fetch 처리 함수
+        function fetchTargetExcelData(url, customName = "") {
+            let directUrl = convertToDirectDownloadUrl(url);
+            
+            // 구글 스프레드시트/드라이브의 수월한 연동을 위해 안정성 높은 주소 가공 결합
+            const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(directUrl);
+            
+            if(!customName) {
+                txtFileNameScreen.textContent = "⏳ 원격 파일 주소 분석 및 구글 동기화 다운로드 중...";
+            } else {
+                txtFileNameScreen.textContent = `⏳ [${customName}] 단어장 로딩 중... 잠시만 기다려주세요.`;
+            }
+
+            fetch(proxyUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error("네트워크 응답 오류가 발생했습니다.");
+                    return response.arrayBuffer();
+                })
+                .then(buffer => {
+                    const data = new Uint8Array(buffer);
+                    const urlFileName = customName ? customName : "온라인 구글 단어장";
+                    
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+                    if (rows.length > 0 && String(rows[0][1]).trim().toLowerCase().includes("http")) {
+                        txtFileNameScreen.textContent = "⚠️ 원하는 옵션을 미리 지정한 후, 상단 불러오기 버튼을 눌러주세요!";
+                        buildHubMenuGrid(rows);
+                    } else {
+                        txtFileNameScreen.textContent = `🔗 원격 학습 중 : ${urlFileName}`;
+                        processExcelRows(rows);
+                    }
+                })
+                .catch(error => {
+                    alert(`❌ 파일 로드 실패: 구글 드라이브 링크의 권한이 '링크가 있는 모든 사용자'로 설정되어 있는지 다시 확인해 주세요.\n\n(원인: ${error.message})`);
+                    txtFileNameScreen.textContent = "❌ 파일 로드 실패. 링크를 확인하거나 다른 파일을 선택해 주세요.";
+                });
+        }
+
+        // 📋 허브 메뉴 주소록 그리드 배열 디자인 빌더
+        function buildHubMenuGrid(rows) {
+            hubMenuPanel.innerHTML = ""; 
+            hubMenuPanel.style.display = "block"; 
+
+            const panelTitle = document.createElement('div');
+            panelTitle.classList.add('hub-panel-title');
+            panelTitle.innerHTML = "✨ 🔗 원격 웹 단어장 리스트 창 (학습할 단어장을 아래에서 선택해 주세요)";
+            hubMenuPanel.appendChild(panelTitle);
+
+            rows.forEach((row) => {
+                if (!row[0] && !row[2] && !row[4]) return;
+
+                const gridRowDiv = document.createElement('div');
+                gridRowDiv.classList.add('hub-grid-row');
+
+                const columnsMap = [
+                    { titleIdx: 0, urlIdx: 1 }, 
+                    { titleIdx: 2, urlIdx: 3 }, 
+                    { titleIdx: 4, urlIdx: 5 }  
+                ];
+
+                columnsMap.forEach(set => {
+                    const cellPair = document.createElement('div');
+                    cellPair.classList.add('hub-cell-pair');
+
+                    const titleVal = String(row[set.titleIdx] || '').trim();
+                    const urlVal = String(row[set.urlIdx] || '').trim();
+
+                    if (titleVal || urlVal) {
+                        const titleSpan = document.createElement('span');
+                        titleSpan.classList.add('hub-file-title');
+                        titleSpan.textContent = titleVal ? titleVal : "이름 없음";
+                        
+                        if(urlVal) {
+                            titleSpan.style.cursor = "pointer";
+                            titleSpan.addEventListener('click', () => { fetchTargetExcelData(urlVal, titleVal); });
+                        }
+
+                        const actionBtn = document.createElement('button');
+                        actionBtn.classList.add('btn-hub-action');
+                        actionBtn.textContent = "GO";
+                        
+                        if (urlVal) {
+                            actionBtn.addEventListener('click', () => {
+                                fetchTargetExcelData(urlVal, titleVal);
+                            });
+                        } else {
+                            actionBtn.style.opacity = "0.3";
+                            actionBtn.disabled = true;
+                        }
+
+                        cellPair.appendChild(titleSpan);
+                        cellPair.appendChild(actionBtn);
+                    } else {
+                        cellPair.style.visibility = "hidden";
+                    }
+
+                    gridRowDiv.appendChild(cellPair);
+                });
+
+                hubMenuPanel.appendChild(gridRowDiv);
+            });
+        }
+
+
 
         btnStreakMinus.addEventListener('click', () => {
             let val = parseInt(inputStreakCount.value) || 1;
@@ -746,13 +1052,15 @@
             ttsRepeatTarget = val;
         });
 
+
+
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
             if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 Random";  //🔄 순서: 무작위
-                btnToggleOrder.style.backgroundColor = "#e76dd8";
+                btnToggleOrder.textContent = "🔄 Random"; //순서: 무작위
+                btnToggleOrder.style.backgroundColor = "#079992";
             } else {
-                btnToggleOrder.textContent = "🔢 sequential"; //🔢 순서: 작위 (순차적) 순서:순차적
+                btnToggleOrder.textContent = "🔢 순서:순차적"; //🔢 순서: 작위 (순차적)
                 btnToggleOrder.style.backgroundColor = "#38ada9";
             }
         });
@@ -760,11 +1068,11 @@
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥level:high"; //🔥 난이도: 높음 전체 숨김high[low]
-                btnToggleHard.style.backgroundColor = "#ed54af";
+                btnToggleHard.textContent = "🔥난이도:높음"; // 난이도: 전체 숨김
+                btnToggleHard.style.backgroundColor = "#eb3b5a";
             } else {
-                btnToggleHard.textContent = "🎯 level:low"; //🎯 난이도: 보통
-                btnToggleHard.style.backgroundColor = "#fb914a";
+                btnToggleHard.textContent = "🎯 난이도: 보통";
+                btnToggleHard.style.backgroundColor = "#fa8231";
             }
         });
 
@@ -772,10 +1080,10 @@
             isMuted = !isMuted;
             if (isMuted) {
                 window.speechSynthesis.cancel(); 
-                btnSoundMute.textContent = "🔇 sound off "; //음소거
+                btnSoundMute.textContent = "🔇 음소거";
                 btnSoundMute.style.backgroundColor = "#eb3b5a";
             } else {
-                btnSoundMute.textContent = "🔊 sound on"; //소리 켬
+                btnSoundMute.textContent = "🔊 소리 켬";
                 btnSoundMute.style.backgroundColor = "#4b6584";
             }
         });
@@ -784,72 +1092,48 @@
             chkAutoSpeak.parentElement.childNodes[1].textContent = chkAutoSpeak.checked ? " 자동 발음: 켬" : " 자동 발음: 끔";
         });
 
-        function parseExcel(file) {
-            if (!file) return;
+        function processExcelRows(rows) {
+            if (rows.length < 2) {
+                alert("구조가 잘못되었습니다.");
+                return;
+            }
 
-            txtFileNameScreen.textContent = `📖   ${file.name}`; //: 학습 중인 파일
+            const firstRow = rows[0];
+            columnLanguages = firstRow.map(cell => String(cell || 'en').trim().toLowerCase());
 
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                const data = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                
-                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-                
-                if (rows.length < 2) {
-                    alert("최소한 1행(TTS코드)과 2행(데이터) 이상의 구조가 필요합니다.");
-                    return;
+            speakerMuteStates = {};
+            visibilityStates = {};
+            columnLanguages.forEach((_, colIdx) => {
+                speakerMuteStates[colIdx] = true; 
+                visibilityStates[colIdx] = true;  
+            });
+
+            quizData = [];
+            for (let r = 1; r < rows.length; r++) {
+                let currentRow = rows[r];
+                if (!currentRow[0] || String(currentRow[0]).trim() === "") continue;
+
+                let rowDataArray = [];
+                for (let c = 0; c < columnLanguages.length; c++) {
+                    rowDataArray.push(String(currentRow[c] || '').trim());
                 }
+                quizData.push(rowDataArray);
+            }
 
-                const firstRow = rows[0];
-                columnLanguages = firstRow.map(cell => String(cell || 'en').trim().toLowerCase());
+            if (quizData.length === 0) {
+                alert("데이터가 존재하지 않습니다.");
+                return;
+            }
 
-                speakerMuteStates = {};
-                visibilityStates = {};
-                columnLanguages.forEach((_, colIdx) => {
-                    speakerMuteStates[colIdx] = true; 
-                    visibilityStates[colIdx] = true;  
-                });
+            correctCount = 0;
+            wrongCount = 0;
+            sequentialIndex = 0; 
 
-                quizData = [];
-                for (let r = 1; r < rows.length; r++) {
-                    let currentRow = rows[r];
-                    if (!currentRow[0] || String(currentRow[0]).trim() === "") continue;
-
-                    let rowDataArray = [];
-                    for (let c = 0; c < columnLanguages.length; c++) {
-                        rowDataArray.push(String(currentRow[c] || '').trim());
-                    }
-                    quizData.push(rowDataArray);
-                }
-
-                if (quizData.length === 0) {
-                    alert("2행 이후에 읽을 수 있는 단어 데이터가 존재하지 않습니다.");
-                    return;
-                }
-
-                correctCount = 0;
-                wrongCount = 0;
-                sequentialIndex = 0; 
-
-                lblCorrect.textContent = correctCount;
-                lblWrong.textContent = wrongCount;
-                
-                nextQuiz(); 
-            };
-            reader.readAsArrayBuffer(file);
+            lblCorrect.textContent = correctCount;
+            lblWrong.textContent = wrongCount;
+            
+            nextQuiz(); 
         }
-
-        btnChangeFile.addEventListener('click', () => {
-            fileRuntime.click();
-        });
-        
-        fileRuntime.addEventListener('change', (e) => {
-            parseExcel(e.target.files[0]);
-            e.target.value = ''; 
-        });
 
         function getStandardLangLocale(code) {
             if (code === 'ja' || code === 'jp') return 'ja-JP';
@@ -896,11 +1180,10 @@
                 btnElement.textContent = "🙈";
                 btnElement.classList.add('hidden-state');
                 textSpan.classList.add('hidden-blind');
-                textSpan.textContent = "           ".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 0)); //█   //.length, 5))
+                textSpan.textContent = "  ".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 5)); // "█".repeat(Math
             }
         }
 
-        // 전체 오디오 사슬 연속 재생 엔진
         function playCorrectSoundChain() {
             if (isMuted || !currentProblem) return;
             window.speechSynthesis.cancel();
@@ -935,7 +1218,6 @@
 
             const totalLength = finalChainQueue.length;
             finalChainQueue.forEach((utt, index) => {
-                // 사슬의 마지막 발음이 완전히 끝났을 때 넘김 조건 처리
                 if (index === totalLength - 1) {
                     utt.onend = () => {
                         handleListeningEndAction();
@@ -945,10 +1227,9 @@
             });
         }
 
-        // 🎯 [핵심 수정 기지] 오디오 발음이 완전히 끝났을 때의 행동 정의
         function handleListeningEndAction() {
-            // 1. 듣기 자동 모드일 때: 정답 여부와 상관없이 소리가 끝나면 무조건 다음 단어로!
             if (listenModeState === 1) {
+                feedbackZone.className = "feedback-container success-state"; 
                 feedbackTextMsg.textContent = "🎧 듣기 자동 모드: 잠시 후 다음 단어로 자동 이동합니다.";
                 feedbackZone.style.display = "flex";
                 
@@ -956,14 +1237,14 @@
                     nextQuiz();
                 }, 1200);
             } 
-            // 2. 듣기 수동 모드일 때: 소리가 끝나면 가만히 멈춰 서서 사용자의 클릭을 대기합니다.
             else if (listenModeState === 2) {
+                feedbackZone.className = "feedback-container success-state";
                 feedbackTextMsg.textContent = "🎧 듣기 수동 모드: 다음 단어로 넘어가려면 [Next] 버튼을 누르세요.";
                 feedbackZone.style.display = "flex";
             }
-            // 3. 일반 모드(듣기 꺼짐)에서 타이핑 훈련 목표 스트릭을 채웠을 때
             else if (listenModeState === 0 && matchStreakCount >= targetStreakLimit) {
-                feedbackTextMsg.textContent = " 👍 ! 잠시 후 다음 단어로 자동 이동합니다."; //🎉 목표 달성
+                feedbackZone.className = "feedback-container success-state";
+                feedbackTextMsg.textContent = "🎉 목표 달성! 잠시 후 다음 단어로 자동 이동합니다.";
                 feedbackZone.style.display = "flex";
                 
                 autoNextTimeoutToken = setTimeout(() => {
@@ -994,6 +1275,7 @@
 
             isCorrectAnswered = false;
             feedbackZone.style.display = "none";
+            feedbackZone.className = "feedback-container"; 
             keyboardContainer.classList.remove('disabled');
 
             clearInterval(timerInterval);
@@ -1025,12 +1307,11 @@
             
             renderDynamicMeaningBoard();
             
-            txtExMeaning.textContent = `💡 정답 안내: ${targetWord}`; 
+            txtExMeaning.textContent = `💡정답 안내: ${targetWord}`; 
             txtExMeaning.style.display = "none";
 
             setupWordSlots(targetWord);
 
-            // 자동 발음이 켜져 있거나, 듣기 모드가 켜져 있다면 다음 단어로 오자마자 재생 시작
             if ((chkAutoSpeak.checked || listenModeState > 0) && !isMuted) {
                 playCorrectSoundChain();
             }
@@ -1046,7 +1327,7 @@
                 rowDiv.classList.add('board-row-item');
                 if(colIdx === 0) rowDiv.classList.add('primary-target'); 
 
-                let labelPrefix = colIdx === 0 ? "📖 " : (colIdx === 1 ? " 📖 " : `📖${colIdx}      .     `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
+                let labelPrefix = colIdx === 0 ? "📖 " : (colIdx === 1 ? " 📖 " : `📖${colIdx}: `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
                 let fullRowText = `${labelPrefix}${text}`;
 
                 const textSpan = document.createElement('span');
@@ -1063,7 +1344,7 @@
                     visibilityBtn.textContent = "🙈";
                     visibilityBtn.classList.add('hidden-state');
                     textSpan.classList.add('hidden-blind');
-                    textSpan.textContent = "         ".repeat(Math.max(fullRowText.length, 0)); //█
+                    textSpan.textContent = " ".repeat(Math.max(fullRowText.length, 5)); //█   //.length, 5))
                 }
 
                 visibilityBtn.addEventListener('click', (e) => {
@@ -1092,6 +1373,7 @@
         function resetSlotsForStreak() {
             isCorrectAnswered = false;
             feedbackZone.style.display = "none";
+            feedbackZone.className = "feedback-container";
             keyboardContainer.classList.remove('disabled');
             answerArray = Array.from(targetWord);
             keyMappingLog = {};
@@ -1200,12 +1482,12 @@
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀Keyboard:mix"; // 🔀 자판섞기 (A)+(C) // 🔀자판A+C:켬
+                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C) : 켬";
             } else {
-                btnShuffle.textContent = "🔀Keyboard:normal"; //🔀 자판(A) : 끔
+                btnShuffle.textContent = "🔀 자판 섞기 (A) : 끔";
             }
 
-            buildDynamicKeyboard(); // 섞기
+            buildDynamicKeyboard();
         }
 
         function toggleListenModeSwitcher() {
@@ -1214,22 +1496,23 @@
             listenModeState = (listenModeState + 1) % 3;
 
             if (listenModeState === 1) {
-                btnListen.textContent = "🎧Listen:auto"; //듣기:자동넘김
+                btnListen.textContent = "🎧 듣기: 자동 넘김";
                 btnListen.style.backgroundColor = "#2e86de";
                 btnListen.style.borderColor = "#246ebb";
                 playCorrectSoundChain(); 
             } else if (listenModeState === 2) {
-                btnListen.textContent = "🎧Listen:normal"; //듣기:수동대기
+                btnListen.textContent = "🎧 듣기: 수동 대기";
                 btnListen.style.backgroundColor = "#ff9f43";
                 btnListen.style.borderColor = "#e67e22";
                 playCorrectSoundChain();
             } else {
-                btnListen.textContent = "🎧Listen:off"; //듣기:정지(끔)
+                btnListen.textContent = "🎧 듣기: 정지(끔)";
                 btnListen.style.backgroundColor = "#10ac84";
                 btnListen.style.borderColor = "#0f8f6e";
                 window.speechSynthesis.cancel();
                 if (autoNextTimeoutToken) clearTimeout(autoNextTimeoutToken);
                 feedbackZone.style.display = "none";
+                feedbackZone.className = "feedback-container";
             }
         }
 
@@ -1276,6 +1559,11 @@
         function handleKeyPress(char, btnElement) {
             if (isCorrectAnswered || quizData.length === 0) return;
 
+            if(feedbackZone.classList.contains('wrong-state')) {
+                feedbackZone.style.display = "none";
+                feedbackZone.className = "feedback-container";
+            }
+
             if (btnElement.classList.contains('used')) {
                 let foundTargetIdx = -1;
                 for (let key in keyMappingLog) {
@@ -1317,6 +1605,11 @@
         function removeLastChar() {
             if (isCorrectAnswered || quizData.length === 0) return; 
 
+            if(feedbackZone.classList.contains('wrong-state')) {
+                feedbackZone.style.display = "none";
+                feedbackZone.className = "feedback-container";
+            }
+
             let lastFilledIdx = -1;
             for (let i = currentBlankIndices.length - 1; i >= 0; i--) {
                 let idx = currentBlankIndices[i];
@@ -1333,6 +1626,12 @@
 
         function removeSpecificChar(blankIdx) {
             if (isCorrectAnswered || quizData.length === 0) return;
+            
+            if(feedbackZone.classList.contains('wrong-state')) {
+                feedbackZone.style.display = "none";
+                feedbackZone.className = "feedback-container";
+            }
+
             const targetSlot = document.getElementById(`blank-${blankIdx}`);
             if (targetSlot.textContent === "") return; 
 
@@ -1366,27 +1665,26 @@
 
                 if (chkAutoSpeak.checked && listenModeState === 0) { playCorrectSoundChain(); }
 
-                // 일반 모드(듣기 꺼짐)일 때는 입력 완료 기준으로 다음 단어 체크 작동하도록 연동유지
                 if (listenModeState === 0) {
                     if (matchStreakCount >= targetStreakLimit) {
                         handleListeningEndAction();
                     } else {
+                        feedbackZone.className = "feedback-container success-state";
                         feedbackTextMsg.textContent = `🎯 정답! (${matchStreakCount}/${targetStreakLimit}) 반복 훈련 중...`;
                         feedbackZone.style.display = "flex";
                         autoNextTimeoutToken = setTimeout(() => { resetSlotsForStreak(); }, 1000);
                     }
                 } else {
-                    // 듣기 모드가 켜져 있을 때 정답을 입력했다면 피드백만 노출 (오디오 종료 이벤트가 다음 단어로 넘겨줌)
+                    feedbackZone.className = "feedback-container success-state";
                     feedbackTextMsg.textContent = "🎯 정답입니다! 원어 오디오 청취가 종료되면 자동 이동합니다.";
                     feedbackZone.style.display = "flex";
                 }
 
             } else {
-                // 🎯 [핵심 개조] 팝업창을 띄우지 않고, 정답 입력칸 바로 아랫부분 메인 화면 패널에 오답 메시지 주입
                 wrongCount++;
                 lblWrong.textContent = wrongCount;
 
-                feedbackZone.className = "feedback-container wrong-state"; // 적색 오답 스타일 주입
+                feedbackZone.className = "feedback-container wrong-state"; 
                 feedbackTextMsg.textContent = "❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.";
                 feedbackZone.style.display = "flex";
             }
@@ -1395,7 +1693,7 @@
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡    : ${targetWord}`; //💡 정답 안내:
+                txtExMeaning.textContent = `💡정답 안내: ${targetWord}`;
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
@@ -1410,6 +1708,138 @@
             if (!currentProblem) return;
             nextQuiz();   
         });
+
+        // 🚀 카톡 링크 클릭 등으로 페이지가 켜지자마자 구글 드라이브의 엑셀을 강제 다운로드해 시작하는 모듈
+        window.addEventListener('DOMContentLoaded', () => {
+            // ⚠️ [중요] 아래 큰따옴표 안에 '구글 드라이브에서 복사한 공유 링크 주소'를 그대로 넣어주세요!
+            const myGoogleDriveUrl = "GOOGLE_DRIVE_LINK_HERE";
+            
+            if(myGoogleDriveUrl && myGoogleDriveUrl !== "GOOGLE_DRIVE_LINK_HERE") {
+                fetchTargetExcelData(myGoogleDriveUrl, "기본 원격 단어장");
+            } else {
+                txtFileNameScreen.textContent = "⚠️ 원하는 옵션을 미리 지정한 후, 상단 불러오기 버튼을 눌러주세요!";
+            }
+        });
+
+
+
+        // 📊 공통 버퍼 분석기 (구글 시트 & 내부 상대경로 전용 통합)
+        function parseBufferData(buffer, titleName) {
+            const data = new Uint8Array(buffer);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+
+            if (rows.length > 0 && String(rows[0][1]).trim().toLowerCase().includes("http")) {
+                txtFileNameScreen.textContent = "⚠️ 하단 허브 메뉴에서 원하시는 단어장을 클릭해 주세요!";
+                buildHubMenuGrid(rows); 
+            } else {
+                txtFileNameScreen.textContent = `📁 단어장 학습 중 : ${titleName}`;
+                processExcelRows(rows);
+            }
+        }
+
+        // 🔗 2중 CORS 온라인 우회 및 내부 폴더 상대 경로 완벽 융합 함수
+        function fetchTargetExcelData(url, customName = "") {
+            const cleanUrl = url.trim();
+            const urlFileName = customName ? customName : "단어장 파일";
+            
+            if (!cleanUrl.startsWith("http") && !cleanUrl.startsWith("https")) {
+                txtFileNameScreen.textContent = `⏳ 내부 상대경로에서 [${cleanUrl}] 파일 로드 중...`; 
+                
+                fetch(cleanUrl)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`파일을 찾을 수 없습니다. 경로와 파일명을 다시 확인해 주세요. (상태코드: ${res.status})`);
+                        return res.arrayBuffer();
+                    })
+                    .then(buffer => {
+                        parseBufferData(buffer, cleanUrl);
+                    })
+                    .catch(err => {
+                        alert(`❌ 내부 로컬 파일 로드 실패\n\n경로: ${cleanUrl}\n원인: ${err.message}\n\n★ 팁: 파일명 확장자(.xlsx)까지 정확히 적었는지 확인해 주세요!`);
+                        txtFileNameScreen.textContent = "❌ 로컬 파일 로드 실패.";
+                    });
+                return;
+            }
+            
+            const proxyUrl1 = "https://api.allorigins.win/raw?url=" + encodeURIComponent(cleanUrl);
+            const proxyUrl2 = "https://corsproxy.io/?" + encodeURIComponent(cleanUrl);
+
+            txtFileNameScreen.textContent = `⏳ [${urlFileName}] 온라인 서버 보안 우회 로딩 중...`;
+
+            fetch(proxyUrl1)
+                .then(res => {
+                    if (!res.ok) throw new Error("1차 프록시 서버 응답 지연");
+                    return res.arrayBuffer();
+                })
+                .then(buffer => {
+                    parseBufferData(buffer, urlFileName);
+                })
+                .catch(() => {
+                    txtFileNameScreen.textContent = `🔄 1차 보안 채널 우회 실패로 인한 2차 백업망 재접속 중...`;
+                    
+                    fetch(proxyUrl2)
+                        .then(res => {
+                            if (!res.ok) throw new Error("원격 파일 서버에 접근할 수 없습니다.");
+                            return res.arrayBuffer();
+                        })
+                        .then(buffer => {
+                            parseBufferData(buffer, urlFileName);
+                        })
+                        .catch(err => {
+                            alert(`❌ 온라인 파일 로드 실패: 모든 보안 우회 축이 차단되었거나 링크 주소가 올바르지 않습니다.\n\n원인: ${err.message}`);
+                            txtFileNameScreen.textContent = "❌ 파일 로드 실패. 주소를 다시 확인해 주세요.";
+                        });
+                });
+        }
+
+// 🌟 [수정] 초기 화면의 4개 단어장도 가로 3개씩 정렬되도록 완벽 보완한 함수
+        function initDefaultHubMenu() {
+            const defaultExcelList = [
+                { name: "🎯 의학 인체부위명 단어장", path: "web경로url_01.xlsx" },
+                { name: "📚 필수 영단어 마스터", path: "web경로url_02.xlsx" },
+                { name: "✈️ 생활 여행 회화", path: "web경로url_03.xlsx" },
+                { name: "🔥 스파르타 고급 단어", path: "web경로url_04.xlsx" }
+            ];
+
+            // 💡 핵심 수정: 원래 엑셀 파일에서 읽어온 것처럼 첫 행에 타이틀(헤더)을 임의로 넣어주고,
+            // 3개씩 한 행(Row)에 묶여서 들어가도록 데이터 구조를 완벽하게 변환합니다.
+            const simulatedRows = [];
+            
+            // 1. 헤더 구조 생성 (구분용 더미 데이터)
+
+            //  simulatedRows.push(["이름", "경로"]); 
+
+            // 2. 가로 3개씩 한 묶음(한 줄)이 되도록 데이터를 쪼개어 담아줍니다.
+            let currentRow = [];
+            defaultExcelList.forEach((item, index) => {
+                currentRow.push(item.name);
+                currentRow.push(item.path);
+
+                // 3개째 채워졌거나, 마지막 데이터라면 하나의 행으로 등록하고 새로 시작합니다.
+                if ((index + 1) % 3 === 0 || index === defaultExcelList.length - 1) {
+                    simulatedRows.push(currentRow);
+                    currentRow = [];
+                }
+            });
+            
+            // 🎨 CSS 강제 바인딩 보완: 혹시 모를 레이아웃 틀어짐을 방지하기 위한 안전장치
+            const targetPanel = document.querySelector('.excel-link-hub-panel');
+            if (targetPanel) {
+                targetPanel.style.display = "block"; // 초기화면에 바로 보이도록 설정
+            }
+
+            // 이제 완벽한 구조로 데이터가 뿌려집니다!
+            buildHubMenuGrid(simulatedRows);
+            txtFileNameScreen.textContent = "🎁 원하시는 단어장을 클릭하시면 학습이 시작됩니다!";
+        }
+
+        // 페이지 로드가 끝나면 자동으로 초기 허브 메뉴 버튼들을 화면에 배치합니다.
+        window.addEventListener('DOMContentLoaded', () => {
+            initDefaultHubMenu();
+        });
+
     </script>
 </body>
 </html>
