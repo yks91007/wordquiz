@@ -1,11 +1,10 @@
 
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스파르타 멀티랭귀지 마스터 단어 퀴즈 게임</title>
+    <title>Spartan </title><!-- Master Word Quiz Game -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
@@ -24,14 +23,10 @@
             align-items: center;
         }
 
-body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
-
-
-
         /* 메인 게임 프레임 */
         #game-frame {
             width: 100%;
-            max-width: 460px;  /*오리지널550*/
+            max-width: 470px;  /*오리지널550*/
         }
 
         /* 상단 컨트롤 바 */
@@ -41,7 +36,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-            gap: 5px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         .btn-file-trigger {
@@ -57,7 +52,8 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         }
         .btn-file-trigger:active { transform: translateY(2px); box-shadow: none; }
 
-        /* 🌐 다국어 파일 전환 버튼 스타일 */
+
+        /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일- 시작- */
         .btn-lang-link-toggle {
             background-color: #6c5ce7;
             color: white;
@@ -82,9 +78,8 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             cursor: pointer;
             box-shadow: 0 3px 0 #2b8a87;
         }
-        .btn-order-toggle:active { transform: translateY(2px); box-shadow: none; }
-        /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일 - 끝-*/
 
+        /* 🌐 새로 추가된 다국어 파일 전환 버튼 스타일 - 끝-*/
 
         .btn-order-toggle {
             background-color: #38ada9; 
@@ -97,6 +92,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             cursor: pointer;
             box-shadow: 0 3px 0 #2b8a87;
         }
+        .btn-order-toggle:active { transform: translateY(2px); box-shadow: none; }
 
         .btn-hard-toggle {
             background-color: #fa8231;
@@ -109,7 +105,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             cursor: pointer;
             box-shadow: 0 3px 0 #d35400;
         }
-
         .btn-hard-toggle:active { transform: translateY(2px); box-shadow: none; }
 
         /* 오디오 컨트롤 바 */
@@ -124,7 +119,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             font-size: 12px;
             font-weight: bold;
         }
-
 
         .btn-sound-mute {
             background-color: #4b6584;
@@ -143,8 +137,8 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             align-items: center;
             gap: 3px;
             background: #ffffff;
-            padding: 6px 6px;
-            width: 135px;
+            padding: 4px 6px;
+            width: 140px;
             border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 12px;
@@ -170,171 +164,14 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             height: 11px;
         }
 
-        /* 🔗 웹 주소로 불러오기 버튼 스타일 */
-        .btn-url-loader {
-            background-color: #8080ff;
-            color: white;
-            border: none;
-            padding: 3px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #1811ae;
-        }
-        .btn-url-loader:active { transform: translateY(2px); box-shadow: none; }
-/* 📁 로컬 파일 불러오기 버튼 고급 디자인 스타일 */
-.btn-local-hub-style {
-    background: linear-gradient(135deg, #10ac84, #0eb880);
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px 6px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.2s ease-in-out;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 5px;
-}
-
-.btn-local-hub-style:hover {
-    background: linear-gradient(135deg, #0f8f6e, #10ac84);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.btn-local-hub-style:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* 🔄 메인으로 Restart 버튼 고급 디자인 스타일 */
-.btn-restart-style {
-    background: linear-gradient(135deg, #1d2c96, #7684e4);
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px 3px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.2s ease-in-out;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 5px;
-}
-
-.btn-restart-style:hover {
-    background: linear-gradient(135deg, #602b95, #401d63);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.btn-restart-style:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-/* == Restart 버튼 디자인 스타일==끝== */
-
-        /* 📁 Excel 파일 불러오기 버튼 스타일 */
-        .btn-excel-loader {
-            background-color: #808040;
-            color: white;
-            border: none;
-            padding: 3px 6px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 3px 0  #b8b872;
-        }
-        .btn-excel-loader:active { transform: translateY(2px); box-shadow: none; }
-
-        /* 📋 Excel 파일 불러오기 버튼의 아래 / 기존 안내 창의 위쪽에 고정 노출되는 새 창 */
-        .excel-link-hub-panel {
-            width: 100%;
-            max-height: 90px; /*160px*/
-            overflow-y: auto;  
-            background-color: #fffaff;
-            border: 3px solid #9b59b6; /*dashed #9b59b6*/
-            border-radius: 10px;
-            padding: 12px;
-            margin-top: 5px;
-            margin-bottom: 12px;
-            box-sizing: border-box;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-            display: none; /* 클릭 작동 전에는 철저히 숨김 */
-        }
-
-        .hub-panel-title {
-            font-size: 12px;
-            font-weight: bold;
-            color: #8e44ad;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* 3열 바둑판 배열 디자인 */
-        .hub-grid-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 6px;
-        }
-
-        .hub-cell-pair {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: #ffffff;
-            border: 1px solid #e1d5e7;
-            border-radius: 6px;
-            padding: 5px 6px;
-            font-size: 11px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-        }
-
-        .hub-file-title {
-            flex: 1;
-            font-weight: bold;
-            color: #2c3e50;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .btn-hub-action {
-            background-color: #9b59b6;
-            color: white;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 1.5px 0 #7e4397;
-        }
-        .btn-hub-action:active { transform: translateY(1px); box-shadow: none; }
-
-
-        /* 안내 및 파일 이름 전광판 스타일 */
+        /* 엑셀 파일 이름 전광판 스타일 */
         .file-name-display {
             background: #2c3e50;
             color: #ecf0f1;
             padding: 8px 15px;
             border-radius: 8px;
-            font-size: 12px;
-            font-weight: solid;
+            font-size: 11px;
+            font-weight: solid ; /*bold*/
             text-align: center;
             margin-bottom: 12px;
             word-break: break-all;
@@ -370,7 +207,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             background-color: var(--board-color);
             border: 3px solid #bcaba0;
             border-radius: 8px;
-            min-height: 140px;
+            min-height: 90px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -385,7 +222,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             gap: 3px; /* 12px문단긴격 */
         }
 
-        /* 동적 생성되는 각 행의 행 컨테이너 */
+        /* 동적 생성되는 각 열의 행 컨테이너 */
         .board-row-item {
             width: 100%;
             display: flex;
@@ -429,8 +266,8 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 23px; /* 발음 아이콘 세로 */
-            height: 23px; /* 발음 아이콘 가로 */
+            width: 20px; /* 발음 아이콘 세로 */
+            height: 20px; /* 발음 아이콘 가로 */
             font-size: 14px;
             cursor: pointer;
             display: flex;
@@ -456,8 +293,8 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             background: #ffffff;
             border: 1.5px solid #bbb;
             border-radius: 50%;
-            width: 23px; /* 발음 아이콘 세로 */
-            height: 23px; /* 발음 아이콘 가로 */
+            width: 20px; /* 발음 아이콘 세로 */
+            height: 20px; /* 발음 아이콘 가로 */
             font-size: 14px;
             cursor: pointer;
             display: flex;
@@ -510,8 +347,8 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         }
 
         .slot {
-            width: 28px;  /*입력문자 박스 가로 크기*/
-            height: 30px; /*입력문자 박스 세로 크기*/
+            width: 24px;  /*입력문자 박스 가로 크기*/
+            height: 26px; /*입력문자 박스 세로 크기*/
             background: white;
             border: 2px solid #555;
             border-radius: 8px;
@@ -542,7 +379,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         }
 		*/
 
-        .slot.blank.filled:hover {
+		.slot.blank.filled:hover {
             transform: scale(1.08);
             border: 2px solid #e84118;
             background-color: #ffeae6;
@@ -569,43 +406,11 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             border-radius: 8px;
             margin-bottom: 15px;
             box-shadow: 0 2px 0 #c6b6ac;
-   
-		   }
+        }
         .feedback-text {
             font-size: 15px;
             font-weight: solid; /*bold*/
             color: #243f7d;  /* 다음 단어로 이동합니다 (문자색)*/
-        }
-        /* 조작 영역 */
-        .control-container {
-            display: flex;
-            justify-content: space-between; /*버튼아이템을 배치위치*/
-            /*justify-content: flex-start;*/ /*버튼아이템을 배치위치*/
-            align-items: center;
-            margin-bottom: 10px;
-            gap: 0px;
-            flex-wrap: wrap; /* 줄이 좁혀지면 다음줄로  */
-        }
-
-
-        .feedback-container.success-state {
-            background: #eef9f1;
-            border: 2px solid #20bf6b;
-        }
-        .feedback-container.success-state .feedback-text {
-            color: #20bf6b;
-        }
-        .feedback-container.wrong-state {
-            background: #fff5f5;
-            border: 2px solid #eb3b5a;
-        }
-        .feedback-container.wrong-state .feedback-text {
-            color: #eb3b5a;
-        }
-        
-        .feedback-text {
-            font-size: 15px;
-            font-weight: bold;
         }
 
         /* 조작 영역 */
@@ -684,6 +489,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             grid-template-columns: repeat(8, 1fr);
             gap: 8px;*/
         }
+
         .key-btn {
             background: white;
             border: 2px solid #444;
@@ -724,70 +530,56 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
 
     <div id="game-frame">
         <div class="top-loader-bar">
-            <button class="btn-lang-link-toggle" id="btn-toggle-lang-page">🌐 언어: ko</button>
-            
-            <button class="btn-order-toggle" id="btn-toggle-order">🔢 순서:순차적</button><!-- 🔢 순서: 작위 (순차적) -->
-            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 난이도: 보통</button>
+
+            <button class="btn-lang-link-toggle" id="btn-toggle-lang-page">🌐 en</button><!-- 언어: -->
+
+            <button class="btn-order-toggle" id="btn-toggle-order">🔢sequential</button><!-- 작위 순서(순차적)-->
+            <button class="btn-hard-toggle" id="btn-toggle-hard">🎯 level:low</button><!-- 난이:보통 -->
             
             <div class="audio-control-box">
-                <button class="btn-sound-mute" id="btn-sound-mute">🔊 소리 켬</button>
+                <button class="btn-sound-mute" id="btn-sound-mute">🔊 sound</button><!-- 소리켬 -->
                 <label style="cursor:pointer; display:flex; align-items:center; gap:3px;">
-                    <input type="checkbox" id="chk-auto-speak" checked /> 자동 발음: 켬
-                </label>
+                    <input type="checkbox" id="chk-auto-speak" checked />auto tts: on
+                </label><!-- 자동발음:켬 -->
             </div>
 
             <div class="repeat-control-box">
-                <span>🔄반복횟수:</span><!-- 목표 맞춤 횟수 -->
+                <span>🔄Quiz rep:</span><!-- 🔄 목표 맞춤 횟수: -->
                 <button class="repeat-btn" id="btn-streak-minus">-</button>
                 <input type="text" class="repeat-input" id="input-streak-count" value="1" />
                 <button class="repeat-btn" id="btn-streak-plus">+</button>
             </div>
 
             <div class="repeat-control-box">
-                <span>🔊TTS 반복:</span><!-- TTS 반복듣기 -->
+                <span>🔊Listen:</span><!--🔊 TTS 반복듣기: -->
                 <button class="repeat-btn" id="btn-repeat-minus">-</button>
                 <input type="text" class="repeat-input" id="input-repeat-count" value="1" />
                 <button class="repeat-btn" id="btn-repeat-plus">+</button>
             </div>
-<!-- 🔗 로컬엑셀 불러오기-->  
-<button id="btn-load-local-hub" class="btn-local-hub-style" onclick="triggerLocalHubLoader()">
-    📁 <!-- [ -->🔗 <!-- 로컬 허브 엑셀 불러오기-->Language Lab<!-- ] -->
-</button>
-<input type="file" id="local-hub-file-loader" accept=".xlsx, .xls" style="display: none;" />
-<!-- 🔗 로컬엑셀 불러오기 끝-->     
-            <button class="btn-url-loader" id="btn-load-url">🔗 웹 url</button><!-- 🔗 웹 주소로 불러오기 -->
-            
-            <button class="btn-excel-loader" id="btn-load-excel">📁 Excel 파일 불러오기</button>
-            
-            <input type="file" id="excel-file-hidden-loader" accept=".xlsx, .xls" style="display: none;" />
 
-<button id="btn-restart-hub" class="btn-restart-style" onclick="restartToMainHub()">
-    🔄 <!-- 메인으로 --> (Restart)
-</button>
-
+            <button class="btn-file-trigger" id="btn-change-file">📁 Import Excel File</button><!-- Excel 파일 불러오기 -->
+            <input type="file" id="excel-file-runtime" accept=".xlsx, .xls" style="display: none;" />
         </div>
 
-        <div class="excel-link-hub-panel" id="hub-menu-panel"></div>
-
-        <div class="file-name-display" id="file-name-screen">⏳ 기본 추천 단어장 다운로드 분석 중...</div>
+        <div class="file-name-display" id="file-name-screen">⚠️Please specify the options you want in advance,<br> and then click [📁 Import Excel File]!</div><!-- ⚠️ 원하는 옵션을 미리 지정 한 후, [📁 Excel 파일 불러오기]를 눌러주세요! -->
 
         <div id="game-container">
             <div class="status-bar">
-                <div>정답: <span id="score-correct" style="color:blue;">0</span></div>
-                <div>오답: <span id="score-wrong" style="color:red;">0</span></div>
-                <div>⏱️ 시간: <span id="timer">0</span>초</div>
+                <div>correct : <span id="score-correct" style="color:blue;">0</span></div><!-- 정답 -->
+                <div>wrong : <span id="score-wrong" style="color:red;">0</span></div><!-- 오답 -->
+                <div>⏱️time : <span id="timer">0</span> sec</div><!-- ⏱️ 시간: 0초 -->
             </div>
 
             <div class="meaning-board" id="dynamic-meaning-board">
-                <div style="color:#777; font-size:14px;">엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다.</div>
+                <div style="color:#777; font-size:14px; ">load the Excel file, the data will be displayed here.</div><!-- 엑셀 파일을 로드하면 데이터가 이곳에 표시됩니다. -->
             </div>
             
             <div style="display: flex; justify-content: center;">
                 <div class="example-hint" id="example-meaning" style="display: none;"></div>
             </div>
 
-            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">
-                🎯 현재 단어 맞춘 횟수: <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
+            <div class="loop-progress-bar" id="loop-progress-zone" style="display:block;">🎯 <!-- 현재 단어 맞춘 횟수 -->Current number of words
+                : <span id="current-match-streak" style="color: #ff4757;">0</span> / <span id="total-target-streak">1</span>
             </div>
 
             <div class="word-slots" id="word-slots"></div>
@@ -797,11 +589,11 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             </div>
 
             <div class="control-container">
-                <button class="btn-action hint-btn" id="hint-button">💡 안내(Hint)</button>
-                <button class="btn-action shuffle-btn" id="shuffle-button">🔀자판<!-- 섞기(A)+(C) -->A+C:켬</button>
+                <button class="btn-action hint-btn" id="hint-button">💡Info(Hint) </button><!-- 안내(Hint) -->
+                <button class="btn-action shuffle-btn" id="shuffle-button">🔀Keyboard :mix<!-- 자판 섞기 A+C:켬 --></button>
                 
-                <button class="btn-action listen-btn" id="listen-button">🎧듣기:정지(끔)</button>
-                <button class="btn-action next-btn" id="next-button">⏩다음<!-- 단어 으로-->(Next)</button>
+                <button class="btn-action listen-btn" id="listen-button">🎧Listen:off</button><!-- 듣기:정지(끔) -->
+                <button class="btn-action next-btn" id="next-button">⏩word(Next)</button><!--다음 단어 로-->
             </div>
 
             <div class="keyboard" id="keyboard"></div>
@@ -843,20 +635,20 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         let listenModeState = 0; 
         let autoNextTimeoutToken = null;
 
-        let currentLanguageMode = "ko";
+        // 🌐 언어 상태 변수 (ko = 한국어 메인 페이지 / en = 영어 번역 버튼 페이지)
+        let currentLanguageMode = "en";
 
         const countryLettersPool = {
             'en': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            'ja': 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめ모야유요라리루레로와을ん가기구게고ザじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイうエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ',
+            'ja': 'あいうえおかきくけこさしす세そたちつてとなにぬねのはひふへほまみむめ도야유よらりる레로わ을ん가ぎぐ게ござじずぜ조다ぢづ데도ば비부べ보ぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ마미むめ도야유よらりる레로わ을ンガギグゲゴザジズゼゾダヂヅデドバ비부베보파피푸페포',
             'zh': 'abcdefghijklmnopqrstuvwxyz',
             'es': 'abcdefghijklmnopqrstuvwxyzñáéíóúüABCDEFGHIJKLMNOPQRSTUVWXYZÑÁÉÍÓÚÜ',
             'ko': 'ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊㅋㅌㅍㅎㅏㅑㅓㅕㅗㅛㅜㅠㅡㅣ'
         };
 
         const btnToggleLangPage = document.getElementById('btn-toggle-lang-page');
-        const btnLoadUrl = document.getElementById('btn-load-url');
-        const btnLoadExcel = document.getElementById('btn-load-excel'); 
-        const fileHiddenLoader = document.getElementById('excel-file-hidden-loader');
+        const fileRuntime = document.getElementById('excel-file-runtime');
+        const btnChangeFile = document.getElementById('btn-change-file');
         const btnToggleOrder = document.getElementById('btn-toggle-order'); 
         const btnToggleHard = document.getElementById('btn-toggle-hard'); 
         
@@ -889,300 +681,27 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         const btnSoundMute = document.getElementById('btn-sound-mute');
         const chkAutoSpeak = document.getElementById('chk-auto-speak');
         const txtFileNameScreen = document.getElementById('file-name-screen');
-        
-        const hubMenuPanel = document.getElementById('hub-menu-panel'); //////////==기존꺼====///////////
 
-
-        // ==========================================
-        // 🔒 [순수 로컬 전용] 시스템 제어부 (인터넷/구글 흔적 제거)
-        // ==========================================
-
-        const localHubFileLoader = document.getElementById('local-hub-file-loader');
-
- 
-       // 🚀 버튼 클릭 시 숨겨진 로컬 파일 탐색기 트리거 함수
-        function triggerLocalHubLoader() {
-            localHubFileLoader.click();
-        }
-
-
-
-
-
-
+        // 🌐 [핵심 탑재] 언어 링커 버튼 클릭시 작동 로직
         btnToggleLangPage.addEventListener('click', () => {
-            if (currentLanguageMode === "ko") {
-                currentLanguageMode = "en";
-                btnToggleLangPage.textContent = "🌐 언어: en";
-                window.location.href = "en_index.html"; 
-            } else {
+            if (currentLanguageMode === "en") {
+                // 현재 ko 상태에서 한 번 더 클릭 시 -> en 모드로 스위칭
                 currentLanguageMode = "ko";
-                btnToggleLangPage.textContent = "🌐 언어: ko";
-                window.location.href = "index.html";
-            }
-        });
-
-        // 🔗 웹 주소로 불러오기 버튼 클릭 핸들러
-        btnLoadUrl.addEventListener('click', () => {
-            const promptMessage = "원격 주소록 웹 주소(URL)를 입력하세요.\n\n★ 내 컴퓨터의 주소록 엑셀 파일을 가져오려면 공백 상태로 확인을 누르세요.";
-            const targetUrl = prompt(promptMessage, "");
-            
-            if (targetUrl === null || targetUrl.trim() === "" || targetUrl.trim().toLowerCase() === "file") {
-                fileHiddenLoader.click();
+                btnToggleLangPage.textContent = "🌐  ko"; //언어:
+                
+                // 💡 [안내] 나중에 각 언어 문자로 바꾼 en버튼용 html 주소를 여기에 적어주시면 됩니다!
+                // 예: window.location.href = "index_en.html"; 또는 "english.html";
+                window.location.href = "ko_index.html"; 
+                
             } else {
-                fetchTargetExcelData(targetUrl.trim());
+                // 현재 en 상태에서 다시 한 번 클릭 시 -> ko 모드로 스위칭
+                currentLanguageMode = "ko";
+                btnToggleLangPage.textContent = "🌐  ko"; //언어:
+                
+                // 원본 한국어 메인 페이지로 복귀
+                window.location.href = "en_index.html";
             }
         });
-
-        // 📁 엑셀 파일 불러오기 버튼 핸들러
-        btnLoadExcel.addEventListener('click', () => {
-            fileHiddenLoader.click();
-        });
-
-        // 📁 로컬 파일 핸들러
-        fileHiddenLoader.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                const data = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-
-                if (rows.length === 0) {
-                    alert("비어있는 엑셀 파일입니다.");
-                    return;
-                }
-
-                if (rows.length > 0 && String(rows[0][1]).trim().toLowerCase().includes("http")) {
-                    buildHubMenuGrid(rows);
-                } else {
-                    txtFileNameScreen.textContent = `📖 로컬 단어장 학습 중 : ${file.name}`;
-                    hubMenuPanel.style.display = "none"; 
-                    processExcelRows(rows);
-                }
-            };
-            reader.readAsArrayBuffer(file);
-            e.target.value = ''; 
-        });
-
-////////////////////////===///////////////////////////////////////
-
-
-        // 🔗 구글 드라이브 주소 자동 탐지 및 다운로드 주소 파싱 우회 로직
-        function convertToDirectDownloadUrl(url) {
-            let processedUrl = url.trim();
-            // 구글 드라이브 공유 링크 형태인 경우 직통 다운로드 주소 체계로 가공
-            if (processedUrl.includes("drive.google.com")) {
-                let fileId = "";
-                if (processedUrl.includes("/d/")) {
-                    fileId = processedUrl.split("/d/")[1].split("/")[0];
-                } else if (processedUrl.includes("id=")) {
-                    fileId = processedUrl.split("id=")[1].split("&")[0];
-                }
-                if (fileId) {
-                    return `https://docs.google.com/spreadsheets/d/${fileId}/export?format=xlsx`;
-                }
-            }
-            return processedUrl;
-        }
-
-        // 🔗 원격 웹 주소 데이터 Fetch 처리 함수
-        function fetchTargetExcelData(url, customName = "") {
-            let directUrl = convertToDirectDownloadUrl(url);
-            
-            // 구글 스프레드시트/드라이브의 수월한 연동을 위해 안정성 높은 주소 가공 결합
-            const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(directUrl);
-            
-            if(!customName) {
-                txtFileNameScreen.textContent = "⏳ 원격 파일 주소 분석 및 구글 동기화 다운로드 중...";
-            } else {
-                txtFileNameScreen.textContent = `⏳ [${customName}] 단어장 로딩 중... 잠시만 기다려주세요.`;
-            }
-
-            fetch(proxyUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("네트워크 응답 오류가 발생했습니다.");
-                    return response.arrayBuffer();
-                })
-                .then(buffer => {
-                    const data = new Uint8Array(buffer);
-                    const urlFileName = customName ? customName : "온라인 구글 단어장";
-                    
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-
-                    if (rows.length > 0 && String(rows[0][1]).trim().toLowerCase().includes("http")) {
-                        txtFileNameScreen.textContent = "⚠️ 원하는 옵션을 미리 지정한 후, 상단 불러오기 버튼을 눌러주세요!";
-                        buildHubMenuGrid(rows);
-                    } else {
-                        txtFileNameScreen.textContent = `🔗 원격 학습 중 : ${urlFileName}`;
-                        processExcelRows(rows);
-                    }
-                })
-                .catch(error => {
-                    alert(`❌ 파일 로드 실패: 구글 드라이브 링크의 권한이 '링크가 있는 모든 사용자'로 설정되어 있는지 다시 확인해 주세요.\n\n(원인: ${error.message})`);
-                    txtFileNameScreen.textContent = "❌ 파일 로드 실패. 링크를 확인하거나 다른 파일을 선택해 주세요.";
-                });
-        }
-
-     
-    // 📁 로컬 허브용 .xlsx 파일을 직접 선택해 불러왔을 때 처리하는 온클릭 핸들러 스크립트
-        localHubFileLoader.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                const data = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-
-                if (rows.length === 0) {
-                    alert("비어있는 엑셀 파일입니다.");
-                    return;
-                }
-
-                // 🔍 0행 또는 1행에서 "local" 마크 단어가 있는지 철저히 검증 (A열~F열 결합 검사)
-                let localMarkRowIndex = -1;
-                for (let i = 0; i < Math.min(rows.length, 3); i++) {
-                    const rowStr = rows[i].join(" ").toLowerCase();
-                    if (rowStr.includes("local")) {
-                        localMarkRowIndex = i;
-                        break;
-                    }
-                }
-
-                // 🛡️ 보라색 허브 전용 파일 검증 안전장치 ("local"이 없으면 일반 워드 게임용 파일로 간주하거나 경고)
-                if (localMarkRowIndex === -1) {
-                    alert("❌ [허브 메뉴 오류] 본 파일은 허브 리스트용 엑셀이 아닙니다.\n1행 혹은 2행에 'local' 표기 문자가 반드시 포함되어야 합니다.");
-                    return;
-                }
-
-                // 🎯 "local" 문자 행은 완벽하게 화면에서 배제(은폐)하고, 그 다음 행부터 잘라냅니다.
-                const validRowsFrom = rows.slice(localMarkRowIndex + 1);
-
-                if (validRowsFrom.length === 0 || validRowsFrom[0].join("").trim() === "") {
-                    alert("표출할 로컬 경로(GO 버튼) 데이터 행이 존재하지 않습니다.");
-                    return;
-                }
-
-                // 💜 보라색 바둑판 창에 바인딩하여 출력
-                txtFileNameScreen.textContent = `📁 불러온 허브 목록 : ${file.name}`;
-                buildHubMenuGrid(validRowsFrom);
-            };
-            reader.readAsArrayBuffer(file);
-            e.target.value = ''; // 핸들러 초기화
-        });
-
-        // 💜 로컬 엑셀 데이터를 바둑판식 배열로 예쁘게 화면에 배치해주는 빌더 함수
-        function buildHubMenuGrid(rows) {
-            hubMenuPanel.innerHTML = ""; 
-            hubMenuPanel.style.display = "block"; 
-
-            const panelTitle = document.createElement('div');
-            panelTitle.classList.add('hub-panel-title');
-            panelTitle.innerHTML = "✨ 📁 내 컴퓨터 로컬 단어장 리스트 창 (학습할 단어장을 아래에서 선택해 주세요)";
-            hubMenuPanel.appendChild(panelTitle);
-
-            rows.forEach((row) => {
-                // A열, C열, E열(이름) 중 하나라도 있으면 출력 프로세스 실행
-                if (!row[0] && !row[2] && !row[4]) return;
-
-                const gridRowDiv = document.createElement('div');
-                gridRowDiv.classList.add('hub-grid-row');
-
-                // 💡 요청 사양에 정확히 맞춘 데이터 인덱스 매핑 구조 (A-B / C-D / E-F)
-                const columnsMap = [
-                    { titleIdx: 0, pathIdx: 1 },  // A열(이름) & B열(로컬경로)
-                    { titleIdx: 2, pathIdx: 3 },  // C열(이름) & D열(로컬경로)
-                    { titleIdx: 4, pathIdx: 5 }   // E열(이름) & F열(로컬경로)
-                ];
-
-                columnsMap.forEach(set => {
-                    const cellPair = document.createElement('div');
-                    cellPair.classList.add('hub-cell-pair');
-
-                    const titleVal = String(row[set.titleIdx] || '').trim();
-                    const pathVal = String(row[set.pathIdx] || '').trim();
-
-                    if (titleVal || pathVal) {
-                        const titleSpan = document.createElement('span');
-                        titleSpan.classList.add('hub-file-title');
-                        titleSpan.textContent = titleVal ? titleVal : "이름 없음";
-
-                        const actionBtn = document.createElement('button');
-                        actionBtn.classList.add('btn-hub-action');
-                        actionBtn.textContent = "GO";
-                        
-                        // 🔒 클릭 시 외부 서버(http)를 타지 않고 순수 내부 파일 시스템으로 Fetch 처리
-                        if (pathVal) {
-                            actionBtn.addEventListener('click', () => {
-                                loadPureLocalWordGameData(pathVal, titleVal);
-                            });
-                            titleSpan.style.cursor = "pointer";
-                            titleSpan.addEventListener('click', () => {
-                                loadPureLocalWordGameData(pathVal, titleVal);
-                            });
-                        } else {
-                            actionBtn.style.opacity = "0.3";
-                            actionBtn.disabled = true;
-                        }
-
-                        cellPair.appendChild(titleSpan);
-                        cellPair.appendChild(actionBtn);
-                    } else {
-                        cellPair.style.visibility = "hidden";
-                    }
-
-                    gridRowDiv.appendChild(cellPair);
-                });
-
-                hubMenuPanel.appendChild(gridRowDiv);
-            });
-        }
-
-        // 🎯 GO 버튼 누르면 내부 정해진 경로(/, ./, ././)의 실제 단어 데이터를 게임판으로 올려주는 특화 함수
-        function loadPureLocalWordGameData(filePath, customName) {
-            txtFileNameScreen.textContent = `⏳ [${customName}] 데이터를 폴더 내부에서 읽어오는 중...`;
-
-            // 외부 Proxy 주소를 일절 섞지 않고 완전한 순수 파일명 경로로 직접 로드 요청
-            fetch(filePath)
-                .then(response => {
-                    if (!response.ok) throw new Error("로컬 경로에 해당 엑셀 파일이 존재하지 않거나 보안 제약이 있습니다.");
-                    return response.arrayBuffer();
-                })
-                .then(buffer => {
-                    const data = new Uint8Array(buffer);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-
-                    // 게임화면 활성화 처리부로 바인딩 전송
-                    txtFileNameScreen.textContent = `🎮 순수 로컬 연동 학습 중 : ${customName}`;
-                    hubMenuPanel.style.display = "none"; // 단어장이 떴으므로 허브 창은 숨김
-                    processExcelRows(rows); // 기존에 내장된 단어 퀴즈 생성 원본 프로세서 가동!
-                })
-                .catch(error => {
-                    alert(`❌ 로컬 파일 접근 실패!\n\n동일 폴더 내에 [ ${filePath} ] 파일이 실재하는지 정확히 확인해 주세요.\n(에러내용: ${error.message})`);
-                    txtFileNameScreen.textContent = "❌ 로컬 단어 데이터 로드에 실패하였습니다.";
-                });
-        }
-
-
-
-//////////////////////////////////////////////////////////
-
-
-
 
         btnStreakMinus.addEventListener('click', () => {
             let val = parseInt(inputStreakCount.value) || 1;
@@ -1227,15 +746,13 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             ttsRepeatTarget = val;
         });
 
-
-
         btnToggleOrder.addEventListener('click', () => {
             isRandomMode = !isRandomMode; 
             if (isRandomMode) {
-                btnToggleOrder.textContent = "🔄 Random"; //순서: 무작위
-                btnToggleOrder.style.backgroundColor = "#079992";
+                btnToggleOrder.textContent = "🔄 Random";  //🔄 순서: 무작위
+                btnToggleOrder.style.backgroundColor = "#e76dd8";
             } else {
-                btnToggleOrder.textContent = "🔢 순서:순차적"; //🔢 순서: 작위 (순차적)
+                btnToggleOrder.textContent = "🔢 sequential"; //🔢 순서: 작위 (순차적) 순서:순차적
                 btnToggleOrder.style.backgroundColor = "#38ada9";
             }
         });
@@ -1243,11 +760,11 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         btnToggleHard.addEventListener('click', () => {
             isAllBlankMode = !isAllBlankMode;
             if (isAllBlankMode) {
-                btnToggleHard.textContent = "🔥난이도:높음"; // 난이도: 전체 숨김
-                btnToggleHard.style.backgroundColor = "#eb3b5a";
+                btnToggleHard.textContent = "🔥level:high"; //🔥 난이도: 높음 전체 숨김high[low]
+                btnToggleHard.style.backgroundColor = "#ed54af";
             } else {
-                btnToggleHard.textContent = "🎯 난이도: 보통";
-                btnToggleHard.style.backgroundColor = "#fa8231";
+                btnToggleHard.textContent = "🎯 level:low"; //🎯 난이도: 보통
+                btnToggleHard.style.backgroundColor = "#fb914a";
             }
         });
 
@@ -1255,10 +772,10 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             isMuted = !isMuted;
             if (isMuted) {
                 window.speechSynthesis.cancel(); 
-                btnSoundMute.textContent = "🔇 음소거";
+                btnSoundMute.textContent = "🔇 sound off "; //음소거
                 btnSoundMute.style.backgroundColor = "#eb3b5a";
             } else {
-                btnSoundMute.textContent = "🔊 소리 켬";
+                btnSoundMute.textContent = "🔊 sound on"; //소리 켬
                 btnSoundMute.style.backgroundColor = "#4b6584";
             }
         });
@@ -1267,48 +784,72 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             chkAutoSpeak.parentElement.childNodes[1].textContent = chkAutoSpeak.checked ? " 자동 발음: 켬" : " 자동 발음: 끔";
         });
 
-        function processExcelRows(rows) {
-            if (rows.length < 2) {
-                alert("구조가 잘못되었습니다.");
-                return;
-            }
+        function parseExcel(file) {
+            if (!file) return;
 
-            const firstRow = rows[0];
-            columnLanguages = firstRow.map(cell => String(cell || 'en').trim().toLowerCase());
+            txtFileNameScreen.textContent = `📖   ${file.name}`; //: 학습 중인 파일
 
-            speakerMuteStates = {};
-            visibilityStates = {};
-            columnLanguages.forEach((_, colIdx) => {
-                speakerMuteStates[colIdx] = true; 
-                visibilityStates[colIdx] = true;  
-            });
-
-            quizData = [];
-            for (let r = 1; r < rows.length; r++) {
-                let currentRow = rows[r];
-                if (!currentRow[0] || String(currentRow[0]).trim() === "") continue;
-
-                let rowDataArray = [];
-                for (let c = 0; c < columnLanguages.length; c++) {
-                    rowDataArray.push(String(currentRow[c] || '').trim());
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const data = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
+                
+                if (rows.length < 2) {
+                    alert("최소한 1행(TTS코드)과 2행(데이터) 이상의 구조가 필요합니다.");
+                    return;
                 }
-                quizData.push(rowDataArray);
-            }
 
-            if (quizData.length === 0) {
-                alert("데이터가 존재하지 않습니다.");
-                return;
-            }
+                const firstRow = rows[0];
+                columnLanguages = firstRow.map(cell => String(cell || 'en').trim().toLowerCase());
 
-            correctCount = 0;
-            wrongCount = 0;
-            sequentialIndex = 0; 
+                speakerMuteStates = {};
+                visibilityStates = {};
+                columnLanguages.forEach((_, colIdx) => {
+                    speakerMuteStates[colIdx] = true; 
+                    visibilityStates[colIdx] = true;  
+                });
 
-            lblCorrect.textContent = correctCount;
-            lblWrong.textContent = wrongCount;
-            
-            nextQuiz(); 
+                quizData = [];
+                for (let r = 1; r < rows.length; r++) {
+                    let currentRow = rows[r];
+                    if (!currentRow[0] || String(currentRow[0]).trim() === "") continue;
+
+                    let rowDataArray = [];
+                    for (let c = 0; c < columnLanguages.length; c++) {
+                        rowDataArray.push(String(currentRow[c] || '').trim());
+                    }
+                    quizData.push(rowDataArray);
+                }
+
+                if (quizData.length === 0) {
+                    alert("2행 이후에 읽을 수 있는 단어 데이터가 존재하지 않습니다.");
+                    return;
+                }
+
+                correctCount = 0;
+                wrongCount = 0;
+                sequentialIndex = 0; 
+
+                lblCorrect.textContent = correctCount;
+                lblWrong.textContent = wrongCount;
+                
+                nextQuiz(); 
+            };
+            reader.readAsArrayBuffer(file);
         }
+
+        btnChangeFile.addEventListener('click', () => {
+            fileRuntime.click();
+        });
+        
+        fileRuntime.addEventListener('change', (e) => {
+            parseExcel(e.target.files[0]);
+            e.target.value = ''; 
+        });
 
         function getStandardLangLocale(code) {
             if (code === 'ja' || code === 'jp') return 'ja-JP';
@@ -1355,10 +896,11 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                 btnElement.textContent = "🙈";
                 btnElement.classList.add('hidden-state');
                 textSpan.classList.add('hidden-blind');
-                textSpan.textContent = "  ".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 5)); // "█".repeat(Math
+                textSpan.textContent = "           ".repeat(Math.max(textSpan.getAttribute('data-raw-text').length, 0)); //█   //.length, 5))
             }
         }
 
+        // 전체 오디오 사슬 연속 재생 엔진
         function playCorrectSoundChain() {
             if (isMuted || !currentProblem) return;
             window.speechSynthesis.cancel();
@@ -1393,6 +935,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
 
             const totalLength = finalChainQueue.length;
             finalChainQueue.forEach((utt, index) => {
+                // 사슬의 마지막 발음이 완전히 끝났을 때 넘김 조건 처리
                 if (index === totalLength - 1) {
                     utt.onend = () => {
                         handleListeningEndAction();
@@ -1402,9 +945,10 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             });
         }
 
+        // 🎯 [핵심 수정 기지] 오디오 발음이 완전히 끝났을 때의 행동 정의
         function handleListeningEndAction() {
+            // 1. 듣기 자동 모드일 때: 정답 여부와 상관없이 소리가 끝나면 무조건 다음 단어로!
             if (listenModeState === 1) {
-                feedbackZone.className = "feedback-container success-state"; 
                 feedbackTextMsg.textContent = "🎧 듣기 자동 모드: 잠시 후 다음 단어로 자동 이동합니다.";
                 feedbackZone.style.display = "flex";
                 
@@ -1412,14 +956,14 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                     nextQuiz();
                 }, 1200);
             } 
+            // 2. 듣기 수동 모드일 때: 소리가 끝나면 가만히 멈춰 서서 사용자의 클릭을 대기합니다.
             else if (listenModeState === 2) {
-                feedbackZone.className = "feedback-container success-state";
                 feedbackTextMsg.textContent = "🎧 듣기 수동 모드: 다음 단어로 넘어가려면 [Next] 버튼을 누르세요.";
                 feedbackZone.style.display = "flex";
             }
+            // 3. 일반 모드(듣기 꺼짐)에서 타이핑 훈련 목표 스트릭을 채웠을 때
             else if (listenModeState === 0 && matchStreakCount >= targetStreakLimit) {
-                feedbackZone.className = "feedback-container success-state";
-                feedbackTextMsg.textContent = "🎉 목표 달성! 잠시 후 다음 단어로 자동 이동합니다.";
+                feedbackTextMsg.textContent = " 👍 ! 잠시 후 다음 단어로 자동 이동합니다."; //🎉 목표 달성
                 feedbackZone.style.display = "flex";
                 
                 autoNextTimeoutToken = setTimeout(() => {
@@ -1450,7 +994,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
 
             isCorrectAnswered = false;
             feedbackZone.style.display = "none";
-            feedbackZone.className = "feedback-container"; 
             keyboardContainer.classList.remove('disabled');
 
             clearInterval(timerInterval);
@@ -1482,11 +1025,12 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             
             renderDynamicMeaningBoard();
             
-            txtExMeaning.textContent = `💡정답 안내: ${targetWord}`; 
+            txtExMeaning.textContent = `💡 정답 안내: ${targetWord}`; 
             txtExMeaning.style.display = "none";
 
             setupWordSlots(targetWord);
 
+            // 자동 발음이 켜져 있거나, 듣기 모드가 켜져 있다면 다음 단어로 오자마자 재생 시작
             if ((chkAutoSpeak.checked || listenModeState > 0) && !isMuted) {
                 playCorrectSoundChain();
             }
@@ -1502,7 +1046,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                 rowDiv.classList.add('board-row-item');
                 if(colIdx === 0) rowDiv.classList.add('primary-target'); 
 
-                let labelPrefix = colIdx === 0 ? "📖 " : (colIdx === 1 ? " 📖 " : `📖${colIdx}: `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
+                let labelPrefix = colIdx === 0 ? "📖 " : (colIdx === 1 ? " 📖 " : `📖${colIdx}      .     `); // let labelPrefix = colIdx === 0 ? "단어: " : (colIdx === 1 ? " 뜻: " : `정보${colIdx}: `);
                 let fullRowText = `${labelPrefix}${text}`;
 
                 const textSpan = document.createElement('span');
@@ -1519,7 +1063,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
                     visibilityBtn.textContent = "🙈";
                     visibilityBtn.classList.add('hidden-state');
                     textSpan.classList.add('hidden-blind');
-                    textSpan.textContent = " ".repeat(Math.max(fullRowText.length, 5)); //█   //.length, 5))
+                    textSpan.textContent = "         ".repeat(Math.max(fullRowText.length, 0)); //█
                 }
 
                 visibilityBtn.addEventListener('click', (e) => {
@@ -1548,7 +1092,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         function resetSlotsForStreak() {
             isCorrectAnswered = false;
             feedbackZone.style.display = "none";
-            feedbackZone.className = "feedback-container";
             keyboardContainer.classList.remove('disabled');
             answerArray = Array.from(targetWord);
             keyMappingLog = {};
@@ -1657,12 +1200,12 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             isMixModeAC = !isMixModeAC;
 
             if (isMixModeAC) {
-                btnShuffle.textContent = "🔀 자판 섞기 (A)+(C) : 켬";
+                btnShuffle.textContent = "🔀Keyboard:mix"; // 🔀 자판섞기 (A)+(C) // 🔀자판A+C:켬
             } else {
-                btnShuffle.textContent = "🔀 자판 섞기 (A) : 끔";
+                btnShuffle.textContent = "🔀Keyboard:normal"; //🔀 자판(A) : 끔
             }
 
-            buildDynamicKeyboard();
+            buildDynamicKeyboard(); // 섞기
         }
 
         function toggleListenModeSwitcher() {
@@ -1671,23 +1214,22 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             listenModeState = (listenModeState + 1) % 3;
 
             if (listenModeState === 1) {
-                btnListen.textContent = "🎧 듣기: 자동 넘김";
+                btnListen.textContent = "🎧Listen:auto"; //듣기:자동넘김
                 btnListen.style.backgroundColor = "#2e86de";
                 btnListen.style.borderColor = "#246ebb";
                 playCorrectSoundChain(); 
             } else if (listenModeState === 2) {
-                btnListen.textContent = "🎧 듣기: 수동 대기";
+                btnListen.textContent = "🎧Listen:normal"; //듣기:수동대기
                 btnListen.style.backgroundColor = "#ff9f43";
                 btnListen.style.borderColor = "#e67e22";
                 playCorrectSoundChain();
             } else {
-                btnListen.textContent = "🎧 듣기: 정지(끔)";
+                btnListen.textContent = "🎧Listen:off"; //듣기:정지(끔)
                 btnListen.style.backgroundColor = "#10ac84";
                 btnListen.style.borderColor = "#0f8f6e";
                 window.speechSynthesis.cancel();
                 if (autoNextTimeoutToken) clearTimeout(autoNextTimeoutToken);
                 feedbackZone.style.display = "none";
-                feedbackZone.className = "feedback-container";
             }
         }
 
@@ -1734,11 +1276,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         function handleKeyPress(char, btnElement) {
             if (isCorrectAnswered || quizData.length === 0) return;
 
-            if(feedbackZone.classList.contains('wrong-state')) {
-                feedbackZone.style.display = "none";
-                feedbackZone.className = "feedback-container";
-            }
-
             if (btnElement.classList.contains('used')) {
                 let foundTargetIdx = -1;
                 for (let key in keyMappingLog) {
@@ -1780,11 +1317,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         function removeLastChar() {
             if (isCorrectAnswered || quizData.length === 0) return; 
 
-            if(feedbackZone.classList.contains('wrong-state')) {
-                feedbackZone.style.display = "none";
-                feedbackZone.className = "feedback-container";
-            }
-
             let lastFilledIdx = -1;
             for (let i = currentBlankIndices.length - 1; i >= 0; i--) {
                 let idx = currentBlankIndices[i];
@@ -1801,12 +1333,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
 
         function removeSpecificChar(blankIdx) {
             if (isCorrectAnswered || quizData.length === 0) return;
-            
-            if(feedbackZone.classList.contains('wrong-state')) {
-                feedbackZone.style.display = "none";
-                feedbackZone.className = "feedback-container";
-            }
-
             const targetSlot = document.getElementById(`blank-${blankIdx}`);
             if (targetSlot.textContent === "") return; 
 
@@ -1840,26 +1366,27 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
 
                 if (chkAutoSpeak.checked && listenModeState === 0) { playCorrectSoundChain(); }
 
+                // 일반 모드(듣기 꺼짐)일 때는 입력 완료 기준으로 다음 단어 체크 작동하도록 연동유지
                 if (listenModeState === 0) {
                     if (matchStreakCount >= targetStreakLimit) {
                         handleListeningEndAction();
                     } else {
-                        feedbackZone.className = "feedback-container success-state";
                         feedbackTextMsg.textContent = `🎯 정답! (${matchStreakCount}/${targetStreakLimit}) 반복 훈련 중...`;
                         feedbackZone.style.display = "flex";
                         autoNextTimeoutToken = setTimeout(() => { resetSlotsForStreak(); }, 1000);
                     }
                 } else {
-                    feedbackZone.className = "feedback-container success-state";
+                    // 듣기 모드가 켜져 있을 때 정답을 입력했다면 피드백만 노출 (오디오 종료 이벤트가 다음 단어로 넘겨줌)
                     feedbackTextMsg.textContent = "🎯 정답입니다! 원어 오디오 청취가 종료되면 자동 이동합니다.";
                     feedbackZone.style.display = "flex";
                 }
 
             } else {
+                // 🎯 [핵심 개조] 팝업창을 띄우지 않고, 정답 입력칸 바로 아랫부분 메인 화면 패널에 오답 메시지 주입
                 wrongCount++;
                 lblWrong.textContent = wrongCount;
 
-                feedbackZone.className = "feedback-container wrong-state"; 
+                feedbackZone.className = "feedback-container wrong-state"; // 적색 오답 스타일 주입
                 feedbackTextMsg.textContent = "❌ 틀렸습니다! 잘못 입력된 글자(빨간색)를 지우고 다시 시도해 보세요.";
                 feedbackZone.style.display = "flex";
             }
@@ -1868,7 +1395,7 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
         function toggleHint() {
             if (!currentProblem) return;
             if (txtExMeaning.style.display === "none") {
-                txtExMeaning.textContent = `💡정답 안내: ${targetWord}`;
+                txtExMeaning.textContent = `💡    : ${targetWord}`; //💡 정답 안내:
                 txtExMeaning.style.display = "block";
             } else {
                 txtExMeaning.style.display = "none";
@@ -1883,123 +1410,6 @@ body{ -ms-overflow-style:none; }  ::-webkit-scrollbar{display:none;}
             if (!currentProblem) return;
             nextQuiz();   
         });
-/////////////////////////=========////////////////////////
-
-        // 🔄 [원터치 재시작] 처음 main_list.xlsx 바둑판 화면으로 리셋하는 함수
-
-        function restartToMainHub() {
-            // 1. 진행 중이던 단어 퀴즈 관련 UI 엘리먼트가 있다면 숨기거나 초기화 처리를 진행합니다.
-            // (사용 중이신 메인 단어 전광판이나 퀴즈 컨테이너 ID가 있다면 상황에 맞게 스타일을 조절할 수 있습니다)
-            const wordGameDisplay = document.getElementById('word-game-container'); // 예시 ID
-            if (wordGameDisplay) {
-                wordGameDisplay.style.display = "none"; 
-            }
-
-            // 2. 닫혀있을지 모르는 보라색 허브 패널을 다시 활성화합니다.
-            if (hubMenuPanel) {
-                hubMenuPanel.style.display = "block";
-            }
-
-            // 3. 켜지자마자 실행되었던 main_list.xlsx 추적 함수를 재가동하여 깨끗한 3열 바둑판을 새로고침합니다!
-            initDefaultHubMenu();
-            
-            console.log("🚀 시스템이 성공적으로 초기 메인 허브 화면으로 Restart 되었습니다.");
-        }
-        // 🔄 [원터치 재시작] 처음 main_list.xlsx 바둑판 화면으로 리셋하는 함수 ==끝==
-
-
-    // 🎯 [최종 완성] 켜지자마자 에러 없이 main_list.xlsx를 강제 로드하여 보라색 창에 GO 버튼을 즉시 정렬하는 함수
-        function initDefaultHubMenu() {
-            if (!hubMenuPanel) return;
-            
-            // 1. 화면을 깨끗하게 비우고 타이틀을 먼저 배치합니다.
-            hubMenuPanel.innerHTML = ""; 
-            hubMenuPanel.style.display = "block"; 
-            
-            const panelTitle = document.createElement('div');
-            panelTitle.classList.add('hub-panel-title');
-            panelTitle.innerHTML = "✨ 📁 내 컴퓨터 로컬 단어장 리스트 창 (학습할 단어장을 아래에서 선택해 주세요)";
-            hubMenuPanel.appendChild(panelTitle);
-
-            // 로딩 중임을 알려주는 안내 메시지
-            const loadingNotice = document.createElement('div');
-            loadingNotice.style.color = "#ffffff";
-            loadingNotice.style.textAlign = "center";
-            loadingNotice.style.padding = "35px";
-            loadingNotice.style.fontSize = "16px";
-            loadingNotice.textContent = "⏳ 로컬 서버로부터 main_list.xlsx 메뉴를 자동으로 분석하여 정렬 중입니다...";
-            hubMenuPanel.appendChild(loadingNotice);
-
-            txtFileNameScreen.textContent = "⏳ 시스템 구동 및 메인 리스트 동기화 중...";
-
-            // 💡 [핵심 보정] 서버 환경(192.168.35.35:8000)에서 브라우저가 경로를 오인하거나 
-            // 캐시 때문에 '가져오기 실패'를 일으키지 않도록 고유 타임스탬프 쿼리를 주소 뒤에 강제로 붙여 추적합니다.
-            const targetPathWithCacheBuster = "./main_list.xlsx?v=" + new Date().getTime();
-
-            // 2. 프로그램 시작과 동시에 main_list.xlsx 자동 로드 개시!
-            fetch(targetPathWithCacheBuster)
-                .then(response => {
-                    if (!response.ok) throw new Error("main_list.xlsx 파일을 불러오지 못했습니다. index.html과 '동일한 폴더'에 파일이 실제로 존재하는지 꼭 확인해 주세요.");
-                    return response.arrayBuffer();
-                })
-                .then(buffer => {
-                    const data = new Uint8Array(buffer);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: "" });
-
-                    if (rows.length === 0) {
-                        loadingNotice.textContent = "❌ main_list.xlsx 파일 내부에 데이터가 존재하지 않습니다.";
-                        return;
-                    }
-
-                    // 🔍 3. 0행 또는 1행에서 "local" 마크 단어가 있는지 철저히 검증 (혼동 방지)
-                    let localMarkRowIndex = -1;
-                    for (let i = 0; i < Math.min(rows.length, 3); i++) {
-                        const rowStr = rows[i].join(" ").toLowerCase();
-                        if (rowStr.includes("local")) {
-                            localMarkRowIndex = i;
-                            break;
-                        }
-                    }
-
-                    // "local" 문자가 없다면 경고를 띄우고 중단합니다.
-                    if (localMarkRowIndex === -1) {
-                        alert("❌ [메인 리스트 검증 오류]\nmain_list.xlsx 파일의 0행 또는 1행에 'local' 표기 문자가 반드시 포함되어야 합니다.");
-                        loadingNotice.textContent = "❌ 파일 검증 실패 ('local' 마크 없음)";
-                        txtFileNameScreen.textContent = "❌ 메인 메뉴 로드 실패";
-                        return;
-                    }
-
-                    // 🎯 4. "local" 문자 행은 보이지 않게 완벽하게 제외(잘라내기)하고 그 다음 행(2행부터)만 정제합니다.
-                    const validRowsFrom = rows.slice(localMarkRowIndex + 1);
-
-                    if (validRowsFrom.length === 0 || validRowsFrom[0].join("").trim() === "") {
-                        loadingNotice.textContent = "❌ 표출할 하위 로컬 경로 데이터가 존재하지 않습니다.";
-                        return;
-                    }
-
-                    // 임시 로딩 안내 문구를 지우고, 보라색 바둑판 창에 GO 버튼들을 즉시 촥 정렬하여 펼쳐줍니다!
-                    loadingNotice.remove();
-                    txtFileNameScreen.textContent = "🎁 로컬 폴더 안의 단어장을 선택하시면 즉시 하위 목록 리스트가 보라색 창에 펼쳐집니다!";
-                    
-                    // A열~F열 구조대로 가로 3개씩 GO 버튼 나열 바인딩 실행!
-                    buildHubMenuGrid(validRowsFrom);
-                })
-                .catch(error => {
-                    // 에러 발생 시 UI에 명확하게 상태를 표시합니다.
-                    loadingNotice.innerHTML = `❌ <b>메인 메뉴 자동 로드 실패!</b><br><span style='font-size:13px; color:#ff8282;'>원인: ${error.message}</span><br><br><span style='font-size:14px;'>[해결책] main_list.xlsx 파일명이 대소문자까지 정확한지, index.html과 완벽히 같은 폴더에 들어있는지 한 번 더 확인해 주세요.</span>`;
-                    txtFileNameScreen.textContent = "❌ main_list.xlsx 자동 추적 실패";
-                });
-        }
-    // 🎯 [최종 완성] 켜지자마자 에러 없이 main_list.xlsx를 강제 로드하여 보라색 창에 GO 버튼을 즉시 정렬하는 함수 - 끝 -
-
-        // 페이지 로드가 끝나면 자동으로 초기 허브 메뉴 버튼들을 화면에 배치합니다.
-        window.addEventListener('DOMContentLoaded', () => {
-            initDefaultHubMenu();
-        });
-
     </script>
 </body>
 </html>
